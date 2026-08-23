@@ -58,13 +58,13 @@ flowchart LR
     QPS["峰值 QPS<br/>+ 长度分布"]:::control
     SLO["SLO:TTFT /<br/>TPOT / 可用性"]:::control
   end
-  subgraph cap["容量层(§6.2 换算)"]
+  subgraph cap["容量层(第 6 章 换算)"]
     TOK["token 吞吐需求<br/>Prefill / Decode 分列"]:::compute
     INST["单实例 goodput<br/>(压测得出)"]:::compute
     NUM["实例数 ÷ 水位 ρ"]:::compute
     GPU["卡数 = 实例数<br/>× 每实例卡数 + 冗余"]:::compute
   end
-  subgraph phy["物理层(§31.2 约束)"]
+  subgraph phy["物理层( 约束)"]
     RACK["机柜数<br/>(按采购粒度取整)"]:::external
     PWR["功率需求<br/>× 整机系数 × PUE"]:::bottleneck
   end
@@ -205,7 +205,7 @@ flowchart TB
     PWRC["电费 10–18%<br/>= IT功率×PUE×电价×时长"]:::comm
     OPS["运维人力 8–15%"]:::storage
   end
-  ECO["生态折算 0–15%<br/>(§12.7 人月 × 人力成本)"]:::control
+  ECO["生态折算 0–15%<br/>(第 12 章 人月 × 人力成本)"]:::control
   TCO -->|"一次投入 ÷ 年限"| HW
   TCO -->|"一次投入 ÷ 年限"| FAC
   TCO -->|"按年计费"| PWRC
@@ -274,13 +274,13 @@ flowchart TB
 
   Q1{"未来 12 个月负载<br/>稳定且可预测?"}:::control
   Q2{"预测利用率<br/>≥ 40%?"}:::control
-  Q3{"机房电力/散热<br/>满足目标密度?<br/>(§31.2)"}:::control
-  Q4{"生态人月折算后<br/>国产卡每 token 成本<br/>仍占优?(§12.5+§12.7)"}:::control
+  Q3{"机房电力/散热<br/>满足目标密度?<br/>"}:::control
+  Q4{"生态人月折算后<br/>国产卡每 token 成本<br/>仍占优?(第 12 章)"}:::control
   Q5{"改造在预算与<br/>工期内可行?"}:::control
   CLOUD["上云<br/>验证期结束后重走本树"]:::external
   HYBRID["混合:基线自建<br/>峰值上云"]:::compute
   DOM["自建 + 国产卡<br/>预留适配人月预算"]:::compute
-  NV["自建 + 成熟生态硬件<br/>按 §4.2.2 配比选型"]:::compute
+  NV["自建 + 成熟生态硬件<br/>按 第 4 章 配比选型"]:::compute
   RETRO["改造机房或托管 IDC<br/>费用计入 TCO 再回 Q2"]:::control
 
   Q1 -->|"否/新业务验证期"| CLOUD

@@ -280,7 +280,7 @@ flowchart TB
 
     S["性能不达预期 /<br/>任务异常"]:::ctrl
     Q0["先问:能正常跑吗?"]:::ctrl
-    V["报版本/加载错误<br/>→ §5.1.2 四步排查<br/>driver→框架→ldd→兼容矩阵"]:::ext
+    V["报版本/加载错误<br/>→  四步排查<br/>driver→框架→ldd→兼容矩阵"]:::ext
     M["报 OOM<br/>→ 图 5-3 归因树"]:::bottleneck
     Q1["能跑但慢:<br/>先抓框架层 profile<br/>(torch profiler)"]:::compute
     Q2["时间线上设备流<br/>有明显空泡吗?"]:::ctrl
@@ -288,7 +288,7 @@ flowchart TB
     B2["间隙空泡<br/>→ launch 开销,<br/>上图模式(见方案对比节)"]:::bottleneck
     B3["尾部空泡<br/>→ 通信/慢节点,<br/>第 16、20 章"]:::bottleneck
     K["无空泡:下钻系统层<br/>Nsight / msprof 看 kernel"]:::compute
-    R["与 §4.4 Roofline 对账:<br/>贴上限→谈扩容;<br/>差得远→查 occupancy,<br/>交算子团队"]:::compute
+    R["与 第 4 章 Roofline 对账:<br/>贴上限→谈扩容;<br/>差得远→查 occupancy,<br/>交算子团队"]:::compute
 
     S -->|"分诊"| Q0
     Q0 -->|"起不来"| V
