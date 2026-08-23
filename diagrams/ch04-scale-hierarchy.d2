@@ -1,0 +1,102 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  comm: {
+    style: {
+      fill: "#FFF4E5"
+      stroke: "#D9822B"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  bottleneck: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+cluster: "第四级:多机集群" {
+  class: plain
+  direction: down
+
+  pod: "第三级:超节点(统一互联域)· 几十到上百卡" {
+    class: comm
+    direction: down
+
+    node: "第二级:单机 · 8 卡量级" {
+      class: comm
+      direction: right
+
+      gpu: "第一级:单卡" {
+        class: compute
+        direction: down
+        core: "计算单元" {class: compute}
+        hbm: "HBM 主显存\nTB/s 量级" {class: compute}
+        core <-> hbm: "读写权重/激活" {
+          style.font-color: "#1F2937"
+        }
+      }
+      gpus: "单卡 ×7\n(同机其余卡)" {class: compute}
+
+      gpu <-> gpus: "机内卡间互联 数百 GB/s\n(比 HBM 低约 1 个量级)" {
+        style: {
+          stroke: "#D9822B"
+          font-color: "#B45309"
+        }
+      }
+    }
+
+    nodes: "单机 ×N(同域其余机器)" {class: comm}
+
+    node <-> nodes: "域内交换互联 数百 GB/s\n域内任意两卡与机内同量级" {
+      style: {
+        stroke: "#D9822B"
+        font-color: "#B45309"
+      }
+    }
+  }
+
+  pods: "超节点 ×M(其他互联域)" {class: comm}
+
+  pod <-> pods: "跨域 RDMA 网络 几十 GB/s\n断崖:降 1–2 个量级" {
+    style: {
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#D64545"
+    }
+  }
+}
+
+note: "互联域边界 = 真正的通信断崖:域内高带宽,\n跨域掉 1–2 个数量级——并行策略与故障域\n按域规划,不按台规划" {
+  class: bottleneck
+  shape: page
+}
+
+cluster.pod -> note: "域边界" {
+  style: {
+    stroke: "#D64545"
+    stroke-dash: 4
+    font-color: "#D64545"
+  }
+}
