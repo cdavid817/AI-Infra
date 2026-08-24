@@ -1,0 +1,37 @@
+schema_version: 1
+chapter: 31
+topic: 能源、碳强度与环境指标(计划 §17.8)
+prepared_at: 2026-08-24
+scope:
+  included:
+    - 功能单位与系统边界(SCI 的 C per R 框架):训练/推理/Agent 负载各自的功能单位(kWh/训练任务、Wh/请求、J/token、gCO2e/百万 token 等)
+    - 运行排放(E×I)与隐含排放(M)的区分;测量 vs 估算的口径差异
+    - 抵消不降分:碳抵消不能替代实际效率改进(SCI 明文排除)
+    - power cap 与吞吐/能效关系、峰谷电价与碳感知调度的适用与失效边界(训练迁移的数据成本前提)
+    - 第 11 章:能效纳入利用率治理(每有效 token 能耗);第 29 章:能耗指标进指标体系
+    - 附录 A 功率密度表与附录 B 符号的衔接;TCO 计算器已有 carbon_intensity 可选输入的正文呼应
+  excluded:
+    - 具体电网碳强度数值与电价(地区高时效数据,只写获取途径)
+    - 碳核算审计流程(超出 Infra 边界)
+claims:
+  - proposed_id: CLM-031-NEW-017
+    statement: SCI 框架把软件碳强度定义为 C per R:运行排放 E×I 加硬件隐含排放 M,按统一功能单位缩放;中和/抵消类 offset 明确不降低分数——环境指标必须落在直接效率改进上
+    claim_type: mechanism
+    candidate_sources: [SRC-GSF-SCI]
+    confidence: high
+  - proposed_id: CLM-031-NEW-018
+    statement: SCI for AI 将该框架扩展到 AI 全生命周期(数据准备、训练、部署、推理),按系统类型定义边界与功能单位
+    claim_type: project_status
+    candidate_sources: [SRC-GSF-SCI-AI]
+    confidence: high
+  - proposed_id: CLM-031-NEW-019
+    statement: power cap 与碳感知调度是有失效边界的手段:cap 压低持续算力直接拉长训练工期,碳感知迁移训练任务的前提是数据与 checkpoint 可低成本随行——两者都要用每功能单位总排放核算而非只看瞬时功率
+    claim_type: recommendation
+    candidate_sources: [SRC-GSF-SCI]
+    confidence: medium
+open_questions:
+  - 训练/推理负载的 J/token 公开基准数据(不编数,正文只给测量方法)
+conflicting_sources: []
+volatile_facts:
+  - statement: SCI for AI 规范的版本与细化程度
+    review_required: true

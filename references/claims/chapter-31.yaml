@@ -164,3 +164,34 @@ claims:
     sources: []
     status: unverified
     disclosure: "行业经验区间,依赖云厂商定价与自建口径,时效性强;应按 §31.3.3 每 token 成本代入自身真实数字复算,不可直接引用。待补来源:主流云厂商 GPU 实例价目与公开自建成本分析。"
+
+  - id: CLM-031-017
+    section: "从电费到碳账:功能单位与系统边界"
+    summary: "SCI 框架把软件碳强度定义为 C per R:运行排放(能耗 E × 电网碳强度 I)加硬件隐含排放 M,全部要素按同一功能单位 R 缩放;中和/抵消类 offset 明确不降低分数,环境指标必须落在直接效率改进上"
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-GSF-SCI]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 365
+
+  - id: CLM-031-018
+    section: "从电费到碳账:功能单位与系统边界"
+    summary: "SCI for AI 将 SCI 框架扩展到 AI 全生命周期(数据准备、训练、部署、推理),按 AI 系统类型定义边界与功能单位;其细化程度属高时效信息,正文只写存在与定位,不写版本细节"
+    claim_type: project_status
+    evidence_level: L1
+    sources: [SRC-GSF-SCI-AI]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180
+
+  - id: CLM-031-019
+    section: "从电费到碳账:功能单位与系统边界"
+    summary: "power cap 与碳感知调度是有失效边界的降碳手段:cap 压低瞬时功率但拉长训练工期,总排放未必下降;碳感知迁移训练任务的前提是数据与 checkpoint 可低成本随行(第 9、14 章),推理受 SLO 锚定基本不可迁——两者都应按每功能单位总排放核算,而非只看功率曲线"
+    claim_type: recommendation
+    evidence_level: L2
+    sources: [SRC-GSF-SCI]
+    status: unverified
+    reviewed_at: 2026-08-24
+    review_after_days: 180
+    disclosure: "判断性结论:'按每功能单位核算'的口径部分由 SCI 规范(SRC-GSF-SCI)直接支撑;cap 拉长工期、迁移的数据成本前提与推理不可迁等失效边界为作者基于调度与数据重力机制的工程推断,无公开实测来源,应按自身负载验证后再采纳。"
