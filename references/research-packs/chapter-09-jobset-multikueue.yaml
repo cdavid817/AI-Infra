@@ -1,0 +1,36 @@
+schema_version: 1
+chapter: 9
+topic: JobSet、Kueue 与 MultiKueue(计划 §17.3)
+prepared_at: 2026-08-24
+scope:
+  included:
+    - 多角色训练作业作为一个生命周期单元(JobSet:ReplicatedJob、成功/失败策略、启动顺序、稳定网络端点)
+    - 「调度准入」与「作业控制器」的职责边界(Kueue 管准入配额,JobSet 管生命周期)
+    - 第 19 章:多角色作业接口(launcher/worker/参数与奖励服务角色映射到 ReplicatedJob)
+    - MultiKueue:manager/worker 集群分离、远程对象同步、完全准入后分发
+    - 第 20 章:跨集群故障语义(远程 Workload 失联/驱逐/重试的所有权)
+    - manager/worker 状态流图(mermaid);附录 C 登记项目状态
+  excluded:
+    - YAML 清单与安装教程;数据位置/地域调度的深入方案(留 open question)
+claims:
+  - proposed_id: CLM-009-NEW-002
+    statement: JobSet 把多角色训练作业建模为一个生命周期单元:ReplicatedJob 承载角色,成功/失败策略与启动顺序在作业级表达,稳定主机名与 headless service 自动管理
+    claim_type: mechanism
+    candidate_sources: [SRC-JOBSET-OFFICIAL]
+    confidence: high
+  - proposed_id: CLM-009-NEW-003
+    statement: MultiKueue 为 manager-worker 架构:manager 持配额与准入,完全准入后在 worker 集群创建远程对象并保持同步;当前为 beta(自 Kueue v0.9)默认启用
+    claim_type: project_status
+    candidate_sources: [SRC-KUEUE-MULTIKUEUE]
+    confidence: high
+  - proposed_id: CLM-020-NEW-001
+    statement: 跨集群训练的故障语义分层:worker 集群内故障由该集群控制器处理,集群级失联/不可用由 manager 按准入检查回收并可重派——所有权边界不清会导致双跑或悬挂
+    claim_type: mechanism
+    candidate_sources: [SRC-KUEUE-MULTIKUEUE]
+    confidence: medium
+open_questions:
+  - 数据位置/地域与队列的联合决策在主流实现中的成熟度(不在正文下结论)
+conflicting_sources: []
+volatile_facts:
+  - statement: MultiKueue 的 beta/stable 状态与 Kueue 版本号
+    review_required: true

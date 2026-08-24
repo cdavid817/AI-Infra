@@ -105,11 +105,24 @@ training:
     verification: unverified
   - layer: 编排 / 平台层(批调度器)
     name: Volcano / Kueue
-    positioning: K8s gang scheduling 与配额队列
+    positioning: K8s gang scheduling 与配额队列;Kueue 经 MultiKueue 支持管理/执行集群分离的多集群作业分发(完全准入后建远程对象并同步)
     chapter_ref: 第 9 章
     ascend_counterpart: Volcano 对昇腾支持成熟
-    sources: []
-    verification: unverified
+    sources: [SRC-KUEUE-MULTIKUEUE]
+    verification: verified
+    review:
+      reviewed_at: "2026-08-24"
+      review_after_days: 180
+  - layer: 编排 / 平台层
+    name: JobSet
+    positioning: 多角色训练作业的生命周期单元:ReplicatedJob 承载角色,作业级成功/失败策略、启动顺序与稳定网络端点
+    chapter_ref: 第 9、19 章
+    ascend_counterpart: '—'
+    sources: [SRC-JOBSET-OFFICIAL]
+    verification: verified
+    review:
+      reviewed_at: "2026-08-24"
+      review_after_days: 180
 inference:
   - layer: 运行时 / 引擎层
     name: vLLM

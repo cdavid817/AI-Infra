@@ -58,3 +58,25 @@ sources:
     evidence_level: L1
     review_after_days: 180
     notes: 驱动与状态控制器的按节点权限收敛、admin access 管控与准入策略建议
+  - id: SRC-JOBSET-OFFICIAL
+    title: JobSet Overview
+    publisher: Kubernetes SIGs
+    source_type: official_documentation
+    url: https://jobset.sigs.k8s.io/docs/overview/
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 180
+    notes: ReplicatedJob 抽象;成功策略可指向 Any/All 子任务;扩展失败策略支持从 checkpoint 恢复语义;启动顺序(leader-worker);自动 headless service 与 IndexedJob 稳定主机名
+  - id: SRC-KUEUE-MULTIKUEUE
+    title: MultiKueue
+    publisher: Kubernetes SIGs (Kueue)
+    source_type: official_documentation
+    url: https://kueue.sigs.k8s.io/docs/concepts/multikueue/
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 180
+    notes: manager + ≥1 worker 集群;manager 创建并监控远程 Workload/Job 且与本地对象同步;Admission Check Controller 在 manager;完全准入(配额+准入检查)后分发;beta since Kueue v0.9 默认启用

@@ -1,0 +1,12 @@
+schema_version: 1
+chapter: 20
+claims:
+  - id: CLM-020-001
+    section: "20.4"
+    summary: 跨集群训练的故障所有权分层:worker 集群内故障由该集群控制器按作业失败策略处置;集群级失联/不可用由 manager 回收准入、清理远程对象并可重派(MultiKueue 官方文档支持此机制)。"所有权边界不清导致双跑或悬挂"为作者基于该机制的工程推论,正文已按判断给出依据与边界
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-KUEUE-MULTIKUEUE]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180

@@ -30,7 +30,8 @@
 | 编排 / 平台层 | Ray Train | 进程组拉起与弹性,Python 原生 | 第 19 章 | 可跑昇腾资源 |
 | 编排 / 平台层 | Slurm | HPC 血统批调度,超算与大训练集群主力 | 第 9、19 章 | 支持 |
 | 编排 / 平台层 | Kubeflow(Training Operator) | K8s 上的训练任务 CRD 编排 | 第 9、19 章 | 配合 Ascent device plugin |
-| 编排 / 平台层(批调度器) | Volcano / Kueue | K8s gang scheduling 与配额队列 | 第 9 章 | Volcano 对昇腾支持成熟 |
+| 编排 / 平台层(批调度器) | Volcano / Kueue | K8s gang scheduling 与配额队列;Kueue 经 MultiKueue 支持管理/执行集群分离的多集群作业分发(完全准入后建远程对象并同步) | 第 9 章 | Volcano 对昇腾支持成熟 |
+| 编排 / 平台层 | JobSet | 多角色训练作业的生命周期单元:ReplicatedJob 承载角色,作业级成功/失败策略、启动顺序与稳定网络端点 | 第 9、19 章 | — |
 
 ### C.1.2 推理侧
 

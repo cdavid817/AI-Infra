@@ -10,3 +10,21 @@ claims:
     status: verified
     reviewed_at: 2026-08-24
     review_after_days: 180
+  - id: CLM-009-002
+    section: "9.5"
+    summary: JobSet 把多角色训练作业建模为一个生命周期单元:ReplicatedJob 承载角色;成功策略可声明指向任意(Any)或全部(All)子任务;失败策略支持重启整组从 checkpoint 续训而非一律整体判死;可表达 leader 先启、worker 后到的启动顺序;为进程提供稳定主机名并自动创建 headless service
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-JOBSET-OFFICIAL]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180
+  - id: CLM-009-003
+    section: "9.5"
+    summary: MultiKueue 为 manager-worker 架构:manager 集群持有配额与准入检查,作业完全准入(配额 + 准入检查)后才在选定 worker 集群创建远程作业对象并持续与本地对象同步。项目状态:beta,自 Kueue v0.9 起默认启用;版本事实仅登记于此,正文机制段不写版本号
+    claim_type: project_status
+    evidence_level: L1
+    sources: [SRC-KUEUE-MULTIKUEUE]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180
