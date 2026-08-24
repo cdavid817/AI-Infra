@@ -60,6 +60,7 @@
 | 集合通信库 | NCCL | 第 7 章 | HCCL(原语对应关系见 [§7.4.5](../第一部分-基础与心智模型/第07章-互联与集合通信.md#745-hccl-与昇腾互联)) |
 | 底层软件栈 | CUDA 全家桶 | 第 5 章 | CANN(完整栈对照见 [§5.3](../第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md#53-cann-与昇腾软件栈两套完整并行的世界),术语对照见附录 D) |
 | K8s 设备分配模型 | Device Plugin(存量主流)/ DRA(核心 stable,驱动生态迁移中) | 第 8 章 | Ascend Device Plugin(DRA 驱动状态待核验) |
+| GenAI 遥测语义约定 | OpenTelemetry GenAI semconv(独立仓库,Development 阶段) | 第 28、29 章 | 与硬件无关 |
 
 ---
 

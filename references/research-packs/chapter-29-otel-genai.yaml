@@ -1,0 +1,37 @@
+schema_version: 1
+chapter: 29
+topic: OpenTelemetry GenAI 可观测性(计划 §17.6)
+prepared_at: 2026-08-24
+scope:
+  included:
+    - 书内指标名(TTFT/TPOT/吞吐/token 用量/finish reason)与 OTel GenAI 属性的映射表
+    - Model→Agent→Tool→(Sandbox)的 span 层级示例(第 28 章 trace 视角衔接)
+    - 隐私纪律:消息内容默认不采、显式 opt-in、截断与外部存储;PII 脱敏责任
+    - 高基数属性、采样与保留成本治理
+    - 评测 run 与生产 trace 的关联设计(回链模型版本)
+    - 稳定性标注:整套约定处 Development,落地必须留属性迁移的缓冲层
+  excluded:
+    - SDK 配置教程与具体属性全集罗列(会过时;指向仓库)
+    - 旧版已迁移/弃用属性(11.45:不复制)
+claims:
+  - proposed_id: CLM-029-NEW-011
+    statement: OTel GenAI 语义约定以独立仓库维护,整体处 Development 稳定性阶段;token 用量与 finish_reasons 等为 Recommended 属性,采集器落地需为属性演进留缓冲层
+    claim_type: project_status
+    candidate_sources: [SRC-OTEL-GENAI-SEMCONV, SRC-OTEL-GENAI-SPANS]
+    confidence: high
+  - proposed_id: CLM-029-NEW-012
+    statement: 规范将提示词/补全内容设为 Opt-In 且默认不采集,采集须显式开关并支持截断与外部存储——平台侧应把"内容不进遥测"当默认合规姿态,内容采集走独立授权与脱敏管道
+    claim_type: mechanism
+    candidate_sources: [SRC-OTEL-GENAI-SPANS]
+    confidence: high
+  - proposed_id: CLM-029-NEW-013
+    statement: 操作类型覆盖模型调用、invoke_agent/invoke_workflow、execute_tool 等,使 Model→Agent→Tool 的层级 trace 有了标准词汇;MCP 交互另有专门约定
+    claim_type: mechanism
+    candidate_sources: [SRC-OTEL-GENAI-SPANS, SRC-OTEL-GENAI-SEMCONV]
+    confidence: high
+open_questions:
+  - GenAI 指标(gen-ai-metrics)中服务端 TTFT/TPOT 对应指标的命名与稳定性(映射表中如实标"以仓库当期为准")
+conflicting_sources: []
+volatile_facts:
+  - statement: 各属性/操作类型的稳定性徽章与命名
+    review_required: true

@@ -252,6 +252,15 @@ tooling:
     review:
       reviewed_at: "2026-08-24"
       review_after_days: 180
+  - purpose: GenAI 遥测语义约定
+    projects: OpenTelemetry GenAI semconv(独立仓库,Development 阶段)
+    chapter_ref: 第 28、29 章
+    ascend_counterpart: 与硬件无关
+    sources: [SRC-OTEL-GENAI-SEMCONV]
+    verification: verified
+    review:
+      reviewed_at: "2026-08-24"
+      review_after_days: 120
 recommendations:
   kind: author_judgment
   intro: 矩阵给的是**默认起点**,不是终点;每格的失效边界在对应章节。规模档口径:小 = 单机 8 卡内,中 = 数机到百卡,大 = 数百到数千卡,超大 = 数千卡以上。

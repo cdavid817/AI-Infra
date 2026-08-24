@@ -92,3 +92,33 @@ claims:
     status: unverified
     reviewed_at: "2026-08-24"
     review_after_days: 180
+
+  - id: CLM-029-011
+    section: "把指标说同一种语言:OTel GenAI 语义约定"
+    summary: OTel GenAI 语义约定以独立仓库维护,整体处 Development 稳定性阶段;token 用量与 finish_reasons 等为 Recommended 属性,采集器落地需为属性演进留缓冲层
+    claim_type: project_status
+    evidence_level: L1
+    sources: [SRC-OTEL-GENAI-SEMCONV, SRC-OTEL-GENAI-SPANS]
+    status: verified
+    reviewed_at: "2026-08-24"
+    review_after_days: 120
+
+  - id: CLM-029-012
+    section: "把指标说同一种语言:OTel GenAI 语义约定"
+    summary: 规范将提示词/补全内容设为 Opt-In 且默认不采集,采集须显式开关并支持截断与外部存储——平台侧应把"内容不进遥测"当默认合规姿态,内容采集走独立授权与脱敏管道
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-OTEL-GENAI-SPANS]
+    status: verified
+    reviewed_at: "2026-08-24"
+    review_after_days: 120
+
+  - id: CLM-029-013
+    section: "把指标说同一种语言:OTel GenAI 语义约定"
+    summary: 操作类型覆盖模型调用、invoke_agent/invoke_workflow、execute_tool 等,使 Model→Agent→Tool 的层级 trace 有了标准词汇;MCP 交互另有专门约定
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-OTEL-GENAI-SPANS, SRC-OTEL-GENAI-SEMCONV]
+    status: verified
+    reviewed_at: "2026-08-24"
+    review_after_days: 120

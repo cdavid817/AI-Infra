@@ -102,3 +102,25 @@ sources:
     evidence_level: L1
     review_after_days: 180
     notes: selector 圈定模型服务 Pod;一个 EPP 只关联一个 InferencePool;HTTPRoute 可引用多个池作 backendRefs;与 Service 职责有对照说明
+  - id: SRC-OTEL-GENAI-SEMCONV
+    title: OpenTelemetry Semantic Conventions for Generative AI(独立仓库)
+    publisher: OpenTelemetry
+    source_type: official_documentation
+    url: https://github.com/open-telemetry/semantic-conventions-genai
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 120
+    notes: GenAI spans/metrics/events 与 MCP、厂商约定的独立仓库;docs/ 由 YAML 模型生成;整体稳定性状态为 Development
+  - id: SRC-OTEL-GENAI-SPANS
+    title: GenAI Spans(docs/gen-ai/gen-ai-spans.md)
+    publisher: OpenTelemetry
+    source_type: official_documentation
+    url: https://github.com/open-telemetry/semantic-conventions-genai/blob/main/docs/gen-ai/gen-ai-spans.md
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 120
+    notes: Status Development;gen_ai.usage.input_tokens/output_tokens 与 gen_ai.response.finish_reasons 为 Recommended;消息内容 Opt-In 默认不采,显式开关门控,支持截断与外部存储钩子;操作类型含 invoke_agent/invoke_workflow/execute_tool/embeddings/fetch_response;MCP 另有专页
