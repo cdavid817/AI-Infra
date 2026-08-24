@@ -1,0 +1,98 @@
+direction: right
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  comm: {
+    style: {
+      fill: "#FFF4E5"
+      stroke: "#D9822B"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  bottleneck: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  domain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#D9822B"
+      font-color: "#1F2937"
+      border-radius: 8
+      stroke-dash: 2
+    }
+  }
+}
+
+podA: "超节点 A(互联域)" {
+  class: domain
+  direction: down
+
+  n1: "节点 1" {
+    class: compute
+    g1: "卡 0..7" {class: compute}
+  }
+  n2: "节点 2" {
+    class: compute
+    g2: "卡 8..15" {class: compute}
+  }
+  sw1: "域内互联交换\n(NVSwitch / HCCS)" {class: comm}
+
+  n1.g1 <-> sw1: "卡间:数百GB/s~TB/s\n(张量/激活)" {
+    style: {
+      stroke: "#D9822B"
+      font-color: "#B45309"
+    }
+  }
+  n2.g2 <-> sw1: "域内:同量级带宽\n(张量/激活)" {
+    style: {
+      stroke: "#D9822B"
+      font-color: "#B45309"
+    }
+  }
+}
+
+podB: "超节点 B(互联域)" {
+  class: domain
+  direction: down
+
+  g3: "卡 0..15" {class: compute}
+  sw2: "域内互联交换" {class: comm}
+
+  g3 <-> sw2: "域内高带宽\n(张量/激活)" {
+    style: {
+      stroke: "#D9822B"
+      font-color: "#B45309"
+    }
+  }
+}
+
+edge: "域边界:带宽断崖\n跌落 5~10 倍" {class: bottleneck}
+
+podA.sw1 <-> edge: "跨域 RDMA:25~100GB/s\n(梯度/参数)" {
+  style: {
+    stroke: "#D64545"
+    stroke-width: 2
+    font-color: "#D64545"
+  }
+}
+edge <-> podB.sw2: "跨域 RDMA\n(梯度/参数)" {
+  style: {
+    stroke: "#D64545"
+    stroke-width: 2
+    font-color: "#D64545"
+  }
+}

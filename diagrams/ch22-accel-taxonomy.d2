@@ -1,0 +1,111 @@
+direction: down
+
+classes: {
+  sched: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  mem: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  comp: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  conflict: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+sc: "调度类:吞吐与排队延迟" {
+  class: plain
+  direction: right
+  s1: "Continuous\nBatching" {class: sched}
+  s2: "Chunked Prefill" {class: sched}
+  s3: "优先级抢占" {class: sched}
+}
+
+me: "显存类:并发上限" {
+  class: plain
+  direction: right
+  m1: "PagedAttention" {class: mem}
+  m2: "Prefix Cache" {class: mem}
+  m3: "KV 量化 / 池化" {class: mem}
+}
+
+co: "计算类:单步耗时" {
+  class: plain
+  direction: right
+  c1: "量化 / 算子融合" {class: comp}
+  c2: "图模式" {class: comp}
+  c3: "投机解码" {class: comp}
+}
+
+x1: "KV 池挤兑:\n大批次 vs 并发余量" {class: conflict}
+x2: "形状冲突:\n动态批 vs 静态图" {class: conflict}
+
+sc -> x1: "组批越大占 KV 越多" {
+  style: {
+    stroke: "#D64545"
+    font-color: "#D64545"
+  }
+}
+me -> x1: "KV 余量限制准入" {
+  style: {
+    stroke: "#D64545"
+    font-color: "#D64545"
+  }
+}
+sc.s1 -> x2: "批形状每步变化" {
+  style: {
+    stroke: "#D64545"
+    font-color: "#D64545"
+  }
+}
+co.c2 -> x2: "要求形状稳定" {
+  style: {
+    stroke: "#D64545"
+    font-color: "#D64545"
+  }
+}
+co.c3 -> sc: "大批次下收益衰减" {
+  style: {
+    stroke: "#7C5CD4"
+    stroke-dash: 4
+    font-color: "#7C5CD4"
+  }
+}
+me.m3 -> sc: "并发翻倍反哺组批" {
+  style: {
+    stroke: "#2E9E64"
+    stroke-dash: 4
+    font-color: "#2E9E64"
+  }
+}

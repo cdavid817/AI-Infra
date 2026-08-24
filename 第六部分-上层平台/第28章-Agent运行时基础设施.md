@@ -71,35 +71,9 @@ gantt
 
 **第三,资源限制必须四维齐全。** CPU(cgroup 配额,防死循环)、内存(硬上限 + OOM kill)、墙钟时间(运行时层面强制超时,通常 30–120 秒)、网络(默认拒绝出站,白名单放行)。四者缺一不可:问题场景里那个打满一个核 20 分钟的死循环,就是只限了内存没限墙钟时间的结果。网络默认拒绝尤其重要——模型生成代码的数据外渗(exfiltration)风险,靠事后审计抓不住,只能靠默认关闭。
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{
-  'primaryColor':'#EEF4FF','primaryBorderColor':'#3B6FD4','primaryTextColor':'#1F2937',
-  'secondaryColor':'#F3F4F6','tertiaryColor':'#FFFFFF',
-  'lineColor':'#6B7280','fontFamily':'-apple-system, Segoe UI, Helvetica, Arial, sans-serif','fontSize':'14px'
-}}}%%
-flowchart LR
-    classDef compute fill:#EEF4FF,stroke:#3B6FD4,stroke-width:1.5px,color:#1F2937
-    classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937
-    classDef ext fill:#F3F4F6,stroke:#9CA3AF,stroke-width:1.5px,color:#1F2937
+![三档沙箱在隔离强度—启动延迟—资源开销上的位置](../diagrams/ch28-sandbox-spectrum.svg)
 
-    subgraph WEAK[隔离弱 · 启动快 · 开销低]
-        WASM[WASM 沙箱<br/>毫秒级启动<br/>MB 级内存]:::compute
-    end
-    subgraph MID[中间档]
-        CT[普通容器<br/>秒级启动<br/>共享宿主内核]:::compute
-        KESC[内核逃逸<br/>风险面最大]:::risk
-    end
-    subgraph STRONG[隔离强 · 启动可控 · 开销中]
-        MVM[微 VM<br/>百毫秒级启动<br/>独立内核]:::compute
-    end
-    HOST[宿主机与<br/>同机其他租户]:::ext
-
-    WASM -->|生态受限:<br/>原生依赖跑不了| CT
-    CT -->|花百毫秒启动成本<br/>换独立内核| MVM
-    CT -.->|共享内核<br/>系统调用直达| KESC
-    KESC -.->|逃逸即触达| HOST
-    MVM -->|虚拟化层阻断<br/>系统调用| HOST
-```
+<!-- source: diagrams/ch28-sandbox-spectrum.excalidraw -->
 
 图 28-2:三档沙箱在隔离强度—启动延迟—资源开销上的位置。普通容器处在最尴尬的中间档:隔离不如微 VM、启动不如 WASM,而它恰恰是多数团队的默认选择——对不可信代码,微 VM 用百毫秒级的代价买断了共享内核这个最大风险面。
 

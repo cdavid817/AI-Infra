@@ -1,0 +1,84 @@
+direction: right
+grid-rows: 2
+grid-gap: 110
+
+classes: {
+  storage: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  bottleneck: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  external: {
+    style: {
+      fill: "#F3F4F6"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 8
+    }
+  }
+}
+
+off: "离线管道(批处理,天级)" {
+  class: plain
+  direction: right
+
+  raw: "原始数据\n网页/日志/媒体" {class: external}
+  clean: "清洗与过滤\nCPU 流式" {class: compute}
+  dedup: "精确+近似去重\n全局 shuffle" {class: bottleneck}
+  shard: "分片打包\nWebDataset/MDS" {class: storage}
+  ver: "版本 manifest\n数据集 commit" {class: storage}
+
+  raw -> clean: "原始字节" {style.font-color: "#1F2937"}
+  clean -> dedup: "候选样本" {style.font-color: "#1F2937"}
+  dedup -> shard: "唯一样本" {style.font-color: "#1F2937"}
+  shard -> ver: "分片文件" {style.font-color: "#1F2937"}
+}
+
+on: "在线管道(流式,毫秒级)" {
+  class: plain
+  direction: right
+
+  read: "分片顺序读" {class: storage}
+  dec: "解码/tokenize\nCPU 或 NVDEC" {class: bottleneck}
+  batch: "采样与打包\n多源加权" {class: compute}
+  gpu: "训练进程" {class: compute}
+
+  read -> dec: "压缩块" {style.font-color: "#1F2937"}
+  dec -> batch: "张量" {style.font-color: "#1F2937"}
+  batch -> gpu: "batch" {style.font-color: "#1F2937"}
+}
+
+off.ver -> on.read: "按 manifest 拉取" {
+  style: {
+    stroke: "#2E9E64"
+    font-color: "#1F2937"
+  }
+}

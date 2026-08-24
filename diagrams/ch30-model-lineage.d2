@@ -1,0 +1,99 @@
+direction: down
+
+classes: {
+  data: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ext: {
+    style: {
+      fill: "#F3F4F6"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  bad: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  layer: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 8
+    }
+  }
+}
+
+reg: "模型注册版本 M-v3.2" {
+  class: layer
+  w: "权重\n分块校验和" {class: data}
+}
+
+lineage: "血缘四要素" {
+  class: layer
+  direction: right
+
+  base: "基座模型 M-v3.0\n指回注册表" {class: ctrl}
+  dsv: "数据集快照 D-v18\n清单+配比+清洗规则版本" {class: data}
+  code: "训练代码\ncommit hash 无 dirty" {class: ctrl}
+  hp: "超参配置快照\n展开后全量归档" {class: ctrl}
+}
+
+up: "上游" {
+  class: layer
+  direction: right
+
+  raw: "原始数据源\n第 13 章管道" {class: ext}
+  fly: "回流数据批次\n含采样与脱敏版本" {class: ext}
+}
+
+risk: "血缘断点:未提交代码\n/ 仅记路径 / 无数据快照" {
+  class: bad
+  shape: page
+}
+
+reg.w -> lineage.base: "微调自" {
+  style.font-color: "#1F2937"
+}
+reg.w -> lineage.dsv: "训练数据" {
+  style.font-color: "#1F2937"
+}
+reg.w -> lineage.code: "训练逻辑" {
+  style.font-color: "#1F2937"
+}
+reg.w -> lineage.hp: "训练配置" {
+  style.font-color: "#1F2937"
+}
+lineage.dsv -> up.raw: "清洗与混合自" {
+  style.font-color: "#1F2937"
+}
+lineage.dsv -> up.fly: "包含" {
+  style.font-color: "#1F2937"
+}
+risk -> reg.w: "任一出现即不可复现" {
+  style: {
+    stroke: "#D64545"
+    stroke-dash: 4
+    font-color: "#D64545"
+  }
+}

@@ -1,0 +1,89 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  store: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ext: {
+    style: {
+      fill: "#F3F4F6"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  layer: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 8
+    }
+  }
+}
+
+train: "训练侧(采集点:训练框架埋点 + 第 5 章 profiler)" {
+  class: layer
+  direction: right
+
+  mfu: "MFU / step 时间" {class: compute}
+  loss: "loss 曲线\n梯度范数" {class: compute}
+  ckpt: "checkpoint 写入耗时" {class: store}
+
+  mfu -> loss: "效率异常触发 profiling" {
+    style.font-color: "#1F2937"
+  }
+}
+
+infer: "推理侧(采集点:网关 + 引擎双端)" {
+  class: layer
+  direction: right
+
+  queue: "排队深度 / 并发" {class: ctrl}
+  ttft: "TTFT / TPOT\n(按长度分桶)" {class: compute}
+  kv: "KV 缓存命中率\n(按租户拆分)" {class: store}
+
+  queue -> ttft: "饱和预警信号" {
+    style.font-color: "#1F2937"
+  }
+}
+
+biz: "业务侧(采集点:网关账单 + 抽样评测)" {
+  class: layer
+  direction: right
+
+  cost: "token 用量与成本" {class: ctrl}
+  quality: "线上质量抽检得分" {class: ext}
+
+  quality -> cost: "质量回归触发重评测" {
+    style.font-color: "#1F2937"
+  }
+}
+
+infer.ttft -> biz.cost: "SLO 约束" {
+  style.font-color: "#1F2937"
+}
+infer.kv -> biz.cost: "折算有效算力" {
+  style.font-color: "#1F2937"
+}

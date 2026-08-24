@@ -114,32 +114,9 @@ flowchart LR
 | 冷板式液冷 | 20–130 kW/柜 | 中等:需建水路(CDU、管路、水质管理),机柜与服务器需冷板改造,机房需承重复核 | 只带走冷板覆盖部件(GPU/CPU)的热,约 70–85% 热量走液路,其余仍需风冷兜底;漏液是新增故障类别 |
 | 浸没式液冷 | 100 kW/柜以上 | 最高:全新机房设计、专用槽体与冷却液、运维流程重构 | 运维复杂度陡增(换卡要吊出沥液)、冷却液成本高、生态兼容性差(光模块等部件需认证);密度未到 100 kW 时为过度设计 |
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{
-  'primaryColor':'#EEF4FF','primaryBorderColor':'#3B6FD4','primaryTextColor':'#1F2937',
-  'secondaryColor':'#F3F4F6','tertiaryColor':'#FFFFFF',
-  'lineColor':'#6B7280','fontFamily':'-apple-system, Segoe UI, Helvetica, Arial, sans-serif','fontSize':'14px'
-}}}%%
-flowchart LR
-  classDef compute fill:#EEF4FF,stroke:#3B6FD4,stroke-width:1.5px,color:#1F2937
-  classDef storage fill:#E9F7EF,stroke:#2E9E64,stroke-width:1.5px,color:#1F2937
-  classDef external fill:#F3F4F6,stroke:#9CA3AF,stroke-width:1.5px,color:#1F2937
-  classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937
+![三种散热方案在机柜功率密度轴上的适配区间:风冷 ≤20 kW/柜,冷板式液冷 20–130 kW/柜,浸没式液冷 ≥100 kW/柜,越界强行沿用则热节流](../diagrams/ch31-cooling-bands.svg)
 
-  subgraph d1["≤20 kW/柜:传统部署"]
-    AIR["风冷<br/>改造成本:低<br/>PUE 1.4–1.6"]:::external
-  end
-  subgraph d2["20–130 kW/柜:高密部署"]
-    COLD["冷板式液冷<br/>改造成本:中(水路+承重)<br/>PUE 1.15–1.3"]:::compute
-  end
-  subgraph d3["≥100 kW/柜:超节点整柜"]
-    IMM["浸没式液冷<br/>改造成本:高(机房重建)<br/>PUE 1.05–1.15"]:::storage
-  end
-  AIR -->|"密度越过 20 kW<br/>风量物理上限"| COLD
-  COLD -->|"密度越过 130 kW<br/>或余热利用需求"| IMM
-  AIR -.->|"强行加密部署"| THROT["热节流:<br/>可持续算力塌陷"]:::bottleneck
-  COLD -.->|"新增故障类别"| LEAK["漏液风险"]:::bottleneck
-```
+<!-- source: diagrams/ch31-cooling-bands.excalidraw -->
 
 图 31-2:散热方案与功率密度的适配区间。方案选择不是技术偏好而是密度的函数——在错误的密度区间强行沿用低成本方案,省下的改造费会以热节流的形式从算力里扣回去。
 
@@ -183,35 +160,9 @@ $$TCO_{year} = \underbrace{\frac{C_{hw}}{Y_{dep}}}_{硬件折旧} + \underbrace{
 
 典型自建集群的年化占比(千卡级、液冷新建):硬件折旧 55–65%,电费 10–18%,机房摊销 8–12%,运维人力 8–15%,生态折算 0–15%(取决于技术栈成熟度)。这组比例的用途不是照抄,而是**校验你的模型有没有漏项**——如果你算出来电费占 2%,大概率是忘了乘 PUE 或忘了算 24×365。
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{
-  'primaryColor':'#EEF4FF','primaryBorderColor':'#3B6FD4','primaryTextColor':'#1F2937',
-  'secondaryColor':'#F3F4F6','tertiaryColor':'#FFFFFF',
-  'lineColor':'#6B7280','fontFamily':'-apple-system, Segoe UI, Helvetica, Arial, sans-serif','fontSize':'14px'
-}}}%%
-flowchart TB
-  classDef compute fill:#EEF4FF,stroke:#3B6FD4,stroke-width:1.5px,color:#1F2937
-  classDef storage fill:#E9F7EF,stroke:#2E9E64,stroke-width:1.5px,color:#1F2937
-  classDef comm fill:#FFF4E5,stroke:#D9822B,stroke-width:1.5px,color:#1F2937
-  classDef control fill:#F3EEFF,stroke:#7C5CD4,stroke-width:1.5px,color:#1F2937
-  classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937
+![年化 TCO 五块构成的典型占比区间:硬件折旧 55–65%、机房改造摊销 8–12%、电费 10–18%、运维人力 8–15%、生态折算 0–15%](../diagrams/ch31-tco-composition.svg)
 
-  TCO["年化 TCO"]:::control
-  subgraph capex["CAPEX 摊销"]
-    HW["硬件折旧 55–65%<br/>折旧期 3–5 年"]:::compute
-    FAC["机房改造 8–12%<br/>液冷/配电/承重,摊 8–10 年"]:::comm
-  end
-  subgraph opex["OPEX 经常性"]
-    PWRC["电费 10–18%<br/>= IT功率×PUE×电价×时长"]:::comm
-    OPS["运维人力 8–15%"]:::storage
-  end
-  ECO["生态折算 0–15%<br/>(第 12 章 人月 × 人力成本)"]:::control
-  TCO -->|"一次投入 ÷ 年限"| HW
-  TCO -->|"一次投入 ÷ 年限"| FAC
-  TCO -->|"按年计费"| PWRC
-  TCO -->|"按人头全成本"| OPS
-  TCO -->|"最常被漏记的一项"| ECO
-```
+<!-- source: diagrams/ch31-tco-composition.excalidraw -->
 
 图 31-3:年化 TCO 的五块构成。生态折算是五项里最常被漏记的一项——漏掉它的 TCO 对比,结论可能整个反转。
 

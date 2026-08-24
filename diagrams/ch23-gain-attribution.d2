@@ -1,0 +1,111 @@
+grid-rows: 1
+horizontal-gap: 340
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  storage: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  bottleneck: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 8
+    }
+  }
+  link: {
+    style: {
+      stroke: "#6B7280"
+      font-color: "#1F2937"
+    }
+  }
+  hidden: {
+    style: {
+      opacity: 0
+    }
+  }
+}
+
+opt: "计算类优化" {
+  class: plain
+  g: "图模式\nCUDA/ACL Graph" {
+    class: ctrl
+    width: 230
+  }
+  qw: "权重量化 W4/W8" {
+    class: storage
+    width: 230
+  }
+  qa: "激活量化 + 算子融合" {
+    class: compute
+    width: 230
+  }
+  s: "投机推理" {
+    class: compute
+    width: 230
+  }
+
+  # 不可见链边:强制单列纵排
+  g -> qw: {class: hidden}
+  qw -> s: {class: hidden}
+  s -> qa: {class: hidden}
+}
+
+cost: "Decode 单步耗时构成" {
+  class: plain
+  l: "launch 开销\n小批次占 20–50%" {
+    class: ctrl
+    width: 250
+  }
+  m: "权重与 KV 访存\nDecode 主导项" {
+    class: bottleneck
+    width: 250
+  }
+  c: "矩阵计算\nPrefill 主导项" {
+    class: compute
+    width: 250
+  }
+  p: "采样与 CPU 后处理" {
+    class: ctrl
+    width: 250
+  }
+
+  l -> m: {class: hidden}
+  m -> c: {class: hidden}
+  c -> p: {class: hidden}
+}
+
+opt.g -> cost.l: "整批捕获\n削减下发次数" {class: link}
+opt.qw -> cost.m: "权重字节数\n减半 / 减 3/4" {class: link}
+opt.qa -> cost.c: "低精度算力倍率\n+ 减少中间张量往返" {class: link}
+opt.qa -> cost.m: "融合削减 HBM 读写" {class: link}
+opt.s -> cost.m: "一步验证多 token,摊薄成本" {class: link}

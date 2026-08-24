@@ -1,0 +1,94 @@
+direction: right
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  comm: {
+    style: {
+      fill: "#FFF4E5"
+      stroke: "#D9822B"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  fault: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+trad: "传统集群:故障域 = 1 台服务器(8 卡)" {
+  class: plain
+  direction: down
+
+  s1: "服务器 A · 8 卡\n故障" {class: fault}
+  s2: "服务器 B · 8 卡\n正常" {class: compute}
+  s3: "服务器 C… · 8 卡\n正常" {class: compute}
+  net: "跨机网络" {class: comm}
+
+  s1 -> net: "梯度同步中断" {
+    style: {
+      stroke: "#D64545"
+      font-color: "#D64545"
+    }
+  }
+  s2 -> net: "梯度" {style.font-color: "#1F2937"}
+  s3 -> net: "梯度" {style.font-color: "#1F2937"}
+}
+
+super: "超节点集群:故障域 = 1 个互联域(上百卡)" {
+  class: plain
+  direction: down
+
+  sw: "域内交换 / 供电 / 液冷\n共享故障点" {class: fault}
+  d1: "节点 1 · 8 卡\n被波及" {class: fault}
+  d2: "节点 2 · 8 卡\n被波及" {class: fault}
+  d3: "节点 3…16\n共上百卡被波及" {class: fault}
+
+  sw -> d1: "域故障扩散" {
+    style: {
+      stroke: "#D64545"
+      font-color: "#D64545"
+    }
+  }
+  sw -> d2: "域故障扩散" {
+    style: {
+      stroke: "#D64545"
+      font-color: "#D64545"
+    }
+  }
+  sw -> d3: "域故障扩散" {
+    style: {
+      stroke: "#D64545"
+      font-color: "#D64545"
+    }
+  }
+}
+
+trad -> super: "影响面 8 卡 → 上百卡\n备机按域预留 · ckpt 副本跨域放置" {
+  style: {
+    stroke: "#D64545"
+    stroke-width: 2
+    stroke-dash: 4
+    font-color: "#D64545"
+  }
+}

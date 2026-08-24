@@ -1,0 +1,119 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  store: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  comm: {
+    style: {
+      fill: "#FFF4E5"
+      stroke: "#D9822B"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ext: {
+    style: {
+      fill: "#F3F4F6"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+app: "业务应用" {class: ext}
+
+gw: "模型网关" {
+  label.near: border-top-left
+  style: {
+    fill: "#FFFFFF"
+    stroke: "#6B7280"
+    font-color: "#1F2937"
+    border-radius: 8
+  }
+
+  l1: "① 协议层" {
+    class: ext
+    api: "统一 API\n协议适配与鉴权" {class: comm}
+  }
+  l2: "② 管控层" {
+    class: ext
+    rl: "限流 / 配额 /\ntoken 计费" {class: ctrl}
+    cache: "语义缓存 /\n请求去重" {
+      class: store
+      shape: cylinder
+    }
+    rl -> cache: "预扣 token 预算" {style.font-color: "#1F2937"}
+  }
+  l3: "③ 路由层" {
+    class: ext
+    rt: "路由与故障转移\n决策引擎" {class: ctrl}
+  }
+  meter: "用量账本\nusage ledger" {
+    class: store
+    shape: cylinder
+  }
+
+  l1.api -> l2.rl: "归一化请求" {style.font-color: "#1F2937"}
+  l2.cache -> l3.rt: "未命中的请求" {style.font-color: "#1F2937"}
+  l3.rt -> meter: "实际 token 用量" {
+    style: {
+      stroke: "#2E9E64"
+      font-color: "#2E9E64"
+    }
+  }
+  meter -> l2.rl: "对账与配额回补" {
+    style: {
+      stroke: "#2E9E64"
+      stroke-dash: 4
+      font-color: "#2E9E64"
+    }
+  }
+}
+
+p1: "自建推理集群" {class: compute}
+p2: "供应商 A / B / C" {class: ext}
+
+app -> gw.l1.api: "统一协议请求" {
+  style: {
+    stroke: "#D9822B"
+    font-color: "#B45309"
+  }
+}
+gw.l3.rt -> p1: "引擎原生协议" {style.font-color: "#1F2937"}
+gw.l3.rt -> p2: "供应商协议" {style.font-color: "#1F2937"}
+p1 -> gw.l3.rt: {
+  style: {
+    stroke: "#D9822B"
+    stroke-dash: 4
+  }
+}
+p2 -> gw.l3.rt: "流式响应 + usage" {
+  style: {
+    stroke: "#D9822B"
+    stroke-dash: 4
+    font-color: "#B45309"
+  }
+}

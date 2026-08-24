@@ -28,36 +28,9 @@ AI 训练存储在 2026 年的主流形态是三层,每层的容量、带宽、�
 - **并行文件系统(Parallel File System,如 Lustre / GPFS 类)**:数百 TB 到数 PB,聚合带宽可到数百 GB/s,POSIX 语义完整,成本最高。承载热数据集与 checkpoint 的落盘目标。它是**性能层**,买带宽的钱主要花在这里。
 - **本地 NVMe**:每节点数 TB、每节点 10 GB/s 以上的读写带宽,成本已含在整机采购里,近乎"免费带宽"。承载数据集缓存分片与异步 checkpoint 的暂存区。它的致命短板是**与节点同生共死**:节点故障,数据即失,所以只能放"丢了能重建"的数据。
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{
-  'primaryColor':'#EEF4FF','primaryBorderColor':'#3B6FD4','primaryTextColor':'#1F2937',
-  'secondaryColor':'#F3F4F6','tertiaryColor':'#FFFFFF',
-  'lineColor':'#6B7280','fontFamily':'-apple-system, Segoe UI, Helvetica, Arial, sans-serif','fontSize':'14px'
-}}}%%
-flowchart TB
-  subgraph L1["本地 NVMe 层:每节点数 TB / 10+ GB/s / 随整机采购"]
-    C1[数据集缓存分片]:::storage
-    C2[异步 checkpoint<br/>暂存区]:::storage
-  end
-  subgraph L2["并行文件系统层:百 TB–数 PB / 数百 GB/s 聚合 / 成本最高"]
-    P1[热数据集]:::storage
-    P2[checkpoint<br/>落盘目标]:::storage
-  end
-  subgraph L3["对象存储层:PB 级 / 横向扩展 / 成本最低"]
-    O1[原始与权威数据集]:::storage
-    O2[冷 checkpoint 归档]:::storage
-  end
-  G[训练进程 GPU 节点]:::compute
-  O1 -->|"预热:批量拷贝热数据"| P1
-  P1 -->|"训练样本流(持续读)"| G
-  G -->|"数据集分片预取"| C1
-  C1 -->|"本地命中读取"| G
-  G -->|"checkpoint 突发写"| C2
-  C2 -->|"后台异步上传"| P2
-  P2 -->|"保留最近 N 份后归档"| O2
-  classDef compute fill:#EEF4FF,stroke:#3B6FD4,stroke-width:1.5px,color:#1F2937
-  classDef storage fill:#E9F7EF,stroke:#2E9E64,stroke-width:1.5px,color:#1F2937
-```
+![三层存储分工:对象存储、并行文件系统与本地 NVMe](../diagrams/ch14-storage-tiers.svg)
+
+<!-- source: diagrams/ch14-storage-tiers.d2 -->
 
 图 14-1:三层存储分工。每层只做自己成本结构擅长的事——对象存储管容量,并行文件系统管带宽,本地 NVMe 管突发;想用一层通吃三种职责,是绝大多数存储事故的起点。
 

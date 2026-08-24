@@ -91,53 +91,10 @@ PyTorch 不把每次 `cudaFree` 真的还给驱动——向驱动申请/释放�
 
 两套栈的分层对照是本章、也是全书被引用最多的图之一:
 
-```mermaid
-%%{init: {'theme':'base','themeVariables':{
-  'primaryColor':'#EEF4FF','primaryBorderColor':'#3B6FD4','primaryTextColor':'#1F2937',
-  'secondaryColor':'#F3F4F6','tertiaryColor':'#FFFFFF',
-  'lineColor':'#6B7280','fontFamily':'-apple-system, Segoe UI, Helvetica, Arial, sans-serif','fontSize':'14px'
-}}}%%
-flowchart TB
-    classDef compute fill:#EEF4FF,stroke:#3B6FD4,stroke-width:1.5px,color:#1F2937
-    classDef ctrl fill:#F3EEFF,stroke:#7C5CD4,stroke-width:1.5px,color:#1F2937
-    classDef ext fill:#F3F4F6,stroke:#9CA3AF,stroke-width:1.5px,color:#1F2937
-
-    subgraph CUDA世界
-        direction TB
-        C1["框架层<br/>PyTorch(原生 CUDA 后端)"]:::ctrl
-        C2["加速库<br/>cuBLAS / cuDNN / NCCL / CUTLASS"]:::compute
-        C3["运行时 API<br/>CUDA Runtime / Driver API"]:::compute
-        C4["图与编译<br/>CUDA Graph / TensorRT"]:::compute
-        C5["算子开发<br/>CUDA C++ / Triton"]:::ext
-        C6["内核驱动<br/>NVIDIA driver"]:::ext
-        C1 -->|"算子调用"| C2
-        C2 -->|"kernel 下发"| C3
-        C1 -->|"整图录制/编译"| C4
-        C3 -->|"指令与显存管理"| C6
-    end
-
-    subgraph 昇腾世界
-        direction TB
-        A1["框架适配层<br/>PyTorch + torch_npu / MindSpore"]:::ctrl
-        A2["加速库<br/>算子加速库(aoe/亲和库)/ HCCL"]:::compute
-        A3["运行时 API<br/>AscendCL(ACL)"]:::compute
-        A4["图与编译<br/>图引擎 GE / ACL Graph / ATC 转换"]:::compute
-        A5["算子开发<br/>Ascend C"]:::ext
-        A6["内核驱动<br/>Ascend driver + 固件"]:::ext
-        A1 -->|"算子调用"| A2
-        A2 -->|"任务下发"| A3
-        A1 -->|"整图编译/下沉"| A4
-        A3 -->|"指令与显存管理"| A6
-    end
-
-    C1 -.对应.- A1
-    C2 -.对应.- A2
-    C3 -.对应.- A3
-    C4 -.对应.- A4
-    C5 -.对应.- A5
-```
+![CUDA 与 CANN 双栈分层对照](../diagrams/ch05-cuda-cann-stacks.svg)
 
 图 5-1:CUDA 与 CANN 双栈分层对照。每一层都有对应物,但对应关系是"职责相同",不是"行为相同"——排查问题时可以按层找对应工具,做迁移评估时绝不能按层假设等价。
+<!-- source: diagrams/ch05-cuda-cann-stacks.d2 -->
 
 逐层把"对应但不相同"讲清楚:
 

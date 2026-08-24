@@ -1,0 +1,82 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  sched: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  comm: {
+    style: {
+      fill: "#FFF4E5"
+      stroke: "#D9822B"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ext: {
+    style: {
+      fill: "#F3F4F6"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  band: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 8
+    }
+  }
+}
+
+gw: "网关层\n配额・路由・多供应商" {class: comm}
+
+l3: "编排 / 平台层" {
+  class: band
+  direction: right
+  o1: "Ray Train / Slurm / Kubeflow\n训练侧" {class: sched}
+  o2: "KServe / Ray Serve / KubeAI\n推理侧" {class: sched}
+}
+
+l2: "框架 / 工程层" {
+  class: band
+  direction: right
+  f1: "TorchTitan / verl\n训练循环与多实例协同" {class: compute}
+  f2: "Triton Server / Dynamo\n服务组装与多实例协同" {class: compute}
+}
+
+l1: "运行时 / 引擎层" {
+  class: band
+  direction: right
+  e1: "Megatron-Core / DeepSpeed / FSDP\n并行与显存" {class: compute}
+  e2: "vLLM / SGLang / TRT-LLM\n批处理与 KV Cache" {class: compute}
+}
+
+hw: "K8s 集群与加速卡\n第二部分" {class: ext}
+
+gw -> l3.o2: "请求流:按模型路由" {
+  style: {
+    stroke: "#D9822B"
+    font-color: "#B45309"
+  }
+}
+l3.o1 -> l2.f1: "拉起进程组・故障重启"
+l3.o2 -> l2.f2: "实例生命周期・流量分配"
+l2.f1 -> l1.e1: "调用训练循环・分发数据"
+l2.f2 -> l1.e2: "转发请求批次"
+l1.e1 -> hw: "申请卡与显存"
+l1.e2 -> hw: "申请卡与显存"

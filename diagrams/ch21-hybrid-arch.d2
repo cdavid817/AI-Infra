@@ -1,0 +1,115 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  store: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  bad: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+m1: "模式一:分离部署" {
+  class: plain
+  direction: right
+
+  train: "训练池\n训练布局 TP×PP" {class: compute}
+  infer: "推理池\n推理布局 TP" {class: compute}
+  idle: "互等空闲\n利用率上界受限" {class: bad}
+
+  train -> infer: "权重 2P 字节/迭代\n广播 + 重切分" {
+    style: {
+      stroke: "#D9822B"
+      font-color: "#B45309"
+    }
+  }
+  infer -> train: "轨迹与 logprob" {
+    style: {
+      stroke: "#D9822B"
+      font-color: "#B45309"
+    }
+  }
+  train -> idle: "同步算法下产生" {
+    style: {
+      stroke: "#D64545"
+      stroke-dash: 4
+      font-color: "#D64545"
+    }
+  }
+}
+
+m2: "模式二:共卡时分" {
+  class: plain
+  direction: right
+
+  pool: "同一卡池\ntrain / rollout 交替" {class: compute}
+  cpu: "CPU 内存\n优化器状态 12P" {class: store}
+  swap: "每次切换\nPCIe 倒换开销" {class: bad}
+
+  pool -> cpu: "rollout 前换出" {
+    style: {
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+    }
+  }
+  cpu -> pool: "train 前换回" {
+    style: {
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+    }
+  }
+  pool -> swap: "相位切换产生" {
+    style: {
+      stroke: "#D64545"
+      stroke-dash: 4
+      font-color: "#D64545"
+    }
+  }
+}
+
+m3: "模式三:权重原地切换" {
+  class: plain
+  direction: right
+
+  te: "训练引擎" {class: compute}
+  ie: "推理引擎" {class: compute}
+  w: "共享显存权重\n单份 2P" {class: store}
+
+  te -> w: "IPC 句柄\n零拷贝读写" {style.font-color: "#1F2937"}
+  ie -> w: "IPC 句柄\n零拷贝只读" {style.font-color: "#1F2937"}
+}
+
+m1 -> m2 -> m3: "潮汐浪费递减 · 工程耦合递增" {
+  style: {
+    stroke: "#7C5CD4"
+    stroke-dash: 4
+    font-color: "#7C5CD4"
+  }
+}

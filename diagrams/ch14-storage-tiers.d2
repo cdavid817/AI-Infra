@@ -1,0 +1,116 @@
+grid-columns: 1
+vertical-gap: 80
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  storage: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  greenlink: {
+    style: {
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+    }
+  }
+  bluelink: {
+    style: {
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+    }
+  }
+  spacer: {
+    style: {
+      opacity: 0
+    }
+  }
+}
+
+g: "训练进程(GPU 节点)" {
+  class: compute
+  width: 320
+  height: 70
+}
+
+l1: "本地 NVMe 层:每节点数 TB / 10+ GB/s / 随整机采购" {
+  class: plain
+  grid-rows: 1
+  horizontal-gap: 180
+  c1: "数据集缓存分片" {
+    class: storage
+    width: 240
+  }
+  c2: "异步 checkpoint 暂存区" {
+    class: storage
+    width: 240
+  }
+  sp1: "" {
+    class: spacer
+    width: 340
+    height: 10
+  }
+}
+
+l2: "并行文件系统层:百 TB–数 PB / 数百 GB/s 聚合 / 成本最高" {
+  class: plain
+  grid-rows: 1
+  horizontal-gap: 100
+  p1: "热数据集" {
+    class: storage
+    width: 240
+  }
+  p2: "checkpoint 落盘目标" {
+    class: storage
+    width: 240
+  }
+  sp2: "" {
+    class: spacer
+    width: 340
+    height: 10
+  }
+}
+
+l3: "对象存储层:PB 级 / 横向扩展 / 成本最低" {
+  class: plain
+  grid-rows: 1
+  horizontal-gap: 100
+  o1: "原始与权威数据集" {
+    class: storage
+    width: 240
+  }
+  o2: "冷 checkpoint 归档" {
+    class: storage
+    width: 240
+  }
+  sp3: "" {
+    class: spacer
+    width: 340
+    height: 10
+  }
+}
+
+g <-> l1.c1: "分片预取 / 命中读取" {class: bluelink}
+g -> l1.c2: "checkpoint 突发写" {class: bluelink}
+l1.c2 -> l2.p2: "后台异步上传" {class: greenlink}
+l2.p1 -> g: "训练样本流(持续读)" {class: greenlink}
+l2.p2 -> l3.o2: "保留最近 N 份后归档" {class: greenlink}
+l3.o1 -> l2.p1: "预热:批量拷贝热数据" {class: greenlink}

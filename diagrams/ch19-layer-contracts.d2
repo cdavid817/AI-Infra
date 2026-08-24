@@ -1,0 +1,92 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  store: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  fault: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+orch: "编排层(K8s+Operator / Slurm / Ray)" {
+  class: plain
+  direction: right
+  sched: "资源分配与\ngang 调度" {class: ctrl}
+  restart: "任务级重启决策" {class: ctrl}
+}
+
+fw: "工程层(TorchTitan / LLaMA-Factory + torchrun)" {
+  class: plain
+  direction: right
+  rdzv: "进程组建立\n(rendezvous)" {class: compute}
+  ckpt: "checkpoint 保存/恢复\n数据分片与采样" {class: store}
+}
+
+eng: "引擎层(Megatron-Core / DeepSpeed / FSDP2)" {
+  class: plain
+  direction: right
+  comm: "并行计算与\n集合通信" {class: compute}
+  fail: "故障显式退出\n(fail fast)" {class: fault}
+}
+
+orch.sched -> fw.rdzv: "契约一:注入 world size / rank /\n汇合点(环境变量)" {
+  style.font-color: "#7C5CD4"
+}
+orch.sched -> fw.ckpt: "契约三:数据挂载\n与亲和调度" {
+  style.font-color: "#7C5CD4"
+}
+fw.rdzv -> eng.comm: "交付已初始化的进程组" {
+  style.font-color: "#6B7280"
+}
+fw.ckpt -> eng.comm: "恢复权重/优化器/数据位点" {
+  style.font-color: "#2E9E64"
+}
+eng.fail -> orch.restart: "契约二:非零退出码\n(故障信号)" {
+  style: {
+    stroke: "#D64545"
+    font-color: "#D64545"
+  }
+}
+orch.restart -> fw.rdzv: "整任务重建 + 重新注入原料" {
+  style: {
+    stroke: "#7C5CD4"
+    stroke-dash: 4
+    font-color: "#7C5CD4"
+  }
+}

@@ -1,0 +1,115 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  store: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  fault: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ext: {
+    style: {
+      fill: "#F3F4F6"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+sub: "自助面(业务方)" {
+  class: plain
+  submit: "选基座 + 传数据集\n(租户凭证)" {class: ext}
+}
+
+ctrlp: "控制面(平台)" {
+  class: plain
+  direction: right
+  tpl: "模板引擎 + 提交前预检\n(格式 / token 量 / 费用)" {class: ctrl}
+  quota: "租户配额 + 微调池调度\n(可借预训练池空闲)" {class: ctrl}
+  tpl -> quota: "完整任务规格" {
+    style.font-color: "#6B7280"
+  }
+}
+
+exec: "执行面(租户隔离域)" {
+  class: plain
+  direction: right
+  job: "训练任务\n(隔离:存储/镜像/日志)" {class: compute}
+  triage: "失败自助分诊" {class: fault}
+  job -> triage: "失败原因 + 归属结论" {
+    style: {
+      stroke: "#D64545"
+      font-color: "#D64545"
+    }
+  }
+}
+
+out: "产出物流转" {
+  class: plain
+  direction: right
+  registry: "模型注册中心\n(五元组 + 状态机)" {class: store}
+  release: "评测卡点 → 发布\n(接第 25/30 章)" {class: store}
+  registry -> release: "评测通过才放行" {
+    style.font-color: "#2E9E64"
+  }
+}
+
+sub.submit -> ctrlp.tpl: "任务请求" {
+  style.font-color: "#6B7280"
+}
+ctrlp.tpl -> sub.submit: "拦截无效提交" {
+  style: {
+    stroke: "#7C5CD4"
+    stroke-dash: 4
+    font-color: "#7C5CD4"
+  }
+}
+ctrlp.quota -> exec.job: "gang 分配 + 租户身份" {
+  style.font-color: "#6B7280"
+}
+exec.job -> out.registry: "LoRA 权重 + 实验记录" {
+  style.font-color: "#2E9E64"
+}
+exec.triage -> sub.submit: "业务侧问题:自助修复" {
+  style: {
+    stroke: "#D64545"
+    stroke-dash: 4
+    font-color: "#D64545"
+  }
+}

@@ -1,0 +1,115 @@
+grid-columns: 2
+grid-gap: 120
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ext: {
+    style: {
+      fill: "#F3F4F6"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  world: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#6B7280"
+      font-color: "#1F2937"
+      border-radius: 8
+    }
+  }
+}
+
+cuda: "CUDA 世界" {
+  class: world
+
+  c1: "框架层\nPyTorch(原生 CUDA 后端)" {class: ctrl}
+  c2: "加速库\ncuBLAS / cuDNN / NCCL / CUTLASS" {class: compute}
+  c3: "运行时 API\nCUDA Runtime / Driver API" {class: compute}
+  c4: "图与编译\nCUDA Graph / TensorRT" {class: compute}
+  c5: "算子开发\nCUDA C++ / Triton" {class: ext}
+  c6: "内核驱动\nNVIDIA driver" {class: ext}
+
+  c1 -> c2: "算子调用"
+  c2 -> c3: "kernel 下发"
+  c1 -> c4: "整图录制/编译"
+  c3 -> c6: "指令与显存管理"
+
+  # 不可见链边:强制单列纵排
+  c3 -> c4: {style.opacity: 0}
+  c4 -> c5: {style.opacity: 0}
+  c5 -> c6: {style.opacity: 0}
+}
+
+ascend: "昇腾世界" {
+  class: world
+
+  a1: "框架适配层\nPyTorch + torch_npu / MindSpore" {class: ctrl}
+  a2: "加速库\n算子加速库(aoe/亲和库)/ HCCL" {class: compute}
+  a3: "运行时 API\nAscendCL(ACL)" {class: compute}
+  a4: "图与编译\n图引擎 GE / ACL Graph / ATC 转换" {class: compute}
+  a5: "算子开发\nAscend C" {class: ext}
+  a6: "内核驱动\nAscend driver + 固件" {class: ext}
+
+  a1 -> a2: "算子调用"
+  a2 -> a3: "任务下发"
+  a1 -> a4: "整图编译/下沉"
+  a3 -> a6: "指令与显存管理"
+
+  # 不可见链边:强制单列纵排
+  a3 -> a4: {style.opacity: 0}
+  a4 -> a5: {style.opacity: 0}
+  a5 -> a6: {style.opacity: 0}
+}
+
+cuda.c1 <-> ascend.a1: "对应" {
+  style: {
+    stroke: "#6B7280"
+    stroke-dash: 4
+    font-color: "#6B7280"
+  }
+}
+cuda.c2 <-> ascend.a2: "对应" {
+  style: {
+    stroke: "#6B7280"
+    stroke-dash: 4
+    font-color: "#6B7280"
+  }
+}
+cuda.c3 <-> ascend.a3: "对应" {
+  style: {
+    stroke: "#6B7280"
+    stroke-dash: 4
+    font-color: "#6B7280"
+  }
+}
+cuda.c4 <-> ascend.a4: "对应" {
+  style: {
+    stroke: "#6B7280"
+    stroke-dash: 4
+    font-color: "#6B7280"
+  }
+}
+cuda.c5 <-> ascend.a5: "对应" {
+  style: {
+    stroke: "#6B7280"
+    stroke-dash: 4
+    font-color: "#6B7280"
+  }
+}

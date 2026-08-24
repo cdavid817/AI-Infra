@@ -1,0 +1,100 @@
+direction: right
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  risk: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+ex: "容器 / VM 边界(第 8 章)——承载以下所有三种切分方式" {class: plain}
+
+hw: "硬件级:MIG(隔离最强)" {
+  class: plain
+  grid-columns: 1
+  grid-gap: 40
+  m1: "SM / 显存 / L2\n物理划分" {class: compute}
+  m2: "独立故障域\n邻居 OOM 不受影响" {class: compute}
+  m3: "共享残留:PCIe、\n主机内存通道" {class: risk}
+  m1 -> m2: "切分出" {
+    style.font-color: "#1F2937"
+  }
+  m2 -> m3: "仍受制于" {
+    style: {
+      stroke: "#D64545"
+      stroke-dash: 4
+      font-color: "#D64545"
+    }
+  }
+}
+
+virt: "虚拟化级:vGPU(隔离居中)" {
+  class: plain
+  grid-columns: 1
+  grid-gap: 40
+  v1: "显存静态划分\n算力时间片" {class: ctrl}
+  v2: "虚拟化层开销\n+ 授权成本" {class: risk}
+  v1 -> v2: "付出" {
+    style.font-color: "#1F2937"
+  }
+}
+
+ts: "时间片级:time-slicing / MPS(隔离最弱)" {
+  class: plain
+  grid-columns: 1
+  grid-gap: 40
+  t1: "kernel 轮转\n或并发驻留" {class: ctrl}
+  t2: "无显存隔离\n一崩全崩" {class: risk}
+  t1 -> t2: "风险是" {
+    style: {
+      stroke: "#D64545"
+      stroke-dash: 4
+      font-color: "#D64545"
+    }
+  }
+}
+
+ex -> hw: "承载" {
+  style.font-color: "#6B7280"
+}
+hw -> virt: "隔离强度递减\n灵活性递增" {
+  style: {
+    stroke: "#7C5CD4"
+    font-color: "#7C5CD4"
+  }
+}
+virt -> ts: "隔离强度递减\n灵活性递增" {
+  style: {
+    stroke: "#7C5CD4"
+    font-color: "#7C5CD4"
+  }
+}

@@ -1,0 +1,96 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  store: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  fault: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+fw: "框架层(自动求导驱动)" {
+  class: plain
+  direction: right
+  model: "模型定义与执行流" {class: compute}
+  act: "激活值生命周期\n重计算决策" {class: compute}
+}
+
+rt: "运行时层(并行运行时)" {
+  class: plain
+  direction: right
+  shard: "参数/梯度/优化器状态\n的分片与聚合" {class: ctrl}
+  buf: "聚合与归约缓冲区\nOffload 搬运" {class: ctrl}
+  conflict: "冲突点:两套运行时\n同时主张参数所有权" {class: fault}
+}
+
+alloc: "分配器层(缓存分配器)" {
+  class: plain
+  direction: right
+  blocks: "显存块的申请与复用" {class: store}
+  frag: "碎片:被保留但\n不可用的显存" {class: fault}
+}
+
+fw.model -> rt.shard: "参数访问事件" {
+  style.font-color: "#6B7280"
+}
+rt.shard -> rt.buf: "聚合/释放指令" {
+  style.font-color: "#6B7280"
+}
+fw.model -> alloc.blocks: "张量创建/释放请求" {
+  style.font-color: "#6B7280"
+}
+fw.act -> alloc.blocks: "激活显存需求" {
+  style.font-color: "#6B7280"
+}
+rt.buf -> alloc.blocks: "大块缓冲区申请" {
+  style.font-color: "#6B7280"
+}
+rt.buf -> rt.conflict: "重复缓冲区" {
+  style: {
+    stroke: "#D64545"
+    stroke-dash: 4
+    font-color: "#D64545"
+  }
+}
+alloc.blocks -> alloc.frag: "复用失败" {
+  style: {
+    stroke: "#D64545"
+    font-color: "#D64545"
+  }
+}

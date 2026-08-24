@@ -1,0 +1,104 @@
+direction: right
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  storage: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  comm: {
+    style: {
+      fill: "#FFF4E5"
+      stroke: "#D9822B"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  ctrl: {
+    style: {
+      fill: "#F3EEFF"
+      stroke: "#7C5CD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 8
+    }
+  }
+  link: {
+    style: {
+      stroke: "#6B7280"
+      font-color: "#1F2937"
+    }
+  }
+  greenlink: {
+    style: {
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+    }
+  }
+}
+
+gw: "网关\n解析 adapter_id" {
+  class: comm
+  width: 170
+}
+
+rt: "路由器\n按基座分池" {
+  class: ctrl
+  width: 160
+}
+
+inst: "推理实例(单卡显存布局)" {
+  class: plain
+
+  eng: "批处理引擎\n批内混合多租户" {
+    class: compute
+    width: 200
+  }
+  base: "共享基座权重\n14 GB · 全租户复用" {
+    class: compute
+    width: 230
+  }
+  apool: "Adapter 显存池\n约 2 GB · LRU 驻留" {
+    class: storage
+    width: 230
+  }
+  kv: "KV Cache 池\n剩余显存全部占用" {
+    class: storage
+    width: 230
+  }
+
+  eng -> base: "统一 GEMM" {class: link}
+  eng -> apool: "按租户 gather 增量" {class: link}
+  eng -> kv: "读写各请求 KV" {class: link}
+}
+
+host: "主机内存" {
+  class: plain
+  areg: "Adapter 仓库\n每个约 40 MB" {
+    class: storage
+    shape: cylinder
+    width: 200
+  }
+}
+
+gw -> rt: "请求 + 租户标识" {class: link}
+rt -> inst.eng: "同基座请求" {class: link}
+host.areg -> inst.apool: "未命中时加载 <100ms" {class: greenlink}

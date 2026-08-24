@@ -1,0 +1,95 @@
+grid-columns: 1
+vertical-gap: 110
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  storage: {
+    style: {
+      fill: "#E9F7EF"
+      stroke: "#2E9E64"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  bottleneck: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 8
+    }
+  }
+  link: {
+    style: {
+      stroke: "#6B7280"
+      font-color: "#1F2937"
+    }
+  }
+  badlink: {
+    style: {
+      stroke: "#D64545"
+      font-color: "#D64545"
+      stroke-dash: 4
+    }
+  }
+}
+
+req: "新请求的前缀查找" {
+  class: compute
+  width: 300
+}
+
+l1: "L1:实例显存" {
+  label.near: top-left
+  class: plain
+  m1: "热前缀块\n数十 GB,亚毫秒" {
+    class: storage
+    shape: cylinder
+    width: 280
+  }
+}
+
+l2: "L2:主机内存" {
+  label.near: top-left
+  class: plain
+  m2: "温前缀块\n数百 GB,几十毫秒换入" {
+    class: storage
+    shape: cylinder
+    width: 280
+  }
+}
+
+l3: "L3:域内远端池化" {
+  label.near: top-left
+  class: plain
+  m3: "跨实例共享池\nTB 级,几十至几百毫秒" {
+    class: storage
+    shape: cylinder
+    width: 280
+  }
+}
+
+rc: "全量重算 prefill\n数百毫秒,算力代价最高" {
+  class: bottleneck
+  width: 300
+}
+
+req -> l1.m1: "查显存索引" {class: link}
+l1.m1 -> l2.m2: "未命中,PCIe 换入" {class: link}
+l2.m2 -> l3.m3: "未命中,按内容哈希取块" {class: link}
+l3.m3 -> rc: "仍未命中,回退" {class: badlink}

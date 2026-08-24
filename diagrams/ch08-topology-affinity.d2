@@ -1,0 +1,102 @@
+direction: down
+
+classes: {
+  compute: {
+    style: {
+      fill: "#EEF4FF"
+      stroke: "#3B6FD4"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  comm: {
+    style: {
+      fill: "#FFF4E5"
+      stroke: "#D9822B"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  bad: {
+    style: {
+      fill: "#FDECEC"
+      stroke: "#D64545"
+      stroke-width: 2
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+  plain: {
+    style: {
+      fill: "#FFFFFF"
+      stroke: "#9CA3AF"
+      font-color: "#1F2937"
+      border-radius: 6
+    }
+  }
+}
+
+host: "一台八卡机器" {
+  class: plain
+  direction: down
+
+  numa0: "NUMA 0" {
+    class: plain
+    direction: right
+    g03: "GPU 0–3\n(同一互联域段)" {class: compute}
+    nic0: "RDMA 网卡 0\n(与 GPU 0–3 同 PCIe 交换机)" {class: comm}
+  }
+
+  numa1: "NUMA 1" {
+    class: plain
+    direction: right
+    g47: "GPU 4–7\n(同一互联域段)" {class: compute}
+    nic1: "RDMA 网卡 1" {class: comm}
+  }
+
+  sw: "卡间高速互联(全互联域)" {class: comm}
+
+  numa0.g03 <-> sw: "梯度/激活 数百 GB/s" {
+    style: {
+      stroke: "#D9822B"
+      font-color: "#B45309"
+    }
+  }
+  numa1.g47 <-> sw: "梯度/激活 数百 GB/s" {
+    style: {
+      stroke: "#D9822B"
+      font-color: "#B45309"
+    }
+  }
+  numa0 <-> numa1: "跨 NUMA 内存访问\n(CPU 互联,带宽减半)" {
+    style: {
+      stroke: "#D64545"
+      stroke-dash: 4
+      font-color: "#D64545"
+    }
+  }
+}
+
+good: "好的分配(方案 A):4 卡任务\n拿 GPU 0–3 + 网卡 0\n同 NUMA、同域段、GDR 直通" {class: compute}
+bad: "坏的分配(方案 B):4 卡任务\n拿 GPU 2,3,6,7\n跨 NUMA,喂数流量与通信流量\n争抢跨节点带宽" {class: bad}
+
+good -> host.numa0.g03: "只落在一个域段" {
+  style: {
+    stroke: "#3B6FD4"
+    font-color: "#3B6FD4"
+  }
+}
+bad -> host.numa0.g03: "占 GPU 2,3" {
+  style: {
+    stroke: "#D64545"
+    stroke-dash: 4
+    font-color: "#D64545"
+  }
+}
+bad -> host.numa1.g47: "占 GPU 6,7" {
+  style: {
+    stroke: "#D64545"
+    stroke-dash: 4
+    font-color: "#D64545"
+  }
+}
