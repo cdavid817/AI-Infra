@@ -1,0 +1,102 @@
+# 全书顺序单一来源:README 目录、网站导航、上一/下一章、缺章检查均由本文件驱动。
+schema_version: 1
+book:
+  title: AI Infra
+  language: zh-CN
+parts:
+  - id: part-1
+    title: 第一部分 基础与心智模型
+    chapters:
+      - number: 1
+        path: 第一部分-基础与心智模型/第01章-从大数据基础设施到AI基础设施.md
+      - number: 2
+        path: 第一部分-基础与心智模型/第02章-两条主线解剖与框架地图.md
+      - number: 3
+        path: 第一部分-基础与心智模型/第03章-人工智能与大模型基础.md
+      - number: 4
+        path: 第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md
+      - number: 5
+        path: 第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md
+      - number: 6
+        path: 第一部分-基础与心智模型/第06章-模型结构的定量分析.md
+      - number: 7
+        path: 第一部分-基础与心智模型/第07章-互联与集合通信.md
+  - id: part-2
+    title: 第二部分 算力底座
+    chapters:
+      - number: 8
+        path: 第二部分-算力底座/第08章-K8s上的加速卡.md
+      - number: 9
+        path: 第二部分-算力底座/第09章-批调度器.md
+      - number: 10
+        path: 第二部分-算力底座/第10章-异构与池化.md
+      - number: 11
+        path: 第二部分-算力底座/第11章-多租户与利用率治理.md
+      - number: 12
+        path: 第二部分-算力底座/第12章-国产算力平台与异构迁移.md
+  - id: part-3
+    title: 第三部分 数据底座
+    chapters:
+      - number: 13
+        path: 第三部分-数据底座/第13章-训练数据管道.md
+      - number: 14
+        path: 第三部分-数据底座/第14章-存储与Checkpoint-IO.md
+      - number: 15
+        path: 第三部分-数据底座/第15章-向量与检索基础设施.md
+  - id: part-4
+    title: 第四部分 训练系统
+    chapters:
+      - number: 16
+        path: 第四部分-训练系统/第16章-并行策略.md
+      - number: 17
+        path: 第四部分-训练系统/第17章-显存与训练侧精度机制.md
+      - number: 18
+        path: 第四部分-训练系统/第18章-并行运行时剖析.md
+      - number: 19
+        path: 第四部分-训练系统/第19章-训练工程层与编排.md
+      - number: 20
+        path: 第四部分-训练系统/第20章-稳定性与容错.md
+      - number: 21
+        path: 第四部分-训练系统/第21章-后训练基础设施.md
+  - id: part-5
+    title: 第五部分 推理系统
+    chapters:
+      - number: 22
+        path: 第五部分-推理系统/第22章-推理引擎原理.md
+      - number: 23
+        path: 第五部分-推理系统/第23章-推理优化-计算类加速.md
+      - number: 24
+        path: 第五部分-推理系统/第24章-服务化架构与显存类加速.md
+      - number: 25
+        path: 第五部分-推理系统/第25章-弹性与多模型.md
+      - number: 26
+        path: 第五部分-推理系统/第26章-特殊负载.md
+  - id: part-6
+    title: 第六部分 上层平台
+    chapters:
+      - number: 27
+        path: 第六部分-上层平台/第27章-模型网关.md
+      - number: 28
+        path: 第六部分-上层平台/第28章-Agent运行时基础设施.md
+      - number: 29
+        path: 第六部分-上层平台/第29章-可观测性与评测流水线.md
+  - id: part-7
+    title: 第七部分 工程化与治理
+    chapters:
+      - number: 30
+        path: 第七部分-工程化与治理/第30章-模型生命周期管理.md
+      - number: 31
+        path: 第七部分-工程化与治理/第31章-容量、成本与SLO.md
+appendices:
+  - id: A
+    path: 附录/附录A-加速卡与集群形态速查表.md
+  - id: B
+    path: 附录/附录B-估算公式速查与符号表.md
+  - id: C
+    path: 附录/附录C-框架选型快照.md
+  - id: D
+    path: 附录/附录D-术语表.md
+  - id: E
+    path: 附录/附录E-异构迁移评估清单.md
+  - id: F
+    path: 附录/附录F-算法深入读物推荐.md

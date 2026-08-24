@@ -18,9 +18,12 @@
     "docs:check:anchors": "node scripts/check-doc-anchors.mjs",
     "docs:check:structure": "node scripts/validate-chapters.mjs",
     "docs:check:external-links": "node scripts/check-external-links.mjs",
-    "docs:check": "npm run test:docs-tools && npm run docs:check:local-links && npm run docs:check:anchors && npm run docs:check:structure && npm run docs:check:evidence && npm run docs:check:data && npm run docs:check:drift && npm run docs:check:prompts && npm run docs:check:images",
+    "docs:check": "npm run test:docs-tools && npm run docs:check:local-links && npm run docs:check:anchors && npm run docs:check:structure && npm run docs:check:evidence && npm run docs:check:data && npm run docs:check:drift && npm run docs:check:prompts && npm run docs:check:images && npm run docs:check:manifest",
     "docs:check:images": "node scripts/validate-images.mjs",
-    "docs:check:mermaid": "node scripts/check-mermaid.mjs"
+    "docs:check:mermaid": "node scripts/check-mermaid.mjs",
+    "docs:check:manifest": "node scripts/validate-manifest.mjs",
+    "site:dev": "vitepress dev",
+    "site:build": "vitepress build"
   },
   "dependencies": {
     "ajv": "8.17.1",
@@ -29,5 +32,11 @@
     "remark-parse": "11.0.0",
     "unified": "11.0.5",
     "yaml": "2.8.0"
+  },
+  "devDependencies": {
+    "markdown-it-mathjax3": "4.3.2",
+    "mermaid": "11.12.1",
+    "vitepress": "1.6.4",
+    "vitepress-plugin-mermaid": "2.0.17"
   }
 }

@@ -1,0 +1,3 @@
+.claim-ref { font-size: 0.7em; opacity: 0.55; margin-left: 2px; }
+.claim-ref a { text-decoration: none; }
+.claim-ref a:hover { opacity: 1; }
