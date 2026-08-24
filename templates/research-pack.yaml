@@ -1,0 +1,20 @@
+# Research Pack 模板(v3):新章或大改章节动笔前必须先填写本文件
+# 存放位置建议:references/research-packs/chapter-NN-<topic>.yaml
+schema_version: 1
+chapter: 0                      # 目标章节号
+topic: ""                       # 主题(对应计划 §17 的子组名或自定义)
+prepared_at: 2026-01-01
+scope:
+  included: []                  # 本次覆盖什么
+  excluded: []                  # 明确不覆盖什么(守住 Infra 边界)
+claims:                         # 候选结论:草稿只允许写这里列过的关键结论
+  - proposed_id: CLM-0NN-NEW-001
+    statement: ""
+    claim_type: mechanism       # 见 references/source-policy.md 的类型表
+    candidate_sources: []       # 来源 id(须已在 sources.yaml)或候选 URL(须逐条验证可达)
+    confidence: medium          # low / medium / high
+open_questions: []              # 写作前必须回答或显式搁置的问题
+conflicting_sources: []         # 来源之间互相矛盾的点及取舍
+volatile_facts:                 # 高时效事实:进附录/claim,不固化进正文
+  - statement: ""
+    review_required: true
