@@ -255,6 +255,15 @@ tooling:
     review:
       reviewed_at: "2026-08-24"
       review_after_days: 180
+  - purpose: Agent 工具协议
+    projects: 'MCP(规范 2026-07-28;Tasks/Skills 为扩展,实现普及度高时效)'
+    chapter_ref: 第 28 章
+    ascend_counterpart: 与硬件无关
+    sources: [SRC-MCP-SPEC-CURRENT]
+    verification: verified
+    review:
+      reviewed_at: "2026-08-24"
+      review_after_days: 120
   - purpose: GenAI 遥测语义约定
     projects: OpenTelemetry GenAI semconv(独立仓库,Development 阶段)
     chapter_ref: 第 28、29 章

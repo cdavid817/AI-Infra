@@ -104,6 +104,107 @@ gantt
 <!-- claim: CLM-029-013 -->
 这套治理要发挥作用,前提是多层结构在 trace 上可见。好消息是这层结构已经有了标准词汇:OpenTelemetry 的 GenAI 语义约定为 Agent 调用、工具执行定义了 `invoke_agent`、`execute_tool` 等标准操作名,MCP 交互另有专门约定——一次 Agent 请求由此成为一棵标准的嵌套 span 树:`invoke_agent` 里套模型调用,模型调用之间夹 `execute_tool`,工具 span 里再套沙箱执行。对本节的意义很具体:上面算过的尾延迟放大(p=1%、N=8 轮放大到约 8%),在没有分层 trace 时的定位方式是"日志考古"——把运行时、工具服务、沙箱三套日志按时间戳手工对齐;有了标准嵌套 span,同一条 trace 上一眼可见是模型在等工具、工具在等下游、还是沙箱在等冷启动,超时预算的分配(任务级 SLO 反推单轮超时)也第一次有了逐层的实测依据。运行时打点时应直接采用这套词汇而不是自造名字,理由与迁移缓冲层的做法见第 29 章"把指标说同一种语言:OTel GenAI 语义约定"一节。
 
+### Agent Runtime 2.0:协议、权限与持久执行
+
+28.4.3 把工具调用当作运行时内部的一条 RPC 通道来治理,但没有回答通道两端的问题:工具怎么接进来,以及"能不能调这个工具"由谁说了算。这两个问题在 2026 年有了协议层的答案,也把 Agent 运行时从"沙箱 + 通道 + 状态"扩成一张更完整的组件图。
+
+<!-- claim: CLM-028-011 -->
+**接口的一半已经协议化。** MCP(Model Context Protocol)把"模型与外部世界的接口"标准化为一层薄协议:连接双方在会话建立时各自声明能做什么,能力按请求协商而不是全局假设。服务端以三种原语暴露能力——Resources 提供上下文(模型可以读什么)、Prompts 提供模板(用户可以选什么)、Tools 提供动作(模型可以做什么);客户端也有对称的特性——Roots 划定服务端可见的文件边界,Sampling 让服务端反过来借用客户端的模型能力,Elicitation 允许执行中途向用户补要输入。进度上报与取消是协议内建的工具件,不必每家自造;超出单次请求生命周期的长任务经 Tasks 扩展获得持久句柄——提交即返回句柄,此后轮询状态、接收进度、注入中途输入,任务与连接解耦。落到平台上,这意味着工具接入从"每个工具一套私有 RPC + 一份自研注册表"收敛为协议化的注册与发现;但协议只管接口,健康检查、重试、幂等、并发治理仍然是运行时的责任——28.4.3 的三件套一件都没少,只是通道两端从此说同一种语言。
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{
+  'primaryColor':'#EEF4FF','primaryBorderColor':'#3B6FD4','primaryTextColor':'#1F2937',
+  'secondaryColor':'#F3F4F6','tertiaryColor':'#FFFFFF',
+  'lineColor':'#6B7280','fontFamily':'-apple-system, Segoe UI, Helvetica, Arial, sans-serif','fontSize':'14px'
+}}}%%
+flowchart LR
+    classDef compute fill:#EEF4FF,stroke:#3B6FD4,stroke-width:1.5px,color:#1F2937
+    classDef store fill:#E9F7EF,stroke:#2E9E64,stroke-width:1.5px,color:#1F2937
+    classDef ctrl fill:#F3EEFF,stroke:#7C5CD4,stroke-width:1.5px,color:#1F2937
+    classDef ext fill:#F3F4F6,stroke:#9CA3AF,stroke-width:1.5px,color:#1F2937
+    classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937
+
+    subgraph RT["Agent Runtime"]
+        LOOP["任务循环<br/>推理—工具—执行"]:::compute
+        REG["Tool Registry<br/>注册 · 发现 · 信任等级"]:::ctrl
+        PDP["Policy Decision<br/>工具/资源/参数级判定"]:::ctrl
+        BRK["Credential Broker<br/>凭据不出此组件"]:::ctrl
+        SBX["Sandbox<br/>代码执行(28.4.2)"]:::compute
+        DST["Durable State<br/>步级 checkpoint · 事件日志"]:::store
+    end
+    MODEL["模型推理<br/>经网关(第 27 章)"]:::compute
+    MCP["MCP Server 群<br/>自建 / 采购 / 第三方"]:::ext
+    INJ(("凭据<br/>注入点")):::risk
+    EXF(("出网 =<br/>外泄面")):::risk
+
+    LOOP -- "每轮推理,凭据只见占位符" --> MODEL
+    LOOP -- "工具调用请求" --> PDP
+    REG -.->|"信任等级作判定输入"| PDP
+    PDP -.->|"拒绝 / 需审批(绑定请求哈希)"| LOOP
+    PDP -- "放行的请求" --> BRK
+    BRK -- "占位符换真实凭据" --> INJ
+    INJ -- "调用" --> MCP
+    MCP -- "结果 = 不可信输入" --> LOOP
+    LOOP -- "代码执行" --> SBX
+    SBX -.-|"默认拒绝出站 + 白名单"| EXF
+    LOOP -- "每步落盘,可恢复可回放" --> DST
+```
+
+图 28-3:Agent Runtime 2.0 的组件边界。实线为调用流,虚线为授权判定流;凭据只在 Broker 到调用边界的一小段出现(红点),模型、会话历史与 Durable State 里自始至终只有占位符。
+
+图上四个新组件各管一件不能混的事:Tool Registry 管注册与发现,连同每个 MCP Server 的信任等级(自建/采购/第三方);Policy Decision 在每次工具调用前做授权判定,粒度到工具级、资源级、参数级;Credential Broker 集中保管凭据,只在调用真正发出的边界注入;Durable State 把任务执行做成步级 checkpoint 加事件日志——28.4.4 的会话状态回答"对话历史在哪",Durable State 回答"任务执行到第几步、每步做了什么",长任务的跨实例恢复与事后审计回放都靠它。
+
+**同步调用与长任务是两套状态机,不能共用一套超时语义。** 同步调用的生命周期与请求相同:请求→执行→结果或错误,超时即失败,28.4.3 的快速失败纪律直接适用。长任务不同:提交换来的是句柄而不是结果,运行中可以轮询、收进度、被中途补参;"超时"不再等于失败,而是触发一个必须回答的问题——任务此刻处于什么状态,要取消还是要补偿。
+
+```mermaid
+%%{init: {'theme':'base','themeVariables':{
+  'primaryColor':'#EEF4FF','primaryBorderColor':'#3B6FD4','primaryTextColor':'#1F2937',
+  'secondaryColor':'#F3F4F6','tertiaryColor':'#FFFFFF',
+  'lineColor':'#6B7280','fontFamily':'-apple-system, Segoe UI, Helvetica, Arial, sans-serif','fontSize':'14px'
+}}}%%
+flowchart TB
+    classDef compute fill:#EEF4FF,stroke:#3B6FD4,stroke-width:1.5px,color:#1F2937
+    classDef store fill:#E9F7EF,stroke:#2E9E64,stroke-width:1.5px,color:#1F2937
+    classDef ctrl fill:#F3EEFF,stroke:#7C5CD4,stroke-width:1.5px,color:#1F2937
+    classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937
+
+    subgraph SYNC["同步调用:结果与请求同生命周期"]
+        direction LR
+        A["请求"]:::compute --> B["执行中"]:::compute
+        B --> C["结果"]:::store
+        B --> E["超时/错误 = 失败<br/>快速失败换路(28.4.3)"]:::risk
+    end
+    subgraph LT["长任务(Tasks 扩展):句柄与连接解耦"]
+        direction LR
+        S["提交"]:::compute --> H["持久句柄"]:::ctrl
+        H --> R["运行中"]:::compute
+        R -->|"轮询 / 进度上报"| R
+        R -->|"中途输入"| R
+        R --> D["完成"]:::store
+        R --> X["取消<br/>(协议内建)"]:::ctrl
+        R --> T["超时 → 补偿<br/>回到一致状态"]:::risk
+    end
+    SYNC ~~~ LT
+```
+
+图 28-4:同步调用与长任务的状态机。同步语义下超时即失败、重试即可;长任务把结果换成句柄之后,取消、补偿与幂等从可选项变成必选项——右侧每个终态都要有明确的到达路径,"不知道任务最后怎样了"不是合法终态。
+
+五个机制各自解决什么、谁负责、缺了会怎样,一张表说清:
+
+| 机制 | 解决什么 | 谁负责 | 典型失效形态 |
+|---|---|---|---|
+| 取消 | 用户或上游放弃后停止计费与副作用 | 运行时发起,工具执行(协议内建信号) | 只停轮询不停任务:后台继续烧资源、继续产生副作用 |
+| 超时 | 有界等待,快速失败换路(28.4.3) | 运行时 | 长任务照抄同步超时:把仍在正常运行的任务判死 |
+| 重试 | 瞬态失败自愈,对模型透明(28.4.3) | 运行时(瞬态失败);模型(语义性失败) | 重试无幂等键 = 重复下单 |
+| 补偿 | 已产生副作用的失败任务回到一致状态 | 工具方提供逆操作,运行时编排 | 无补偿设计:多步操作半途失败留下脏状态 |
+| 幂等 | 同一请求重复到达只生效一次 | 工具以幂等键实现,运行时生成并传键 | 键的作用域错位(按会话而非按步),把合法的重复调用也吞掉 |
+
+<!-- claim: CLM-028-012 -->
+<!-- claim: CLM-028-013 -->
+**权限是一条只能衰减的委托链。** 用户把一部分权限委托给 Agent,Agent 再把子任务连同更小的权限交给子 Agent——链上每一跳权限只能收窄,不能放大,而且这条规则必须由运行时(Policy Decision 组件)强制,不能指望模型"自觉"不越权:模型的行为由输入文本驱动,而输入文本里可能混着攻击者的话(见下段)。第二条硬规则是审批与请求内容绑定:高危操作的人工审批必须绑定请求参数的哈希——批的是"以 A 参数执行",执行前校验哈希一致——否则审批与执行之间存在一个 TOCTOU(校验与使用之间)窗口:批的是转账 100 元,执行时参数已被改成 10 万。第三条最常被违反:**凭据绝不进 Prompt,也绝不进长期会话状态**。Prompt 会被日志、trace、上下文回放复制到无数地方,进了 Prompt 的凭据等于广播;正确形态是模型全程只见占位符,Credential Broker 在调用发出的边界把占位符换成真实凭据,用后即弃。MCP 的授权面基于 OAuth 2.1,其安全原则要求用户对数据访问与操作显式同意并保持控制——这正是把授权与凭据做成运行时组件而非提示词内容的协议依据。
+
+**威胁面的共同结构是"数据被当成指令"。** prompt injection(检索结果或网页内容里埋着"忽略之前的指令")与 tool poisoning(工具描述或工具输出里埋着诱导模型调用其他工具的话)是同一个结构的两个入口:模型不区分数据通道与指令通道,凡是进上下文的文本都可能改变它的行为。运行时能做的不是"教模型分辨",而是收边界:第三方 MCP Server 的信任等级进 Tool Registry,低信任工具的输出进入上下文前标记来源、其后续可触发的动作由 Policy Decision 收紧;工具输出一律按不可信输入对待——与 28.4.2"模型生成的代码等同于不可信第三方代码"是同一条威胁模型的两面;SSRF 与数据外泄的出网路径,归 Sandbox 的网络策略管(默认拒绝出站 + 白名单,28.4.2 已述),不另设机制。
+
 ### 28.4.4 会话状态与上下文存储
 
 <!-- claim: CLM-028-005 -->
@@ -163,6 +264,8 @@ flowchart TB
     classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937
 
     Q0{数据允许出域、<br/>负载低频?}:::ctrl
+    QM{"工具由第三方<br/>MCP Server 提供?"}:::ctrl
+    WM["按 Registry 信任等级<br/>定沙箱档位与出网白名单"]:::ctrl
     Q1{"执行的代码<br/>是否不可信<br/>(模型生成/多租户)?"}:::ctrl
     Q2{"依赖是否纯语言级<br/>(无原生扩展/子进程)?"}:::ctrl
     Q3{宿主支持虚拟化、<br/>无需 GPU 直通?}:::ctrl
@@ -177,7 +280,10 @@ flowchart TB
     R1[普通容器直跑<br/>不可信代码]:::risk
 
     Q0 -->|是| S0
-    Q0 -->|否,自建| Q1
+    Q0 -->|否,自建| QM
+    QM -->|是| WM
+    WM --> Q1
+    QM -->|否,工具自营| Q1
     Q1 -->|是| Q2
     Q1 -->|否,内部半可信| Q4
     Q2 -->|是,且高频短任务| S1
@@ -190,13 +296,13 @@ flowchart TB
     S4 -.->|禁止滑向| R1
 ```
 
-图 28-3:Agent 沙箱选型决策树。第一道分岔不是技术而是信任域——代码是否可信决定了隔离档位的下限,其余问题只是在这个下限之上做延迟与生态的权衡。
+图 28-5:Agent 沙箱选型决策树。第一道分岔不是技术而是信任域——代码是否可信决定了隔离档位的下限,其余问题只是在这个下限之上做延迟与生态的权衡;第三方 MCP Server 提供的工具先过一道信任等级判定,再进入常规选型。
 
-沿树走一遍你所在的场景:先问数据能否出域(能且量小,托管服务是最省的起点);自建则先定信任域——不可信代码把普通容器直接排除;再看依赖形态决定 WASM 还是微 VM;只有内部半可信且规模可控的场景,普通容器加预热池才是合理的省事之选。无论落在哪个叶子,两条纪律不变:依赖零安装、资源限制四维齐全(CPU/内存/墙钟/网络)。
+沿树走一遍你所在的场景:先问数据能否出域(能且量小,托管服务是最省的起点);自建则先看工具来源——第三方 MCP Server 提供的工具按 Tool Registry 的信任等级定沙箱档位与出网白名单(见"Agent Runtime 2.0"一节),再定信任域——不可信代码把普通容器直接排除;再看依赖形态决定 WASM 还是微 VM;只有内部半可信且规模可控的场景,普通容器加预热池才是合理的省事之选。无论落在哪个叶子,两条纪律不变:依赖零安装、资源限制四维齐全(CPU/内存/墙钟/网络)。
 
 ## 28.8 来源、口径与复现说明
 
-本章问题场景为合成案例,其人物、机构与全部数值(P50 38 秒、单轮沙箱准备 8.5 秒等)均为写作构造的示意,登记为 `CLM-028-001`,不构成真实事故记录。预热池容量、尾延迟放大率与会话状态规模三处数字为公式推导估算,输入、公式、假设与误差来源见 `references/claims/chapter-28.yaml` 中 `CLM-028-003`、`CLM-028-004`、`CLM-028-005` 的 `estimate` 字段,读者代入自己的 λ、T_cold、p、N 与轮次分布即可复算。三档隔离对比中的量级数字(微 VM 百毫秒级冷启动、gVisor 类加固的性能损耗等)为业界常见量级表述,目前登记为待补来源(`CLM-028-009`、`CLM-028-010`),使用前请以目标运行时的官方文档与自测数据校准。本章全部 claim 登记与状态以 `references/claims/chapter-28.yaml` 为准,校验方式为 `npm run docs:check:evidence`。
+本章问题场景为合成案例,其人物、机构与全部数值(P50 38 秒、单轮沙箱准备 8.5 秒等)均为写作构造的示意,登记为 `CLM-028-001`,不构成真实事故记录。预热池容量、尾延迟放大率与会话状态规模三处数字为公式推导估算,输入、公式、假设与误差来源见 `references/claims/chapter-28.yaml` 中 `CLM-028-003`、`CLM-028-004`、`CLM-028-005` 的 `estimate` 字段,读者代入自己的 λ、T_cold、p、N 与轮次分布即可复算。三档隔离对比中的量级数字(微 VM 百毫秒级冷启动、gVisor 类加固的性能损耗等)为业界常见量级表述,目前登记为待补来源(`CLM-028-009`、`CLM-028-010`),使用前请以目标运行时的官方文档与自测数据校准。"Agent Runtime 2.0"一节的协议机制结论(`CLM-028-011`、`CLM-028-012`)挂接 MCP 规范当期版本(具体版本号与复核周期记录在 claim 条目中,正文不锁定版本);审批哈希绑定与权限单调衰减(`CLM-028-013`)是作者的工程原则,规范来源支撑其授权组件化与用户显式同意的方向,但不直接规定这两条机制,按未核验立场登记。本章全部 claim 登记与状态以 `references/claims/chapter-28.yaml` 为准,校验方式为 `npm run docs:check:evidence`。
 
 ---
 

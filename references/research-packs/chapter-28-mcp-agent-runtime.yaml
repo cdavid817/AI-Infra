@@ -1,0 +1,40 @@
+schema_version: 1
+chapter: 28
+topic: Agent Runtime 2.0 与 MCP(计划 §17.5)
+prepared_at: 2026-08-24
+scope:
+  included:
+    - MCP 协议面:能力协商、三原语与客户端三特性、进度/取消工具件、Tasks 扩展(长任务/中途输入/持久句柄)、OAuth 2.1 授权
+    - Agent Runtime 组件边界重画:Tool Registry、Policy Decision、Credential Broker、Sandbox、Durable State(11.32/11.33)
+    - 同步工具调用 vs 长任务的状态机(11.34);取消/超时/重试/补偿/幂等对照表(11.35)
+    - 父子 Agent 权限衰减模型(11.36);审批与请求哈希绑定、TOCTOU 风险(11.37)
+    - 凭据绝不进 Prompt/长期会话的原则(11.38);沙箱决策树更新(11.39)
+    - 第 29 章 MCP trace 衔接(11.40,17.6 已建 OTel 词汇,仅补衔接);第 30 章 Agent 配置/工具清单/策略版本血缘(11.41)
+    - 第 27 章:网关与 MCP Server 注册/凭据托管的关系
+    - 安全威胁面:prompt injection、tool poisoning、Server 信任等级、输出污染、外泄、SSRF(以机制与边界写,不写攻防教程)
+  excluded:
+    - Agent 推理算法、人格与提示技巧(11.42);SDK 教程;协议消息格式细节
+  already_covered_in_chapter:
+    - 沙箱三档对比与决策树、工具调用超时/重试/并发、会话状态规模估算、KV 非会话存储、OTel span 树段——只做增量与改造,不重写
+claims:
+  - proposed_id: CLM-028-NEW-011
+    statement: MCP 以能力协商 + 三原语(Resources/Prompts/Tools)+ 客户端特性(Roots/Sampling/Elicitation)定义模型与外部世界的接口;进度与取消是核心工具件,长任务经 Tasks 扩展获得轮询、中途输入与持久句柄
+    claim_type: mechanism
+    candidate_sources: [SRC-MCP-SPEC-CURRENT]
+    confidence: high
+  - proposed_id: CLM-028-NEW-012
+    statement: MCP 授权基于 OAuth 2.1,安全原则要求用户对数据访问与操作显式同意并保持控制——凭据托管与审批因此是运行时组件而非提示词内容
+    claim_type: mechanism
+    candidate_sources: [SRC-MCP-SPEC-CURRENT]
+    confidence: high
+  - proposed_id: CLM-028-NEW-013
+    statement: 审批必须与请求内容哈希绑定,否则存在审批与执行间的 TOCTOU 窗口;父子 Agent 委托链上权限只能衰减不能放大——两者是运行时强制而非模型自觉
+    claim_type: recommendation
+    candidate_sources: [SRC-MCP-SPEC-CURRENT]
+    confidence: medium
+open_questions:
+  - Tasks 扩展的实现普及度(附录 C 高时效登记,不在正文断言)
+conflicting_sources: []
+volatile_facts:
+  - statement: MCP 规范版本(2026-07-28)与 Tasks/Skills 扩展状态
+    review_required: true

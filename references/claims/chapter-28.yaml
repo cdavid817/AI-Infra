@@ -107,3 +107,34 @@ claims:
     sources: []
     status: unverified
     reviewed_at: "2026-08-24"
+
+  - id: CLM-028-011
+    section: "28.4(Agent Runtime 2.0:协议、权限与持久执行)"
+    summary: "MCP(规范版本 2026-07-28)以按请求的能力协商 + 服务端三原语(Resources/Prompts/Tools)+ 客户端特性(Roots/Sampling/Elicitation)定义模型与外部世界的接口;进度上报与取消是协议内建工具件;长任务经 Tasks 扩展获得持久句柄、轮询与中途输入,任务与连接解耦。正文不记载规范版本号,以本条为准。"
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-MCP-SPEC-CURRENT]
+    status: verified
+    reviewed_at: "2026-08-24"
+    review_after_days: 120
+
+  - id: CLM-028-012
+    section: "28.4(Agent Runtime 2.0:协议、权限与持久执行)"
+    summary: "MCP(规范版本 2026-07-28)的授权基于 OAuth 2.1,安全原则要求用户对数据访问与操作显式同意并保持控制——这是把授权判定与凭据托管做成运行时组件(Policy Decision / Credential Broker)而非提示词内容的协议依据。"
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-MCP-SPEC-CURRENT]
+    status: verified
+    reviewed_at: "2026-08-24"
+    review_after_days: 120
+
+  - id: CLM-028-013
+    section: "28.4(Agent Runtime 2.0:协议、权限与持久执行)"
+    summary: "工程原则:高危操作的审批必须与请求参数哈希绑定,否则审批与执行之间存在 TOCTOU 窗口;父子 Agent 委托链上权限只能单调衰减不能放大;两者须由运行时强制而非依赖模型自觉;凭据绝不进 Prompt 与长期会话状态,由 Credential Broker 在调用边界注入。"
+    claim_type: recommendation
+    evidence_level: L4
+    sources: [SRC-MCP-SPEC-CURRENT]
+    status: unverified
+    disclosure: "选型立场为作者的工程原则归纳。所引 MCP 规范(2026-07-28)支撑其中的授权组件化方向与用户显式同意原则(见 CLM-028-012),但不直接规定审批哈希绑定与权限单调衰减两条具体机制,故如实按 unverified 登记,不冒充规范条文。"
+    reviewed_at: "2026-08-24"
+    review_after_days: 120

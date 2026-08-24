@@ -169,3 +169,15 @@ sources:
     arxiv_id: "2409.19256"
     license_note: arXiv non-exclusive license;图表不可转载,仅引用机制事实
     notes: RL 后训练建模为数据流;传统单控制器统一指挥节点内计算与节点间通信在 RLHF 下低效,混合控制器编程模型为其核心贡献;为 verl 的论文原型
+  - id: SRC-MCP-SPEC-CURRENT
+    title: Model Context Protocol Specification(2026-07-28)
+    publisher: Model Context Protocol
+    source_type: standard_specification
+    url: https://modelcontextprotocol.io/specification/2026-07-28
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    version: "2026-07-28"
+    review_after_days: 120
+    notes: 当前 latest 版;按请求能力协商、无状态自包含 JSON-RPC;服务端 Resources/Prompts/Tools,客户端 Roots/Sampling/Elicitation;进度与取消为核心工具件;Tasks 为扩展(长任务:轮询、中途输入、持久句柄);授权基于 OAuth 2.1;安全原则含用户显式同意与控制、Security Best Practices 专章
