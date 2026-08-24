@@ -1,0 +1,45 @@
+# Mermaid 红色样式人工审查清单
+
+红色(#FDECEC/#D64545)只允许用于瓶颈与故障;以下位置定义或使用了红色,语义是否越界需人工确认。
+
+- 第二部分-算力底座/第08章-K8s上的加速卡.md:144 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第二部分-算力底座/第09章-批调度器.md:97 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第二部分-算力底座/第09章-批调度器.md:210 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第二部分-算力底座/第10章-异构与池化.md:82 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第二部分-算力底座/第11章-多租户与利用率治理.md:103 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第二部分-算力底座/第11章-多租户与利用率治理.md:174 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第二部分-算力底座/第12章-国产算力平台与异构迁移.md:57 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第二部分-算力底座/第12章-国产算力平台与异构迁移.md:142 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第二部分-算力底座/第12章-国产算力平台与异构迁移.md:372 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第六部分-上层平台/第27章-模型网关.md:112 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第六部分-上层平台/第27章-模型网关.md:201 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第六部分-上层平台/第28章-Agent运行时基础设施.md:160 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第六部分-上层平台/第29章-可观测性与评测流水线.md:161 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第六部分-上层平台/第29章-可观测性与评测流水线.md:224 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第七部分-工程化与治理/第30章-模型生命周期管理.md:166 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第七部分-工程化与治理/第31章-容量、成本与SLO.md:65 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第七部分-工程化与治理/第31章-容量、成本与SLO.md:247 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第三部分-数据底座/第13章-训练数据管道.md:135 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第三部分-数据底座/第13章-训练数据管道.md:203 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第三部分-数据底座/第14章-存储与Checkpoint-IO.md:187 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第四部分-训练系统/第17章-显存与训练侧精度机制.md:152 `classDef fault fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第四部分-训练系统/第17章-显存与训练侧精度机制.md:223 `classDef fault fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第四部分-训练系统/第18章-并行运行时剖析.md:147 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第四部分-训练系统/第20章-稳定性与容错.md:190 `classDef fault fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第五部分-推理系统/第23章-推理优化-计算类加速.md:218 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第五部分-推理系统/第24章-服务化架构与显存类加速.md:194 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第五部分-推理系统/第25章-弹性与多模型.md:152 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第五部分-推理系统/第26章-特殊负载.md:131 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第一部分-基础与心智模型/第01章-从大数据基础设施到AI基础设施.md:134 `classDef fail fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第一部分-基础与心智模型/第01章-从大数据基础设施到AI基础设施.md:164 `linkStyle 3 stroke:#D64545,stroke-width:2px`
+- 第一部分-基础与心智模型/第01章-从大数据基础设施到AI基础设施.md:165 `linkStyle 4 stroke:#D64545,stroke-width:2px`
+- 第一部分-基础与心智模型/第01章-从大数据基础设施到AI基础设施.md:166 `linkStyle 5 stroke:#D64545,stroke-width:2px`
+- 第一部分-基础与心智模型/第01章-从大数据基础设施到AI基础设施.md:241 `classDef hot fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第一部分-基础与心智模型/第02章-两条主线解剖与框架地图.md:55 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第一部分-基础与心智模型/第03章-人工智能与大模型基础.md:80 `classDef hot fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md:246 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:2px,color:#1F2937`
+- 第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md:192 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md:235 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第一部分-基础与心智模型/第06章-模型结构的定量分析.md:285 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第一部分-基础与心智模型/第07章-互联与集合通信.md:137 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:2px,color:#1F2937`
+- 第一部分-基础与心智模型/第07章-互联与集合通信.md:222 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:2px,color:#1F2937`

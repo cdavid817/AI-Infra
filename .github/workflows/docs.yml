@@ -3,13 +3,59 @@ name: Documentation checks
 on:
   push:
   pull_request:
+  schedule:
+    - cron: '30 18 * * *'   # nightly(UTC)完整外链与 freshness
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  local-links:
+  deterministic-checks:
+    # PR 与 push 的确定性门禁:工具单测、本地链接、锚点、结构、证据、数据、生成物漂移、Prompt 结构
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
-      - run: node scripts/check-doc-links.mjs
+          cache: npm
+      - run: npm ci
+      - run: npm run docs:check
+      - name: 生成物漂移(二次防线)
+        run: npm run docs:generate && git diff --exit-code
+
+  external-links:
+    # 完整外链扫描放 nightly 与手动触发;404/410 失败,403/429/timeout 仅警告
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run docs:check:external-links
+
+  freshness-report:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/validate-data.mjs --freshness-report
+      - run: node scripts/validate-chapters.mjs --red-report
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: freshness-and-review-reports
+          path: reports/

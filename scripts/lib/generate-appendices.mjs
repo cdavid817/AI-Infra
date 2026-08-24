@@ -84,7 +84,7 @@ export function generateAppendixA(rootDir) {
   const out = [];
   out.push(GEN_HEADER('data/accelerators/accelerators.yaml + data/cluster-forms/cluster-forms.yaml'));
   out.push(`# 附录 A 加速卡与集群形态速查表\n`);
-  out.push(`> **数据截至 ${snap}。** 本附录承载的是会过时的具体数据,与正文的分工是:正文只教"如何读一张卡的 spec sheet"([§4.2](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#42-加速器架构范式)),本附录给出可以直接查的数字。使用前请核对[勘误与更新页](../ERRATA.md#附录-a-加速卡与集群形态速查表)及对应的来源与口径记录;**逐项数据的来源与核验状态以 \`data/\` 目录为准,未标注来源的行均为 unverified(待核验)**。\n>`);
+  out.push(`> **数据截至 ${snap}。** 本附录承载的是会过时的具体数据,与正文的分工是:正文只教"如何读一张卡的 spec sheet"([§4.2](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#42-加速器架构范式)),本附录给出可以直接查的数字。使用前请核对[勘误与更新页](../ERRATA.md#附录-a加速卡与集群形态速查表)及对应的来源与口径记录;**逐项数据的来源与核验状态以 \`data/\` 目录为准,未标注来源的行均为 unverified(待核验)**。\n>`);
   out.push(`> 数字口径说明(先读再查):\n>`);
   acc.intro_notes.forEach((n, i) => out.push(`> ${i + 1}. ${n}`));
   out.push(`\n---\n`);
@@ -130,7 +130,7 @@ export function generateAppendixA(rootDir) {
     acc.section_notes.domestic_disciplines.forEach((x, i) => out.push(`${i + 1}. ${x}`));
   }
   out.push(`\n---\n`);
-  out.push(`*本附录数据截至 ${snap}；勘误与更新见[本地勘误页](../ERRATA.md#附录-a-加速卡与集群形态速查表)。数据源:\`data/accelerators/accelerators.yaml\`、\`data/cluster-forms/cluster-forms.yaml\`(更新请改数据文件后运行 \`npm run docs:generate\`)。*\n`);
+  out.push(`*本附录数据截至 ${snap}；勘误与更新见[本地勘误页](../ERRATA.md#附录-a加速卡与集群形态速查表)。数据源:\`data/accelerators/accelerators.yaml\`、\`data/cluster-forms/cluster-forms.yaml\`(更新请改数据文件后运行 \`npm run docs:generate\`)。*\n`);
   return out.join('\n');
 }
 
@@ -169,7 +169,7 @@ export function generateAppendixC(rootDir) {
   out.push(table(['信息类型', '预期保质期', '过时的信号'],
     fw.shelf_life.map((r) => [r.info_type, r.expected_shelf_life, r.staleness_signal])));
   out.push(`\n---\n`);
-  out.push(`*本附录数据截至 ${snap}；勘误与更新见[本地勘误页](../ERRATA.md#附录-c-框架选型快照)。数据源:\`data/frameworks/frameworks.yaml\`(项目清单为登记信息,矩阵与否决规则为作者判断 author_judgment;更新请改数据文件后运行 \`npm run docs:generate\`)。*\n`);
+  out.push(`*本附录数据截至 ${snap}；勘误与更新见[本地勘误页](../ERRATA.md#附录-c框架选型快照)。数据源:\`data/frameworks/frameworks.yaml\`(项目清单为登记信息,矩阵与否决规则为作者判断 author_judgment;更新请改数据文件后运行 \`npm run docs:generate\`)。*\n`);
   return out.join('\n');
 }
 
