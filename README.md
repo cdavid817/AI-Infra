@@ -130,3 +130,9 @@
 ## 维护与数据更新
 
 附录 A、B、C 含有高时效性数据。引用其中的具体参数、项目状态或公式前,请先查看[勘误与更新](ERRATA.md)中的适用口径与来源记录。提交修订时遵循[贡献指南](CONTRIBUTING.md);本仓库的本地 Markdown 链接可通过 `node scripts/check-doc-links.mjs` 校验。
+
+## 许可证与引用
+
+- **书稿内容**(章节、附录、自绘图、数据):[CC BY 4.0](LICENSE-CONTENT),转载须署名;第三方图片按 `images/sources.yaml` 登记的原始许可使用(含一张 CC BY-SA 4.0)。
+- **代码与脚本**(`scripts/` 等):[MIT](LICENSE-CODE)。
+- 学术引用元数据见 [CITATION.cff](CITATION.cff);版本语义见 [book-version.yaml](book-version.yaml) 与 [CHANGELOG.md](CHANGELOG.md)。

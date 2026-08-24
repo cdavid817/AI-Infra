@@ -1,0 +1,15 @@
+《AI Infra》书稿内容许可证
+==========================
+
+本仓库的**书稿内容**(七个部分的章节正文、附录、README 目录、diagrams/ 下的自绘图及其源文件、data/ 与 references/ 中的数据与元数据)以
+Creative Commons Attribution 4.0 International(CC BY 4.0)许可发布。
+
+许可证全文(法律文本):https://creativecommons.org/licenses/by/4.0/legalcode.zh-hans
+署名要求:转载或演绎须注明作者(cdavid817)、来源仓库(https://github.com/cdavid817/AI-Infra)并标明是否修改。
+
+第三方内容例外(不适用上述许可,按各自原始许可使用,详见 images/sources.yaml):
+- images/distserve-arch.png:Zhong et al., DistServe(arXiv:2401.09670),CC BY-SA 4.0——对该图的再分发或修改须以相同许可共享;
+- images/ 下其余论文与数据图表:各自 CC BY 4.0,须保留原作者署名;
+- 正文中引用的论文文字与数据:属引用,版权归原作者。
+
+代码、脚本与工具(scripts/、calculators/ 等)适用 MIT 许可,见 LICENSE-CODE。

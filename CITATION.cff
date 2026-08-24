@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: 引用本书时请使用以下元数据。
+title: "AI Infra:AI 基础设施工程知识库"
+type: dataset
+authors:
+  - name: cdavid817
+repository-code: "https://github.com/cdavid817/AI-Infra"
+url: "https://github.com/cdavid817/AI-Infra"
+license: CC-BY-4.0
+version: 0.1.0
+date-released: 2026-08-24
+abstract: >-
+  面向平台建设方与方案选型方的中文 AI 基础设施书稿:七部分 31 章、附录 A–F、
+  结构化数据(加速卡/集群形态/框架快照)、证据注册体系与文档 CI 门禁。

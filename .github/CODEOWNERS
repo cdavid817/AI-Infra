@@ -1,0 +1,7 @@
+# 默认所有变更由 Owner 审核
+* @cdavid817
+# 高时效数据与发布工作流强制 Owner 审核
+/data/ @cdavid817
+/附录/ @cdavid817
+/.github/workflows/ @cdavid817
+/images/sources.yaml @cdavid817
