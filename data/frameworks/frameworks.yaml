@@ -273,6 +273,15 @@ tooling:
     review:
       reviewed_at: "2026-08-24"
       review_after_days: 120
+  - purpose: 模型供应链与制品签名
+    projects: 'Sigstore/Cosign(签名与透明日志)、SLSA(provenance 框架 v1.2)、CycloneDX ML-BOM / SPDX 3.0(AI 物料清单,后者 profile 细节以规范为准)'
+    chapter_ref: 第 30 章
+    ascend_counterpart: 与硬件无关
+    sources: [SRC-SIGSTORE-COSIGN, SRC-SLSA-SPEC, SRC-CYCLONEDX-MLBOM]
+    verification: verified
+    review:
+      reviewed_at: "2026-08-25"
+      review_after_days: 365
 recommendations:
   kind: author_judgment
   intro: 矩阵给的是**默认起点**,不是终点;每格的失效边界在对应章节。规模档口径:小 = 单机 8 卡内,中 = 数机到百卡,大 = 数百到数千卡,超大 = 数千卡以上。

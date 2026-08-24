@@ -1,0 +1,44 @@
+schema_version: 1
+chapter: 30
+topic: 可信平面与模型供应链(计划 §17.1,Group 11 收官)
+prepared_at: 2026-08-25
+scope:
+  included:
+    - 横切可信平面八要素:Identity/Policy/Provenance/Signature/Attestation/Admission/Audit/Revocation(第 2 章全景挂接)
+    - 四类身份的区别:用户/Agent/工作负载/服务身份(第 19/27/28 章分别落点)
+    - 完整血缘:数据集、代码、配置、Tokenizer、权重、评测、运行时依赖(第 30 章五元组 → 可签名供应链包,11.6)
+    - 模型包签名与验证(Sigstore keyless:身份绑定、短时证书、透明日志);SLSA provenance 的适用位置
+    - AI/ML-BOM(CycloneDX 已核验;SPDX AI Profile 以规范文本为准、写为并列选项不深断言)
+    - AI/ML-BOM 与 provenance 关系图(11.7);制品撤销与紧急回滚路径(11.8,衔接 ERRATA 撤销流程与第 30 章回滚)
+    - 第 13 章:数据来源/许可证/敏感数据/删除传播(11.2);第 19 章:训练任务短期凭据与最小权限(11.3)
+    - 第 27 章:用户身份透传与租户边界(11.4;凭据托管已有);第 31 章:安全与合规成本项(11.9)
+    - 高敏场景机密计算与远程证明只讲基础设施边界(CoCo 用例)
+  excluded:
+    - 密码学原理与攻防教程;各标准字段级细节(11.10:标准状态与版本只进来源/附录)
+  already_covered_in_chapter:
+    - 第 28 章 Credential Broker/审批哈希绑定/威胁面/信任等级(17.5 已写,身份四分类只做挂接)
+    - 第 30 章 Agent 四版本指针与 RL 轨迹血缘(17.5/17.7 已写,供应链包在其上扩展)
+    - 第 13 章数据飞轮合规与自噬防线(初稿已有,增量为许可证/删除传播)
+    - 第 27 章网关凭据托管(初稿+17.5 已有,增量为身份透传与租户边界)
+claims:
+  - proposed_id: CLM-030-NEW-011
+    statement: Sigstore keyless 签名把制品签名与身份(经 OIDC 与短时证书)而非长期密钥绑定,并记录进防篡改透明日志;配合 in-toto attestation 可承载 SLSA provenance——模型包的签名验证由此可组件化为准入检查
+    claim_type: mechanism
+    candidate_sources: [SRC-SIGSTORE-COSIGN, SRC-SLSA-SPEC]
+    confidence: high
+  - proposed_id: CLM-030-NEW-012
+    statement: CycloneDX ML-BOM 把模型与数据集透明度(数据集 provenance、训练方法、框架配置)标准化为物料清单;SPDX 3.0 提供并列路线,细节以其规范文本为准
+    claim_type: mechanism
+    candidate_sources: [SRC-CYCLONEDX-MLBOM, SRC-SPDX-SPECS]
+    confidence: high
+  - proposed_id: CLM-030-NEW-013
+    statement: 机密计算把"平台运营者也在威胁模型内"的场景交给 TEE 与远程证明(证明环境后再释放密钥/模型);其基础设施边界是信任根移到硬件与证明服务,性能与运维复杂度是代价
+    claim_type: mechanism
+    candidate_sources: [SRC-COCO-CONFIDENTIAL-AI]
+    confidence: medium
+open_questions:
+  - SPDX 3.0 AI/Dataset Profile 与 CycloneDX ML-BOM 的字段级适用边界(附录 C 登记为并列,不深断言)
+conflicting_sources: []
+volatile_facts:
+  - statement: 各标准版本号(SLSA v1.2、SPDX 3.0、MCP 等)与 profile 状态
+    review_required: true

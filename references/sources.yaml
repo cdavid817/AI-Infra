@@ -181,3 +181,59 @@ sources:
     version: "2026-07-28"
     review_after_days: 120
     notes: 当前 latest 版;按请求能力协商、无状态自包含 JSON-RPC;服务端 Resources/Prompts/Tools,客户端 Roots/Sampling/Elicitation;进度与取消为核心工具件;Tasks 为扩展(长任务:轮询、中途输入、持久句柄);授权基于 OAuth 2.1;安全原则含用户显式同意与控制、Security Best Practices 专章
+  - id: SRC-SLSA-SPEC
+    title: SLSA Specification v1.2
+    publisher: SLSA / OpenSSF
+    source_type: standard_specification
+    url: https://slsa.dev/spec/v1.2/
+    accessed_at: 2026-08-25
+    language: en
+    status: active
+    evidence_level: L1
+    version: "1.2"
+    review_after_days: 365
+    notes: Build Track 与 Source Track 双轨;制品生产/分发 provenance/验证的分层要求;attestation 通用模型与 Build Provenance 格式;Build L3+ 平台加固指南
+  - id: SRC-CYCLONEDX-MLBOM
+    title: Machine Learning Bill of Materials (ML-BOM)
+    publisher: CycloneDX (OWASP)
+    source_type: standard_specification
+    url: https://cyclonedx.org/capabilities/mlbom/
+    accessed_at: 2026-08-25
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 365
+    notes: 模型与数据集透明度(安全/隐私/安全性/伦理);覆盖数据集 provenance、训练方法与 AI 框架配置的可见性
+  - id: SRC-SIGSTORE-COSIGN
+    title: Sigstore Cosign — Signing Overview
+    publisher: Sigstore (OpenSSF)
+    source_type: official_documentation
+    url: https://docs.sigstore.dev/cosign/signing/overview/
+    accessed_at: 2026-08-25
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 365
+    notes: keyless 签名将身份而非密钥与制品签名绑定(Fulcio 短时证书 + OIDC);签名入防篡改公共日志;支持 in-toto attestation 与 OCI 制品
+  - id: SRC-SPDX-SPECS
+    title: SPDX Specifications
+    publisher: SPDX (Linux Foundation)
+    source_type: standard_specification
+    url: https://spdx.dev/use/specifications/
+    accessed_at: 2026-08-25
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 365
+    notes: 当前版本 3.0;历史版本经 ISO/IEC 5962:2021 标准化;AI/Dataset Profile 的细节以 3.0 规范文本为准(本次仅核验版本页)
+  - id: SRC-COCO-CONFIDENTIAL-AI
+    title: Confidential Containers — Confidential AI Use Case
+    publisher: Confidential Containers (CNCF)
+    source_type: official_documentation
+    url: https://confidentialcontainers.org/docs/use-cases/confidential-ai/
+    accessed_at: 2026-08-25
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 180
+    notes: AI 负载的机密计算用例(含 GPU 加速的推理与微调);信任模型、Trustee 远程证明、签名/加密镜像、sealed secrets 等特性

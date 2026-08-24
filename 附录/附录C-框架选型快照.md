@@ -62,6 +62,7 @@
 | K8s 设备分配模型 | Device Plugin(存量主流)/ DRA(核心 stable,驱动生态迁移中) | 第 8 章 | Ascend Device Plugin(DRA 驱动状态待核验) |
 | Agent 工具协议 | MCP(规范 2026-07-28;Tasks/Skills 为扩展,实现普及度高时效) | 第 28 章 | 与硬件无关 |
 | GenAI 遥测语义约定 | OpenTelemetry GenAI semconv(独立仓库,Development 阶段) | 第 28、29 章 | 与硬件无关 |
+| 模型供应链与制品签名 | Sigstore/Cosign(签名与透明日志)、SLSA(provenance 框架 v1.2)、CycloneDX ML-BOM / SPDX 3.0(AI 物料清单,后者 profile 细节以规范为准) | 第 30 章 | 与硬件无关 |
 
 ---
 

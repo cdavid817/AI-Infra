@@ -77,3 +77,34 @@ claims:
     evidence_level: L4
     sources: []
     status: unverified
+
+  - id: CLM-030-011
+    section: "模型供应链:从五元组到可签名制品"
+    summary: "Sigstore keyless 签名(Cosign)把制品签名与经 OIDC 认证的身份和短时证书绑定,而非长期密钥,签名事件写入防篡改透明日志,并支持以 in-toto attestation 承载构建 provenance;SLSA(规范 v1.2)的 Build Provenance 回答制品由谁、在哪条流水线、用什么输入构建。签名(完整性+身份)与 provenance(构建过程)正交互补,可组合为注册表准入检查。正文机制段不写标准版本号,版本以本条与来源条目为准。"
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-SIGSTORE-COSIGN, SRC-SLSA-SPEC]
+    status: verified
+    reviewed_at: "2026-08-25"
+    review_after_days: 365
+
+  - id: CLM-030-012
+    section: "模型供应链:从五元组到可签名制品"
+    summary: "CycloneDX ML-BOM 把模型与数据集透明度(数据集 provenance、训练方法、AI 框架配置)标准化为物料清单,回答'里面有什么';SPDX(当前版本 3.0)提供并列的 AI 物料清单路线,其 AI/Dataset Profile 细节以规范文本为准,本书不做字段级断言。正文机制段不写标准版本号,版本以本条与来源条目为准。"
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-CYCLONEDX-MLBOM, SRC-SPDX-SPECS]
+    status: verified
+    reviewed_at: "2026-08-25"
+    review_after_days: 365
+
+  - id: CLM-030-013
+    section: "模型供应链:从五元组到可签名制品"
+    summary: "机密计算把'平台运营者也在威胁模型内'的场景(外部算力租赁、跨组织数据合作)交给 TEE 与远程证明:环境通过证明之后才释放解密密钥与模型(Confidential Containers 的机密 AI 用例);其基础设施边界是信任根移到硬件厂商与证明服务,性能折损与运维复杂度上升是代价。"
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-COCO-CONFIDENTIAL-AI]
+    status: verified
+    reviewed_at: "2026-08-25"
+    review_after_days: 180
+    disclosure: "机制部分(TEE + 远程证明通过后释放密钥/模型、信任根含证明服务)由官方文档直接支撑;'性能折损与运维复杂度上升'为方向性工程判断,未挂定量来源,量级应按目标硬件与负载实测。"
