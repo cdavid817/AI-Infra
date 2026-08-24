@@ -29,6 +29,11 @@ jobs:
       - run: npm run docs:check
       - name: 生成物漂移(二次防线)
         run: npm run docs:generate && git diff --exit-code
+      - name: 计算器测试与 CLI smoke
+        run: |
+          pip install pytest==8.3.4
+          PYTHONPATH=calculators/src python -m pytest calculators/tests -q
+          PYTHONPATH=calculators/src python -m ai_infra_calc --help
 
   external-links:
     # 完整外链扫描放 nightly 与手动触发;404/410 失败,403/429/timeout 仅警告

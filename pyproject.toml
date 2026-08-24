@@ -1,0 +1,15 @@
+[project]
+name = "ai-infra-calc"
+version = "0.1.0"
+description = "《AI Infra》配套容量估算器:公式与附录 B/正文双向对齐,输出含假设与不确定性"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+
+[project.optional-dependencies]
+test = ["pytest==8.3.4"]
+
+[tool.pytest.ini_options]
+testpaths = ["calculators/tests"]
+
+[tool.setuptools.packages.find]
+where = ["calculators/src"]

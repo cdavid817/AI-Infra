@@ -131,6 +131,10 @@
 
 附录 A、B、C 含有高时效性数据。引用其中的具体参数、项目状态或公式前,请先查看[勘误与更新](ERRATA.md)中的适用口径与来源记录。提交修订时遵循[贡献指南](CONTRIBUTING.md);本仓库的本地 Markdown 链接可通过 `node scripts/check-doc-links.mjs` 校验。
 
+## 配套估算器
+
+`calculators/` 提供七个可执行估算器(训练显存 / KV 并发 / 训练工期 / 集合通信 / Checkpoint 窗口 / 推理容量 / 功率 TCO),公式与附录 B 编号双向对齐,输出含假设与不确定性;固定测试向量取自正文算例,防止与书静默漂移。用法见 [calculators/examples/README.md](calculators/examples/README.md)。
+
 ## 许可证与引用
 
 - **书稿内容**(章节、附录、自绘图、数据):[CC BY 4.0](LICENSE-CONTENT),转载须署名;第三方图片按 `images/sources.yaml` 登记的原始许可使用(含一张 CC BY-SA 4.0)。
