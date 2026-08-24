@@ -18,7 +18,9 @@
     "docs:check:anchors": "node scripts/check-doc-anchors.mjs",
     "docs:check:structure": "node scripts/validate-chapters.mjs",
     "docs:check:external-links": "node scripts/check-external-links.mjs",
-    "docs:check": "npm run test:docs-tools && npm run docs:check:local-links && npm run docs:check:anchors && npm run docs:check:structure && npm run docs:check:evidence && npm run docs:check:data && npm run docs:check:drift && npm run docs:check:prompts"
+    "docs:check": "npm run test:docs-tools && npm run docs:check:local-links && npm run docs:check:anchors && npm run docs:check:structure && npm run docs:check:evidence && npm run docs:check:data && npm run docs:check:drift && npm run docs:check:prompts && npm run docs:check:images",
+    "docs:check:images": "node scripts/validate-images.mjs",
+    "docs:check:mermaid": "node scripts/check-mermaid.mjs"
   },
   "dependencies": {
     "ajv": "8.17.1",

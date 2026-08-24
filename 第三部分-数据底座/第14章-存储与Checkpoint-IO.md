@@ -28,9 +28,9 @@ AI 训练存储在 2026 年的主流形态是三层,每层的容量、带宽、�
 - **并行文件系统(Parallel File System,如 Lustre / GPFS 类)**:数百 TB 到数 PB,聚合带宽可到数百 GB/s,POSIX 语义完整,成本最高。承载热数据集与 checkpoint 的落盘目标。它是**性能层**,买带宽的钱主要花在这里。
 - **本地 NVMe**:每节点数 TB、每节点 10 GB/s 以上的读写带宽,成本已含在整机采购里,近乎"免费带宽"。承载数据集缓存分片与异步 checkpoint 的暂存区。它的致命短板是**与节点同生共死**:节点故障,数据即失,所以只能放"丢了能重建"的数据。
 
-![三层存储分工:对象存储、并行文件系统与本地 NVMe](../diagrams/ch14-storage-tiers.svg)
+![三层存储分工:对象存储、并行文件系统与本地 NVMe](../diagrams/generated/ch14-storage-tiers.svg)
 
-<!-- source: diagrams/ch14-storage-tiers.d2 -->
+<!-- source: diagrams/sources/ch14-storage-tiers.d2 -->
 
 图 14-1:三层存储分工。每层只做自己成本结构擅长的事——对象存储管容量,并行文件系统管带宽,本地 NVMe 管突发;想用一层通吃三种职责,是绝大多数存储事故的起点。
 
@@ -165,7 +165,7 @@ flowchart TB
   Q1{集群规模?}:::control
   Q2{"S_ckpt / 存储写带宽<br/>≤ 间隔的 1%?"}:::control
   Q3{"每节点内存或 NVMe<br/>装得下快照分摊量?"}:::control
-  Q4{模型有稀疏更新<br/>(MoE / 大 embedding)?}:::control
+  Q4{"模型有稀疏更新<br/>(MoE / 大 embedding)?"}:::control
   A1["对象存储 + 缓存层<br/>同步保存即可"]:::storage
   A2["并行文件系统<br/>+ 异步 + 分片保存"]:::storage
   A3["两级方案:本地 NVMe 暂存<br/>+ 后台上传 + 分片保存"]:::storage

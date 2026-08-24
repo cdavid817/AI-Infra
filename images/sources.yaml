@@ -1,0 +1,116 @@
+schema_version: 1
+images:
+  - file: pagedattention-block-table.png
+    sha256: 56c8bbb11ff37c869b6aa693a56d8a6dc5162624033552fbe0cafed887e18dc6
+    used_in:
+      - 第五部分-推理系统/第22章-推理引擎原理.md
+    origin:
+      title: Efficient Memory Management for Large Language Model Serving with PagedAttention
+      author: Kwon et al.
+      source_url: https://arxiv.org/abs/2309.06180
+      original_figure: Figure 6
+      derivation: ar5iv SVG 经无头浏览器渲染为 PNG
+    license:
+      name: CC BY 4.0
+      url: https://creativecommons.org/licenses/by/4.0/
+      verified_at: 2026-08-24
+      attribution_required: true
+      modifications_allowed: true
+      share_alike: false
+    publish_status: approved
+    notes: 正文来源行已署名;许可证于 arXiv 摘要页复核
+  - file: pagedattention.png
+    sha256: 585aae45eea37d77256ba7faca618ebd3301b337371ad22a347fac949ea2f6df
+    used_in:
+      - 第五部分-推理系统/第22章-推理引擎原理.md
+    origin:
+      title: Efficient Memory Management for Large Language Model Serving with PagedAttention
+      author: Kwon et al.
+      source_url: https://arxiv.org/abs/2309.06180
+      original_figure: Figure 5
+      derivation: ar5iv SVG 经无头浏览器渲染为 PNG
+    license:
+      name: CC BY 4.0
+      url: https://creativecommons.org/licenses/by/4.0/
+      verified_at: 2026-08-24
+      attribution_required: true
+      modifications_allowed: true
+      share_alike: false
+    publish_status: approved
+    notes: 正文来源行已署名
+  - file: speculative-decoding-example.png
+    sha256: 0014d0d865498feb7553c4e478a0355b24db0b1b20c353223f8df0bec044fc4e
+    used_in:
+      - 第五部分-推理系统/第23章-推理优化-计算类加速.md
+    origin:
+      title: Fast Inference from Transformers via Speculative Decoding
+      author: Leviathan et al.
+      source_url: https://arxiv.org/abs/2211.17192
+      original_figure: Figure 1
+      derivation: 论文原版 PNG
+    license:
+      name: CC BY 4.0
+      url: https://creativecommons.org/licenses/by/4.0/
+      verified_at: 2026-08-24
+      attribution_required: true
+      modifications_allowed: true
+      share_alike: false
+    publish_status: approved
+    notes: 正文来源行已署名
+  - file: speculative-decoding-trace.png
+    sha256: 51615cb536268196f9dfa9e4ad33af583ee68ec0f0028373484aadef9b4ac629
+    used_in:
+      - 第五部分-推理系统/第23章-推理优化-计算类加速.md
+    origin:
+      title: Fast Inference from Transformers via Speculative Decoding
+      author: Leviathan et al.
+      source_url: https://arxiv.org/abs/2211.17192
+      original_figure: Figure 5
+      derivation: 论文原版 PNG
+    license:
+      name: CC BY 4.0
+      url: https://creativecommons.org/licenses/by/4.0/
+      verified_at: 2026-08-24
+      attribution_required: true
+      modifications_allowed: true
+      share_alike: false
+    publish_status: approved
+    notes: 正文来源行已署名
+  - file: distserve-arch.png
+    sha256: 3e4f9c02d9e7cbe47ad9c90e7f2568a1408734b5ced2d0cc543106e9d78a1943
+    used_in:
+      - 第五部分-推理系统/第24章-服务化架构与显存类加速.md
+    origin:
+      title: "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving"
+      author: Zhong et al.
+      source_url: https://arxiv.org/abs/2401.09670
+      original_figure: Figure 6
+      derivation: arXiv HTML 版原图
+    license:
+      name: CC BY-SA 4.0
+      url: https://creativecommons.org/licenses/by-sa/4.0/
+      verified_at: 2026-08-24
+      attribution_required: true
+      modifications_allowed: true
+      share_alike: true
+    publish_status: approved
+    notes: 正文来源行已署名;SA 义务——若对该图作品进行再分发或修改,需以相同许可共享
+  - file: epoch-training-compute.png
+    sha256: 304bfb816506ed2396ff1eebb91a483a23aec9e5541e9145a32cfe7b95f3c7f5
+    used_in:
+      - 第一部分-基础与心智模型/第01章-从大数据基础设施到AI基础设施.md
+    origin:
+      title: Notable AI Models — Training compute of notable ML models
+      author: Epoch AI
+      source_url: https://epoch.ai/data/notable-ai-models
+      original_figure: Training compute trends chart
+      derivation: 官方发布 PNG,图内自带 "CC BY Epoch AI" 水印
+    license:
+      name: CC BY 4.0
+      url: https://creativecommons.org/licenses/by/4.0/
+      verified_at: 2026-08-24
+      attribution_required: true
+      modifications_allowed: true
+      share_alike: false
+    publish_status: approved
+    notes: 页面 JSON-LD 明示 CC BY 4.0

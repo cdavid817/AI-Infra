@@ -83,9 +83,9 @@ gantt
 
 **第三,资源限制必须四维齐全。** CPU(cgroup 配额,防死循环)、内存(硬上限 + OOM kill)、墙钟时间(运行时层面强制超时,通常 30–120 秒)、网络(默认拒绝出站,白名单放行)。四者缺一不可:问题场景里那个打满一个核 20 分钟的死循环,就是只限了内存没限墙钟时间的结果。网络默认拒绝尤其重要——模型生成代码的数据外渗(exfiltration)风险,靠事后审计抓不住,只能靠默认关闭。
 
-![三档沙箱在隔离强度—启动延迟—资源开销上的位置](../diagrams/ch28-sandbox-spectrum.svg)
+![三档沙箱在隔离强度—启动延迟—资源开销上的位置](../diagrams/generated/ch28-sandbox-spectrum.svg)
 
-<!-- source: diagrams/ch28-sandbox-spectrum.excalidraw -->
+<!-- source: diagrams/sources/ch28-sandbox-spectrum.excalidraw -->
 
 图 28-2:三档沙箱在隔离强度—启动延迟—资源开销上的位置。普通容器处在最尴尬的中间档:隔离不如微 VM、启动不如 WASM,而它恰恰是多数团队的默认选择——对不可信代码,微 VM 用百毫秒级的代价买断了共享内核这个最大风险面。
 
@@ -160,8 +160,8 @@ flowchart TB
     classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937
 
     Q0{数据允许出域、<br/>负载低频?}:::ctrl
-    Q1{执行的代码<br/>是否不可信<br/>(模型生成/多租户)?}:::ctrl
-    Q2{依赖是否纯语言级<br/>(无原生扩展/子进程)?}:::ctrl
+    Q1{"执行的代码<br/>是否不可信<br/>(模型生成/多租户)?"}:::ctrl
+    Q2{"依赖是否纯语言级<br/>(无原生扩展/子进程)?"}:::ctrl
     Q3{宿主支持虚拟化、<br/>无需 GPU 直通?}:::ctrl
     Q4{应用少、依赖收敛、<br/>能过安全评审?}:::ctrl
 

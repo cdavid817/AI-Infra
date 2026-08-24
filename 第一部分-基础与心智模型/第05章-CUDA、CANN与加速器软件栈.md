@@ -91,10 +91,10 @@ PyTorch 不把每次 `cudaFree` 真的还给驱动——向驱动申请/释放�
 
 两套栈的分层对照是本章、也是全书被引用最多的图之一:
 
-![CUDA 与 CANN 双栈分层对照](../diagrams/ch05-cuda-cann-stacks.svg)
+![CUDA 与 CANN 双栈分层对照](../diagrams/generated/ch05-cuda-cann-stacks.svg)
 
 图 5-1:CUDA 与 CANN 双栈分层对照。每一层都有对应物,但对应关系是"职责相同",不是"行为相同"——排查问题时可以按层找对应工具,做迁移评估时绝不能按层假设等价。
-<!-- source: diagrams/ch05-cuda-cann-stacks.d2 -->
+<!-- source: diagrams/sources/ch05-cuda-cann-stacks.d2 -->
 
 逐层把"对应但不相同"讲清楚:
 

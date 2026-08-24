@@ -1,0 +1,219 @@
+# 图表清单:源文件(sources/)与产物(generated/)对应关系。改图先改源文件再重渲染。
+# 渲染:d2 用 `d2 sources/x.d2 generated/x.svg`;excalidraw 经 kroki(POST text/plain 到 kroki.io/excalidraw/svg)。
+schema_version: 1
+diagrams:
+  - id: ch01-seven-layer-map
+    tool: d2
+    source: sources/ch01-seven-layer-map.d2
+    generated: generated/ch01-seven-layer-map.svg
+    chapter: 1
+  - id: ch02-framework-three-layers
+    tool: d2
+    source: sources/ch02-framework-three-layers.d2
+    generated: generated/ch02-framework-three-layers.svg
+    chapter: 2
+  - id: ch03-ai-ml-dl-llm
+    tool: excalidraw
+    source: sources/ch03-ai-ml-dl-llm.excalidraw
+    generated: generated/ch03-ai-ml-dl-llm.svg
+    chapter: 3
+  - id: ch03-memory-anatomy
+    tool: excalidraw
+    source: sources/ch03-memory-anatomy.excalidraw
+    generated: generated/ch03-memory-anatomy.svg
+    chapter: 3
+  - id: ch03-nlp-unification
+    tool: excalidraw
+    source: sources/ch03-nlp-unification.excalidraw
+    generated: generated/ch03-nlp-unification.svg
+    chapter: 3
+  - id: ch03-nn-family
+    tool: excalidraw
+    source: sources/ch03-nn-family.excalidraw
+    generated: generated/ch03-nn-family.svg
+    chapter: 3
+  - id: ch03-transformer-block
+    tool: excalidraw
+    source: sources/ch03-transformer-block.excalidraw
+    generated: generated/ch03-transformer-block.svg
+    chapter: 3
+  - id: ch04-precision-spectrum
+    tool: excalidraw
+    source: sources/ch04-precision-spectrum.excalidraw
+    generated: generated/ch04-precision-spectrum.svg
+    chapter: 4
+  - id: ch04-roofline
+    tool: excalidraw
+    source: sources/ch04-roofline.excalidraw
+    generated: generated/ch04-roofline.svg
+    chapter: 4
+  - id: ch04-scale-hierarchy
+    tool: d2
+    source: sources/ch04-scale-hierarchy.d2
+    generated: generated/ch04-scale-hierarchy.svg
+    chapter: 4
+  - id: ch05-cuda-cann-stacks
+    tool: d2
+    source: sources/ch05-cuda-cann-stacks.d2
+    generated: generated/ch05-cuda-cann-stacks.svg
+    chapter: 5
+  - id: ch06-memory-composition
+    tool: excalidraw
+    source: sources/ch06-memory-composition.excalidraw
+    generated: generated/ch06-memory-composition.svg
+    chapter: 6
+  - id: ch07-three-tier-topology
+    tool: d2
+    source: sources/ch07-three-tier-topology.d2
+    generated: generated/ch07-three-tier-topology.svg
+    chapter: 7
+  - id: ch08-topology-affinity
+    tool: d2
+    source: sources/ch08-topology-affinity.d2
+    generated: generated/ch08-topology-affinity.svg
+    chapter: 8
+  - id: ch10-isolation-spectrum
+    tool: d2
+    source: sources/ch10-isolation-spectrum.d2
+    generated: generated/ch10-isolation-spectrum.svg
+    chapter: 10
+  - id: ch12-eco-dimensions
+    tool: excalidraw
+    source: sources/ch12-eco-dimensions.excalidraw
+    generated: generated/ch12-eco-dimensions.svg
+    chapter: 12
+  - id: ch13-data-pipeline
+    tool: d2
+    source: sources/ch13-data-pipeline.d2
+    generated: generated/ch13-data-pipeline.svg
+    chapter: 13
+  - id: ch14-storage-tiers
+    tool: d2
+    source: sources/ch14-storage-tiers.d2
+    generated: generated/ch14-storage-tiers.svg
+    chapter: 14
+  - id: ch15-index-profiles
+    tool: excalidraw
+    source: sources/ch15-index-profiles.excalidraw
+    generated: generated/ch15-index-profiles.svg
+    chapter: 15
+  - id: ch16-domain-alignment
+    tool: d2
+    source: sources/ch16-domain-alignment.d2
+    generated: generated/ch16-domain-alignment.svg
+    chapter: 16
+  - id: ch16-parallelism-cuts
+    tool: excalidraw
+    source: sources/ch16-parallelism-cuts.excalidraw
+    generated: generated/ch16-parallelism-cuts.svg
+    chapter: 16
+  - id: ch17-memory-tradeoff
+    tool: excalidraw
+    source: sources/ch17-memory-tradeoff.excalidraw
+    generated: generated/ch17-memory-tradeoff.svg
+    chapter: 17
+  - id: ch18-memory-ownership-layers
+    tool: d2
+    source: sources/ch18-memory-ownership-layers.d2
+    generated: generated/ch18-memory-ownership-layers.svg
+    chapter: 18
+  - id: ch18-runtime-comparison
+    tool: excalidraw
+    source: sources/ch18-runtime-comparison.excalidraw
+    generated: generated/ch18-runtime-comparison.svg
+    chapter: 18
+  - id: ch19-ftaas-architecture
+    tool: d2
+    source: sources/ch19-ftaas-architecture.d2
+    generated: generated/ch19-ftaas-architecture.svg
+    chapter: 19
+  - id: ch19-layer-contracts
+    tool: d2
+    source: sources/ch19-layer-contracts.d2
+    generated: generated/ch19-layer-contracts.svg
+    chapter: 19
+  - id: ch20-detection-spectrum
+    tool: excalidraw
+    source: sources/ch20-detection-spectrum.excalidraw
+    generated: generated/ch20-detection-spectrum.svg
+    chapter: 20
+  - id: ch20-failure-domain
+    tool: d2
+    source: sources/ch20-failure-domain.d2
+    generated: generated/ch20-failure-domain.svg
+    chapter: 20
+  - id: ch21-hybrid-arch
+    tool: d2
+    source: sources/ch21-hybrid-arch.d2
+    generated: generated/ch21-hybrid-arch.svg
+    chapter: 21
+  - id: ch22-accel-taxonomy
+    tool: d2
+    source: sources/ch22-accel-taxonomy.d2
+    generated: generated/ch22-accel-taxonomy.svg
+    chapter: 22
+  - id: ch23-gain-attribution
+    tool: d2
+    source: sources/ch23-gain-attribution.d2
+    generated: generated/ch23-gain-attribution.svg
+    chapter: 23
+  - id: ch23-speculative-payoff
+    tool: excalidraw
+    source: sources/ch23-speculative-payoff.excalidraw
+    generated: generated/ch23-speculative-payoff.svg
+    chapter: 23
+  - id: ch23-stack-conflict
+    tool: excalidraw
+    source: sources/ch23-stack-conflict.excalidraw
+    generated: generated/ch23-stack-conflict.svg
+    chapter: 23
+  - id: ch24-kv-cache-tiers
+    tool: d2
+    source: sources/ch24-kv-cache-tiers.d2
+    generated: generated/ch24-kv-cache-tiers.svg
+    chapter: 24
+  - id: ch24-pd-disaggregation
+    tool: d2
+    source: sources/ch24-pd-disaggregation.d2
+    generated: generated/ch24-pd-disaggregation.svg
+    chapter: 24
+  - id: ch25-lora-multitenancy
+    tool: d2
+    source: sources/ch25-lora-multitenancy.d2
+    generated: generated/ch25-lora-multitenancy.svg
+    chapter: 25
+  - id: ch26-workload-profiles
+    tool: excalidraw
+    source: sources/ch26-workload-profiles.excalidraw
+    generated: generated/ch26-workload-profiles.svg
+    chapter: 26
+  - id: ch27-gateway-layers
+    tool: d2
+    source: sources/ch27-gateway-layers.d2
+    generated: generated/ch27-gateway-layers.svg
+    chapter: 27
+  - id: ch28-sandbox-spectrum
+    tool: excalidraw
+    source: sources/ch28-sandbox-spectrum.excalidraw
+    generated: generated/ch28-sandbox-spectrum.svg
+    chapter: 28
+  - id: ch29-metrics-panorama
+    tool: d2
+    source: sources/ch29-metrics-panorama.d2
+    generated: generated/ch29-metrics-panorama.svg
+    chapter: 29
+  - id: ch30-model-lineage
+    tool: d2
+    source: sources/ch30-model-lineage.d2
+    generated: generated/ch30-model-lineage.svg
+    chapter: 30
+  - id: ch31-cooling-bands
+    tool: excalidraw
+    source: sources/ch31-cooling-bands.excalidraw
+    generated: generated/ch31-cooling-bands.svg
+    chapter: 31
+  - id: ch31-tco-composition
+    tool: excalidraw
+    source: sources/ch31-tco-composition.excalidraw
+    generated: generated/ch31-tco-composition.svg
+    chapter: 31

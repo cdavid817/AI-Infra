@@ -42,6 +42,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run docs:check:external-links
+      - run: npm run docs:check:mermaid
 
   freshness-report:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
@@ -59,3 +60,16 @@ jobs:
         with:
           name: freshness-and-review-reports
           path: reports/
+
+  release-gate:
+    # 发布门禁:手动触发;图片授权非 approved 即失败
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node scripts/validate-images.mjs --release

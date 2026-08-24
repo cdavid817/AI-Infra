@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
+import { generateImageLedger } from './generate-image-ledger.mjs';
 
 const GEN_HEADER = (source) => `<!-- AUTO-GENERATED. DO NOT EDIT DIRECTLY. -->\n<!-- Source: ${source} ; Generator: scripts/generate-appendices.mjs -->\n\n`;
 
@@ -176,4 +177,5 @@ export function generateAppendixC(rootDir) {
 export const GENERATED_TARGETS = [
   { path: '附录/附录A-加速卡与集群形态速查表.md', generate: generateAppendixA },
   { path: '附录/附录C-框架选型快照.md', generate: generateAppendixC },
+  { path: 'images/SOURCES.md', generate: generateImageLedger },
 ];
