@@ -9,3 +9,4 @@
 | `speculative-decoding-example.png` | 第 23 章 | Leviathan et al., *Fast Inference from Transformers via Speculative Decoding*, arXiv:2211.17192 | Figure 1 | CC BY 4.0（需发布前复核） | 待确认 |
 | `speculative-decoding-trace.png` | 第 23 章 | Leviathan et al., *Fast Inference from Transformers via Speculative Decoding*, arXiv:2211.17192 | Figure 5 | CC BY 4.0（需发布前复核） | 待确认 |
 | `distserve-arch.png` | 第 24 章 | Zhong et al., *DistServe: Disaggregating Prefill and Decoding for Goodput-optimized LLM Serving*, arXiv:2401.09670 | Figure 6 | CC BY-SA 4.0（需发布前复核） | 待确认 |
+| `epoch-training-compute.png` | 第 1 章 | Epoch AI, *Notable AI Models*(数据页 epoch.ai/data/notable-ai-models) | Training compute of notable ML models | CC BY 4.0(页面明示,图内自带 "CC BY Epoch AI" 水印,2026-08 核实) | 可发布(需保留署名) |
