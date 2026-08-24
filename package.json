@@ -9,12 +9,15 @@
   },
   "scripts": {
     "docs:check:local-links": "node scripts/check-doc-links.mjs",
-    "test:docs-tools": "node --test \"scripts/tests/**/*.test.mjs\""
+    "test:docs-tools": "node --test \"scripts/tests/**/*.test.mjs\"",
+    "docs:check:evidence": "node scripts/validate-evidence.mjs"
   },
   "dependencies": {
+    "ajv": "8.17.1",
     "github-slugger": "2.0.0",
     "remark-gfm": "4.0.1",
     "remark-parse": "11.0.0",
-    "unified": "11.0.5"
+    "unified": "11.0.5",
+    "yaml": "2.8.0"
   }
 }

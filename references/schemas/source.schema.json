@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai-infra/source-registry",
+  "title": "来源注册表",
+  "type": "object",
+  "required": ["schema_version", "sources"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "publisher", "source_type", "url", "accessed_at"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^SRC-[A-Z0-9-]+$" },
+          "title": { "type": "string", "minLength": 1 },
+          "publisher": { "type": "string", "minLength": 1 },
+          "source_type": {
+            "enum": [
+              "standard_specification",
+              "vendor_specification",
+              "official_documentation",
+              "official_release",
+              "paper",
+              "official_blog",
+              "incident_report",
+              "maintainer_statement",
+              "author_measurement",
+              "secondary_article",
+              "community_discussion",
+              "dataset"
+            ]
+          },
+          "url": { "type": "string", "pattern": "^https?://" },
+          "accessed_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "language": { "type": "string" },
+          "status": { "enum": ["active", "moved", "retracted", "dead"] },
+          "evidence_level": { "enum": ["L1", "L2", "L3", "L4"] },
+          "doi": { "type": "string" },
+          "arxiv_id": { "type": "string" },
+          "version": { "type": "string" },
+          "license_note": { "type": "string" },
+          "expires_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "review_after_days": { "type": "integer", "minimum": 1 },
+          "notes": { "type": "string" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai-infra/claim-file",
+  "title": "章节 Claim 文件",
+  "type": "object",
+  "required": ["schema_version", "chapter", "claims"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "chapter": { "type": "integer", "minimum": 1, "maximum": 99 },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "section", "summary", "claim_type", "evidence_level", "sources", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "id": { "type": "string", "pattern": "^CLM-\\d{3}-\\d{3}$" },
+          "section": { "type": "string", "minLength": 1 },
+          "summary": { "type": "string", "minLength": 1 },
+          "claim_type": {
+            "enum": [
+              "quantitative",
+              "compatibility",
+              "project_status",
+              "mechanism",
+              "recommendation",
+              "incident",
+              "measurement",
+              "estimate",
+              "illustrative"
+            ]
+          },
+          "evidence_level": { "enum": ["L1", "L2", "L3", "L4", "L5"] },
+          "sources": { "type": "array", "items": { "type": "string", "pattern": "^SRC-[A-Z0-9-]+$" } },
+          "status": { "enum": ["verified", "illustrative_only", "estimate_only", "unverified", "needs_review"] },
+          "reviewed_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+          "review_after_days": { "type": "integer", "minimum": 1 },
+          "disclosure": { "type": "string" },
+          "applies_to": { "type": "object" },
+          "estimate": {
+            "type": "object",
+            "required": ["inputs", "formula", "assumptions", "error_sources"],
+            "properties": {
+              "inputs": { "type": "string", "minLength": 1 },
+              "formula": { "type": "string", "minLength": 1 },
+              "assumptions": { "type": "string", "minLength": 1 },
+              "error_sources": { "type": "string", "minLength": 1 }
+            }
+          },
+          "measurement": {
+            "type": "object",
+            "required": [
+              "model", "precision", "input_length_distribution", "output_length_distribution",
+              "concurrency", "hardware", "software", "measured_at", "sample_count",
+              "metric_definition", "result", "reproduction_path"
+            ],
+            "properties": {
+              "model": { "type": "string", "minLength": 1 },
+              "model_revision": { "type": "string" },
+              "precision": { "type": "string", "minLength": 1 },
+              "input_length_distribution": { "type": "string", "minLength": 1 },
+              "output_length_distribution": { "type": "string", "minLength": 1 },
+              "concurrency": { "type": "string", "minLength": 1 },
+              "hardware": { "type": "string", "minLength": 1 },
+              "topology": { "type": "string" },
+              "software": {
+                "type": "object",
+                "required": ["runtime", "version"],
+                "properties": {
+                  "runtime": { "type": "string", "minLength": 1 },
+                  "version": { "type": "string", "minLength": 1 }
+                }
+              },
+              "measured_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+              "warmup": { "type": "string" },
+              "sample_count": { "type": "integer", "minimum": 1 },
+              "metric_definition": { "type": "string", "minLength": 1 },
+              "result": { "type": "string", "minLength": 1 },
+              "reproduction_path": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    }
+  }
+}

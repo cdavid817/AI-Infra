@@ -4,6 +4,9 @@
 
 - 正文优先修订稳定的机制和判断方法；具体型号、版本、价格和项目状态应放在附录或勘误页，并标注日期。
 - 任何可量化结论都要写清口径、适用边界和可公开核验的一手来源。性能数字还应给出模型、精度、长度分布、并发、硬件和测量日期。
+- 遵循「证据即代码」:来源登记在 `references/sources.yaml`,可核验结论按章登记在 `references/claims/chapter-NN.yaml`,来源分级与 Claim 类型见 [references/source-policy.md](references/source-policy.md)。第 27–31 章与附录 A/C 为强制范围,提交前运行 `npm run docs:check:evidence`。
+- 每章「问题场景」必须按 [templates/case-metadata.md](templates/case-metadata.md) 标注案例四分类(公开真实 / 作者实测 / 合成 / 容量估算)。无法核验的内容降级为合成案例或估算示例,不得反向编造来源。
+- 使用 AI 辅助写作时,证据责任仍由提交者承担:AI 生成的数字、案例与来源必须逐条人工核验后才能登记。
 - 新增或替换图片前，先登记到 [images/SOURCES.md](images/SOURCES.md)。未经确认授权的图片只能标为草稿，不能用于正式发布。
 - Mermaid 图的跨层、跨子图及数据/控制流边必须有标签；图注应写出读者需要记住的结论。
 

@@ -1,0 +1,79 @@
+schema_version: 1
+chapter: 30
+claims:
+  - id: CLM-030-001
+    section: "30.3 问题场景:一次回滚不出去的回滚"
+    summary: "合成案例中的示意数字:拒答率从 3% 爬到 11% 持续六小时、40 个推理实例、三周前 scp 的 model_final_v2_fixed/ 目录、凌晨三点的考古过程,均为写作构造。"
+    claim_type: illustrative
+    evidence_level: L5
+    sources: []
+    status: illustrative_only
+    disclosure: "合成案例:人物、机构、日期与全部数值均为写作构造的示意,用于说明生命周期留痕缺失的后果与方法,不构成真实事故记录,不能作为现实统计证据。"
+
+  - id: CLM-030-002
+    section: "30.4.3 灰度、回滚与影子流量"
+    summary: "灰度观察窗口的样本量估算:n ≈ 16·p(1−p)/δ²;代入拒答率基线 3%、检出恶化到 5%(δ=0.02)需约 1200 条相关请求;在退款类占比 8%、灰度 5%、总 QPS 20 的假设下约需 4.2 小时;100% 影子流量下缩短到约 13 分钟。"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    disclosure: "公式为双侧 95% 置信、80% 检验功效下两比例检验样本量的常用近似;代入数字沿用 30.3 合成场景的示意参数,仅演示计算方法。"
+    estimate:
+      inputs: "指标基线 p=0.03;待检出恶化幅度 δ=0.02(3%→5%);相关请求占总流量 8%;灰度流量比例 5%(影子场景为 100%);总 QPS=20。"
+      formula: "n ≈ 16·p(1−p)/δ²(双侧 α=0.05、功效 80% 的两比例检验样本量近似);积累时间 T = n / (QPS × 相关请求占比 × 灰度比例)。"
+      assumptions: "请求独立同分布、指标为二项比例、无时段性流量波动;系数 16 为 (z_{α/2}+z_β)² 量级的工程化取整;影子流量可无损复制全量请求。"
+      error_sources: "近似系数的取整误差;真实流量的时段波动与请求相关性;配对比较(影子)与分桶比较(灰度)的统计效率差异未在公式中体现;p 接近 0 或 δ 与 p 同量级时近似退化。"
+
+  - id: CLM-030-003
+    section: "30.4.4 制品管理与权重分发"
+    summary: "权重分发带宽账:200 GB 权重包推给 40 个实例总量 8 TB,单一对象存储桶聚合带宽 10 GB/s 时串行化时间约 13 分钟;P2P 分发把源端带宽需求从 O(N) 降为 O(1)。"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    disclosure: "示例量级(百亿参数 FP8/INT8 几十 GB、数百亿到千亿级一两百 GB)为按参数量×字节宽度的量级推算,具体数值随模型结构与量化方案变化。"
+    estimate:
+      inputs: "权重包体积 200 GB;实例数 40;对象存储桶聚合读带宽 10 GB/s。"
+      formula: "总传输量 = 200 GB × 40 = 8 TB;串行化时间 ≈ 8 TB / 10 GB/s ≈ 800 s ≈ 13 分钟;P2P 模式下源端只需支撑 O(1) 份上传,总时间趋近单节点拉取时间 + 传播轮次。"
+      assumptions: "桶带宽被本次分发独占且可打满;实例侧网卡与磁盘不构成瓶颈;P2P 传播轮次相对单节点拉取时间可忽略。"
+      error_sources: "对象存储的单流限速与并发配额;与其他读者(评测任务等)的带宽争抢;解压/校验的 CPU 开销;跨可用区流量的额外延迟与成本。"
+
+  - id: CLM-030-004
+    section: "30.4.2 注册、版本与血缘"
+    summary: "模型注册版本必须绑定五元组(权重校验和、基座模型版本、数据集快照版本、训练代码版本、超参配置快照),缺任一要素血缘即存在断点。"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-030-005
+    section: "30.4.2 注册、版本与血缘"
+    summary: "模型血缘的验收标准是指标级复现:按注册信息复跑训练应得到评测指标在噪声范围内一致的模型;逐 bit 一致因并行训练非确定性不可求。"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-030-006
+    section: "30.4.3 灰度、回滚与影子流量"
+    summary: "模型效果信号是慢变量,灰度观察窗口必须按样本量计算而非按时间拍定;影子流量回答响应质量、小流量灰度回答用户反馈,两者是串联关系。"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-030-007
+    section: "30.4.3 灰度、回滚与影子流量"
+    summary: "分钟级回滚要求上一良好版本权重常驻节点本地或近端缓存,回滚退化为配置下发 + 热切换/滚动重启,且必须是注册表上留痕的版本指针切换。"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-030-008
+    section: "30.4.5 准入卡点与飞轮接口"
+    summary: "回流数据批次必须记录采集时的线上模型版本,数据集快照必须能表达包含哪些回流批次;否则模型血缘图上的环(模型→流量→回流→数据集)无法追踪污染。"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified

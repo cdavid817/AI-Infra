@@ -1,0 +1,94 @@
+schema_version: 1
+chapter: 29
+claims:
+  - id: CLM-029-001
+    section: "29.1 问题场景:全绿的监控盘和掉了 4 个点的模型"
+    summary: 量化上线事故场景及其全部数字(TTFT 480ms→390ms、吞吐 +38%、单位 token 成本降三分之一、幻觉率 2.1%→6.7%、十一天后发现)为合成示意
+    claim_type: illustrative
+    evidence_level: L5
+    sources: []
+    status: illustrative_only
+    disclosure: 合成案例。人物、机构、日期与数值均为写作构造的示意,用于说明"监控只测系统性能、缺失质量维度"的方法论,不构成真实事故记录,不得作为现实统计证据。
+
+  - id: CLM-029-002
+    section: "29.2.1 LLM 专属指标体系"
+    summary: TTFT 定义为请求进入到首 token 返回的时间,由排队、调度、prefill 三段构成;应在网关侧闭合端到端 TTFT、引擎侧测纯 prefill,并按输入长度分桶
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-029-003
+    section: "29.2.1 LLM 专属指标体系"
+    summary: TPOT 定义为 (总生成时间 − TTFT)/(输出 token 数 − 1),反映 Decode 速度且随并发批大小上升,须在目标并发压力下测量
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-029-004
+    section: "29.2.1 LLM 专属指标体系"
+    summary: 吞吐存在请求吞吐、输出 token 吞吐、总 token 吞吐三个口径;容量规划应使用 SLO 约束下的最大吞吐(goodput),即 TTFT/TPOT P99 满足阈值前提下可承载的吞吐
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-029-005
+    section: "29.2.1 LLM 专属指标体系"
+    summary: 引擎内 running/waiting 队列深度是比 GPU 利用率更灵敏的饱和度信号;waiting 持续大于零意味着已饱和、TTFT 即将雪崩
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-029-006
+    section: "29.2.4 评测是一个吃卡的批任务"
+    summary: 评测本身是吃卡的批式推理任务,应作为可抢占、可断点续跑的低优先级填谷负载进调度与记账;中等规模平台评测负载达推理总负载 5–10% 的量级为经验判断
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+
+  - id: CLM-029-007
+    section: "29.2.4 评测是一个吃卡的批任务"
+    summary: 典型全量精度评测约需 18.5 卡时(5 万样本、每样本约 2000 token,合计约 1 亿 token,单卡有效吞吐按 1500 tokens/s 计)
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: 8 个能力维度共 5 万条样本;平均每条输入 1500 token、输出 500 token(合计约 1 亿 token);70B 模型单卡批式有效吞吐取 1500 tokens/s
+      formula: 评测卡时 ≈ Σ(各评测集样本数 × 平均单样本 token 数) / 单卡有效吞吐;1e8 token ÷ 1500 tok/s ≈ 66667 s ≈ 18.5 卡时
+      assumptions: 批式离线推理、吞吐最大化配置;输入输出长度分布均匀且判卷开销不计;不含排队、加载权重与失败重跑
+      error_sources: 单卡有效吞吐随硬件、引擎版本、量化精度、batch 策略与长度分布波动可达数倍;样本数与 token 长度因评测集不同差异大;LLM 判卷会额外消耗与被评模型同量级的推理成本
+
+  - id: CLM-029-008
+    section: "29.2.5 工具链定位"
+    summary: OpenCompass 定位为学术级全面性的精度评测框架,数据集覆盖面大、支持客观判分与主观 LLM 判卷、自带分布式切分能力
+    claim_type: project_status
+    evidence_level: L4
+    sources: []
+    status: unverified
+    reviewed_at: "2026-08-24"
+    review_after_days: 180
+
+  - id: CLM-029-009
+    section: "29.2.5 工具链定位"
+    summary: EvalScope 定位偏服务化评测,围绕模型服务 API 端点组织评测并内置压测能力,与 ModelScope 系推理服务生态耦合较深,数据集广度不及 OpenCompass
+    claim_type: project_status
+    evidence_level: L4
+    sources: []
+    status: unverified
+    reviewed_at: "2026-08-24"
+    review_after_days: 180
+
+  - id: CLM-029-010
+    section: "29.2.5 工具链定位"
+    summary: AISBench 定位为兼具精度与性能的标准化 benchmark 体系,价值在于口径标准化(负载模型、指标口径、结果格式),使跨硬件、跨引擎评测结果可比
+    claim_type: project_status
+    evidence_level: L4
+    sources: []
+    status: unverified
+    reviewed_at: "2026-08-24"
+    review_after_days: 180

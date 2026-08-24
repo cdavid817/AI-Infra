@@ -6,6 +6,11 @@
 
 请在 issue 或变更提交中给出：受影响文件与小节、原文、建议修订、可公开访问的一手来源、来源访问日期，以及适用的硬件/软件版本或测量口径。没有来源或口径的数字不进入附录。
 
+## Claim 修订与来源撤销
+
+- 正文结论已登记为 Claim(`references/claims/`)的,勘误须同步修订对应 Claim 的 `status`/`reviewed_at`;结论被推翻时将 status 改为 `needs_review` 并在此登记,不直接删除 Claim(保留 id 稳定性)。
+- 来源失效或被撤稿时,在 `references/sources.yaml` 将该来源 `status` 改为 `moved`/`retracted`/`dead`(不删除记录、不复用 id),`npm run docs:check:evidence` 会对引用它的 Claim 输出复查警告;受影响结论按上一条处理。
+
 ## 当前勘误
 
 - 2026-08-23：第 15 章修正 HNSW 标记删除的表述。标记删除的节点可继续占用图空间并参与遍历，但合格实现应在结果返回前过滤它；已下线内容被召回应优先排查索引、元数据和权限过滤的可见性一致性。

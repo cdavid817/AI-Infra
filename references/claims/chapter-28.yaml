@@ -1,0 +1,109 @@
+schema_version: 1
+chapter: 28
+claims:
+  - id: CLM-028-001
+    section: "28.3 问题场景:沙箱冷启动吃掉了一半延迟"
+    summary: "合成案例 trace 数字:端到端 P50 38 秒、模型推理 4 轮累计 11 秒、拉起容器 1.8 秒、安装依赖 6.5 秒、单轮沙箱准备约 8.5 秒、4 轮冷启动合计 22 秒;40 多个 Agent 应用、3 GB 胖镜像、单沙箱 800 MB 内存、低频应用池命中率不到 10%。"
+    claim_type: illustrative
+    evidence_level: L5
+    sources: []
+    status: illustrative_only
+    disclosure: "合成案例:人物、机构、日期与全部数值均为写作构造的示意,用于说明冷启动延迟构成与预热池取舍的分析方法,不构成真实事故记录或生产统计。"
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-002
+    section: "28.4.1 Agent 负载的资源画像"
+    summary: "示意数字:N 轮 Agent 任务中 GPU 的有效占空比通常只有 20%–40%;图 28-1 时序中各段耗时(推理 2–3 秒/轮、冷启动 8 秒、代码执行 3–4 秒、检索 4 秒)为示意。"
+    claim_type: illustrative
+    evidence_level: L5
+    sources: []
+    status: illustrative_only
+    disclosure: "占空比区间与图 28-1 的分段耗时均为讲解用示意数字,用于说明'交替占用'的资源模式,非任何真实负载的测量统计。"
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-003
+    section: "28.4.2 沙箱:隔离级别的三档与延迟预算"
+    summary: "预热池容量估算:常驻实例数下限约为 λ×T_cold×峰值余量(1.5–2 倍),内存成本=实例数×单实例底噪;示例 λ=10 次/秒、T_cold=2 秒、余量 2 倍时约 40 个实例、按 500 MB/实例约 20 GB 内存。"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: "沙箱请求到达率 λ=10 次/秒;冷启动耗时 T_cold=2 秒(依赖已进镜像的容器档);峰值余量系数 1.5–2;单实例内存底噪 500 MB(胖镜像容器)。"
+      formula: "常驻实例数 ≈ λ × T_cold × 余量系数;内存成本 = 实例数 × 单实例底噪。示例:10×2×2=40 个实例,40×500 MB≈20 GB。"
+      assumptions: "到达近似平稳(未按排队论建模突发);池命中即零冷启动;实例回收与补充速率能跟上消耗;T_cold 与底噪取该档技术的典型量级。"
+      error_sources: "到达率突发性(泊松/突发流量使所需余量偏大);T_cold 随镜像大小与宿主负载波动;底噪随依赖集变化;未计入池管理与调度自身开销。"
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-004
+    section: "28.4.3 工具调用:超时、重试与延迟放大"
+    summary: "尾延迟放大估算:单工具 P99 超时率 p、N 轮串行任务至少踩中一次尾部的概率为 1−(1−p)^N;p=1%、N=8 时约 7.7%。"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: "单轮工具调用超时/尾部概率 p=1%;串行工具调用轮次 N=8。"
+      formula: "P(至少一次踩尾) = 1−(1−p)^N = 1−0.99^8 ≈ 7.7%。"
+      assumptions: "各轮工具调用相互独立且同分布;任务严格串行、无并行分支;p 在任务期间恒定。"
+      error_sources: "真实故障常相关(下游抖动时各轮并不独立,实际劣化率可能偏离);各工具 p 不同;重试与模型改道会改变有效轮次数 N。"
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-005
+    section: "28.4.4 会话状态与上下文存储"
+    summary: "会话文本状态规模估算:每轮对话+工具结果按 2–8 KB 计,50 轮重会话约 100–400 KB,百万级活跃会话合计数百 GB。"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: "单轮文本状态体积 2–8 KB;重会话轮次 50;活跃会话数 10^6。"
+      formula: "单会话 ≈ 轮次 × 单轮体积 = 50×(2–8 KB) = 100–400 KB;总量 ≈ 会话数 × 单会话 = 10^6×(100–400 KB) ≈ 100–400 GB。"
+      assumptions: "状态以文本为主(文件产物另走对象存储只存引用);未计压缩与索引开销;会话轮次分布以 50 轮代表重会话上界附近。"
+      error_sources: "单轮体积随工具结果尺寸波动大(检索结果可达数十 KB);会话轮次分布长尾;副本数与存储引擎放大系数未计入。"
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-006
+    section: "28.4.2 沙箱:隔离级别的三档与延迟预算 / 28.7 选型决策树"
+    summary: "机制结论:模型生成代码在威胁模型上等同于不可信第三方代码;隔离强度、启动延迟、资源开销三者没有全优解,代码信任域决定隔离档位下限,其余是延迟与生态的权衡;依赖必须进镜像或预挂载只读层、运行时零安装;资源限制须 CPU/内存/墙钟/网络四维齐全。"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-007
+    section: "28.4.3 工具调用:超时、重试与延迟放大"
+    summary: "机制结论:Agent 工具失败若交回模型处理需额外一整轮推理,代价远高于普通 RPC 重试;幂等瞬态失败(超时、429、5xx)应在运行时层对模型透明地重试,只有语义性失败才交回模型;工具超时预算应从任务级 SLO 反推。"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-008
+    section: "28.4.4 会话状态与上下文存储"
+    summary: "机制结论:推理引擎的 KV Cache/前缀缓存是易失的性能优化,不是会话存储;会话状态必须能在推理实例重启或请求改路由后完整重建,持久性责任不能押在推理实例显存上。"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-009
+    section: "28.4.2 表 28-x 三档隔离对比 / 28.5 方案对比"
+    summary: "量级数字(待补来源):微 VM 冷启动约 100–300 毫秒(精简 guest,'百毫秒级');容器冷启动数百毫秒~秒级(依赖进镜像后 1–2 秒);WASM 启动毫秒~十毫秒级;单实例内存底噪分别为数十~百余 MB / 数十 MB / MB 级。"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    reviewed_at: "2026-08-24"
+
+  - id: CLM-028-010
+    section: "28.5 方案对比"
+    summary: "量级数字(待补来源):gVisor 类用户态内核加固会带来两位数百分比的系统调用性能损耗;WASM 在高频短小纯计算负载下成本比容器/微 VM 低一到两个数量级。"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    reviewed_at: "2026-08-24"

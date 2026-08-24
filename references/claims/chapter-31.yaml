@@ -1,0 +1,166 @@
+# 第 31 章 容量、成本与 SLO —— claim 登记
+# 说明:本章为全书数字最密章节。散热密度区间、PUE 典型值、TCO 占比等为
+# 行业工程经验数字,暂无登记来源,统一标 unverified 并列为待补来源重点项;
+# 收口算例均为估算模型(estimate),不构成报价或真实生产数据。
+schema_version: 1
+chapter: 31
+claims:
+  - id: CLM-031-001
+    section: "31.0.1 问题场景:买够了卡,机房上不了电"
+    summary: "场景示意数字:峰值 1,200 QPS、512 张训练卡 + 256 张推理卡、预算 2.3 亿、单柜 132 kW、机房单柜配电 8 kW、全楼层市电 1.8 MW、楼板承重 800 kg/m²、满配液冷柜约 1.6 吨、异地托管年增支出约 1,900 万"
+    claim_type: illustrative
+    evidence_level: L5
+    sources: []
+    status: illustrative_only
+    disclosure: "合成案例:人物、机构、日期与全部数值均为写作构造的示意,用于说明『算了算力、没算电』的失败模式,不构成真实事故记录或统计证据。"
+
+  - id: CLM-031-002
+    section: "31.1.1 容量模型:一条完整的推导链"
+    summary: "训练卡数若用标称峰值算力直接除会严重低估:计入 MFU 与集群可用率两个折扣后,真实卡数约为理想值的 2.5–4 倍"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: "总算力需求 C=6ND;单卡峰值算力 F_peak;MFU 取大集群 dense 模型经验区间 35–45%(第 11 章,MoE 更低);集群可用率 U 取 0.85–0.95(扣除故障重启与 checkpoint 开销,第 20 章)"
+      formula: "N_GPU = 6ND / (F_peak × MFU × U × T_deadline);倍率 = 1/(MFU×U),MFU=0.35–0.45、U=0.85–0.95 时约为 2.3–3.4,叠加数值精度与重算开销取整为 2.5–4 倍"
+      assumptions: "MFU 区间沿用第 11 章的实测经验值;可用率不含大规模级联故障;工期内不换代、不改并行策略"
+      error_sources: "MFU 随模型结构(dense/MoE)、并行策略与集群规模波动大;可用率依赖运维成熟度;checkpoint 频率与恢复时长因场景差异显著"
+
+  - id: CLM-031-003
+    section: "31.1.1 容量模型:一条完整的推导链"
+    summary: "整机开销系数 α(CPU、内存、风扇、互联)典型取 1.3–1.5"
+    claim_type: recommendation
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "作者工程经验区间,非某一机型实测值;具体机型应以整机规格表或实测墙上功率为准。待补一手来源(整机规格页或实测)。"
+
+  - id: CLM-031-004
+    section: "31.1.3 压测方法论:负载建模、长尾、饱和点"
+    summary: "容量水位 ρ 的经验取值:在线推理平台典型 0.6–0.75;离线训练因任务可排队可顶到 0.9 以上"
+    claim_type: recommendation
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "作者工程经验区间,取值依据流量峰谷比、扩容速度与故障域大小三因素;不同业务形态应重标定,非普适常数。"
+
+  - id: CLM-031-005
+    section: "31.1.2 采购粒度:台阶变粗了"
+    summary: "超节点把最小采购单元从『台』变成『域/整柜』:容量台阶从几十万一级跳到千万一级,小步扩容失效、超配成为常态、故障域按域变粗"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "机制推论,基于超节点域内互联预制、不可拆卖的产品形态(第 4、7 章);金额量级为示意性描述。待补厂商整柜交付形态的一手来源。"
+
+  - id: CLM-031-006
+    section: "31.2.1 功耗密度是根因"
+    summary: "功耗密度演进量级:单卡功耗从 300 W 级到 700 W 级再到 1,000 W+ 级;八卡整机 4–6 kW 抬到 10–14 kW;传统部署单柜 15–40 kW;超节点整柜 100–150 kW;大数据机房单柜设计功率 5–10 kW"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "行业公开规格的量级归纳,未逐一登记具体型号来源;具体型号数值见附录 A。待补来源重点项:各代表卡 TDP 规格页与整机规格页。"
+
+  - id: CLM-031-007
+    section: "31.2.2 三种散热方案的适用密度区间"
+    summary: "散热方案适用密度区间:风冷 ≤15–20 kW/柜(热通道封闭可勉强顶到 25–30 kW);冷板式液冷 20–130 kW/柜,约 70–85% 热量走液路、其余风冷兜底;浸没式液冷 100 kW/柜以上"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "数据中心行业工程经验区间,边界值因机房设计而异,暂无登记一手来源。待补来源重点项:ASHRAE 指南、主流液冷厂商白皮书或数据中心设计规范。"
+
+  - id: CLM-031-008
+    section: "31.2.3 降频与热节流:性能不稳定的头号真凶"
+    summary: "热节流机制:标称算力是散热充分前提下的瞬时能力;结温逼近上限时固件在驱动层以下自动降频,对上层框架不可见、不报错不告警;训练为全局同步负载,一张卡节流、整个任务陪它降速"
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "基于加速卡固件温控机制与同步训练特性的因果推论;机制本身可由厂商功耗管理文档佐证,待补一手来源(厂商 thermal management 文档)。"
+
+  - id: CLM-031-009
+    section: "31.2.3 降频与热节流:性能不稳定的头号真凶"
+    summary: "热节流典型幅度:持续满载后吞吐较压测峰值下降 10–20%;同一批『同构』机器因机柜位置温度基线不同,性能离散度可达 15%"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "运维经验中的典型幅度,非受控实测统计;具体幅度随机房温控与负载形态波动。待补来源或降级为作者实测(labs 复现)。"
+
+  - id: CLM-031-010
+    section: "31.2.4 PUE 与电费:功率如何进入 TCO"
+    summary: "电费算例:1,000 张 1 kW 级卡、整机系数 1.4,IT 功率约 1.4 MW;风冷 PUE 1.5、电价 0.7 元/kWh、负载率 70% 时年电费约 900 万元;冷板液冷 PUE 1.2 时约 720 万元"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: "N=1,000 卡;单卡 1 kW;α=1.4;PUE=1.5(风冷)/1.2(冷板);电价 0.7 元/kWh;平均负载率 u=0.7;年小时数 8,760"
+      formula: "Cost_power = P_IT × PUE × 8760 × price_kWh × u;P_IT = 1000×1×1.4 = 1.4 MW → 1.4×1.5×8760×0.7×0.7 ≈ 901 万;PUE=1.2 时 ≈ 721 万"
+      assumptions: "电价取工商业电价的常见量级且全年不变;负载率均匀;PUE 取两类方案的典型值(见 CLM-031-011);不含峰谷电价与需量电费"
+      error_sources: "电价随地区与峰谷政策差异可达 ±50%;实际 PUE 随季节与负载波动;负载率为年均简化;α 为经验系数(CLM-031-003)"
+
+  - id: CLM-031-011
+    section: "31.2.4 PUE 与电费:功率如何进入 TCO"
+    summary: "PUE 典型值:风冷机房约 1.5,冷板式液冷约 1.2;液冷改造投资回收期(改造费 ÷ 年省电费)通常 2–4 年,短于卡的 3–5 年折旧期"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "PUE 为行业经验典型值(实际范围风冷约 1.4–1.8、优化后液冷可低于 1.2),回收期为基于该典型值与常见改造费量级的推导区间,均暂无登记一手来源。待补来源重点项:Uptime Institute 年度调查或主要云厂商/IDC 披露的 PUE 数据。"
+
+  - id: CLM-031-012
+    section: "31.3.1 TCO 建模:五块构成"
+    summary: "折旧与摊销期经验取值:加速卡硬件折旧 3–5 年(贬值快于通用服务器,保守取 3 年);机房改造摊销 8–10 年(跨硬件代际复用)"
+    claim_type: recommendation
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "财务与运维实践中的经验区间,具体取值以企业会计政策为准;非会计准则规定值。"
+
+  - id: CLM-031-013
+    section: "31.3.1 TCO 建模:五块构成"
+    summary: "千卡级液冷新建自建集群的年化 TCO 典型占比:硬件折旧 55–65%、电费 10–18%、机房摊销 8–12%、运维人力 8–15%、生态折算 0–15%"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "行业经验占比区间,用途是校验模型漏项而非照抄;随卡价、电价、人力成本波动。待补来源重点项:公开的 AI 集群 TCO 分析报告(如 SemiAnalysis、Uptime Institute 或云厂商白皮书)。"
+
+  - id: CLM-031-014
+    section: "31.3.2 国产卡在 TCO 模型里的正确算法"
+    summary: "生态折算量级算例:一次 70B 级模型迁移适配 30–80 人月是常态区间,按人月全成本 8 万元计为 240–640 万元,足以吃掉千卡以下集群的大部分卡价差额"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: "迁移适配工作量 30–80 人月(§12.7 五维评估口径下的经验区间:算子补齐、精度对齐、性能调优、双后端 CI);人月全成本 8 万元"
+      formula: "C_eco = 人月 × 人月全成本 = 30×8 万 – 80×8 万 = 240–640 万元"
+      assumptions: "目标栈成熟度中等;团队具备双后端经验;人月全成本按一线城市工程师全包成本量级取整"
+      error_sources: "人月区间本身是经验值而非统计数据,随硬件生态成熟度变化极快;人力成本地区差异大;复用前次迁移资产可大幅压缩工作量"
+
+  - id: CLM-031-015
+    section: "31.3.3 全书技术决策的成本折算"
+    summary: "优化杠杆量级:MFU 每提高 5 个百分点 ≈ 训练卡数需求下降约 10%;利用率从 30% 拉到 60% 等于单位算力成本减半;PUE 优化对 TCO 的量级约 10% 上下"
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: "训练卡数公式 N ∝ 1/MFU;单位 token 成本 ∝ 1/利用率;电费占年化 TCO 10–18%(CLM-031-013)"
+      formula: "MFU 40%→45% 时 N 变为 40/45 ≈ 0.89(约降 11%);利用率 30%→60% 时每 token 分摊的折旧与电费减半;PUE 1.5→1.2 省电约 20%,乘电费占比 10–18% 得对 TCO 影响约 2–4%,连同配电容量释放按 10% 量级表述"
+      assumptions: "其余变量不变的单因素敏感性;成本以年化 TCO ÷ 年实际产出 token 口径"
+      error_sources: "利用率提升可能伴随长尾恶化与 SLO 折扣;MFU 与卡数非严格线性(通信占比随规模变化);电费占比区间本身为经验值"
+
+  - id: CLM-031-016
+    section: "31.4 方案对比:自建、云、混合"
+    summary: "自建/云/混合的经验判据:高利用率下自建单位算力成本约为云按需价的 1/3–1/2;利用率低于约 40% 时自建优势消失;稳定满载 12–18 个月后云累计支出超过自建 TCO;混合架构使平台工程量约增 20–30%"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "行业经验区间,依赖云厂商定价与自建口径,时效性强;应按 §31.3.3 每 token 成本代入自身真实数字复算,不可直接引用。待补来源:主流云厂商 GPU 实例价目与公开自建成本分析。"

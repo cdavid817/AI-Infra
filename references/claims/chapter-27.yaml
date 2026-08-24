@@ -1,0 +1,91 @@
+schema_version: 1
+chapter: 27
+claims:
+  - id: CLM-027-001
+    section: "27.3"
+    summary: 问题场景中的全部数字(成功率 99.9% 掉到 30%、延迟 2 秒涨到 40 秒以上、二十多个微服务、备用配额十分之一、中断四小时、流失两个 PoC 客户)均为合成案例的示意数字
+    claim_type: illustrative
+    evidence_level: L5
+    sources: []
+    status: illustrative_only
+    disclosure: 该案例为写作构造的合成案例,人物、机构、日期与全部数值均为示意,用于说明"没有故障转移能力"的失效模式,不对应任何真实公司或真实事故记录,不能作为现实统计证据引用。
+  - id: CLM-027-002
+    section: "27.4.2"
+    summary: 同一段文本在不同供应商分词器下的 token 数可以相差 10%–40%,中文场景差异更大
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: 经验区间,尚未用公开分词器(如 tiktoken、各家 tokenizer)在统一语料上实测核验;后续应以 labs 实测(多分词器同语料对比)替换为 measurement。
+  - id: CLM-027-003
+    section: "27.4.3"
+    summary: LLM 请求的资源消耗方差达三到四个数量级(10 token 短问答 vs 128K 长上下文),因此按请求数(QPS)限流失效,计量单位必须是与资源消耗成正比的 token
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: 机制推理结论;"三到四个数量级"由上下文长度上限与最短请求的比值直接推出,未附外部来源。
+  - id: CLM-027-004
+    section: "27.4.3"
+    summary: token 预估公式 T_est = T_in + α·min(max_tokens, T̂_out),α 取 [1.0, 1.5];无历史数据时退化为直接用 max_tokens
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: T_in(基准分词器现场计算的输入 token 数)、max_tokens(请求声明的输出上限)、T̂_out(该租户在该模型上滑动窗口统计的历史输出均值)、保守系数 α
+      formula: T_est = T_in + α · min(max_tokens, T̂_out)
+      assumptions: 租户输出长度分布相对平稳,历史均值对下一次请求有预测力;基准分词器与实际上游分词器的偏差由结算步骤的差额回补消化;α∈[1.0,1.5] 为作者给出的保守系数经验区间,非实测最优值。
+      error_sources: 输出长度天然由模型决定、方差大;历史窗口冷启动或负载突变时均值失真;基准分词器与上游分词器计数偏差(见 CLM-027-002);max_tokens 声明失真(业务方虚报上限)。
+  - id: CLM-027-005
+    section: "27.4.3"
+    summary: 令牌桶容量 B 建议取补充速率 R 的 1/6 到 1/2,即允许 10–30 秒的突发
+    claim_type: estimate
+    evidence_level: L5
+    sources: []
+    status: estimate_only
+    estimate:
+      inputs: 租户的 TPM 速率限制 R;可容忍的突发时长 t_burst
+      formula: B = R · t_burst / 60;t_burst 取 10–30 秒时 B = R/6 至 R/2
+      assumptions: 突发容忍度以秒级为宜——过小则正常抖动被误拒,过大则速率限制形同虚设;该区间为作者经验规则,不同负载形态(批处理 vs 交互)应各自校准。
+      error_sources: 突发容忍时长的选取本身是业务判断而非推导结果;租户请求到达分布(泊松 vs 尖峰)不同时同一 B 的实际拒绝率差异很大。
+  - id: CLM-027-006
+    section: "27.4.3"
+    summary: 各供应商的输入与输出 token 价差普遍在 3–5 倍,因此用量账本必须把输入/输出 token 分开记
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: 区间来自对主流供应商价目页的印象性归纳,尚未在本仓库登记逐家价目来源;价目高时效,核验后应设 review_after_days。
+  - id: CLM-027-007
+    section: "27.4.4"
+    summary: 流式响应中的故障转移只在首 token 之前合法;流已开始后的失败应走流内错误事件、把重试决策交还客户端,不自动跨供应商重试(已吐出的 token 无法收回,重新生成会产生不一致拼接)
+    claim_type: mechanism
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: 由 SSE 流式协议语义(状态码已发出、token 已送达)直接推出的机制结论,未附外部来源。
+  - id: CLM-027-008
+    section: "27.4.5"
+    summary: 精确缓存的典型命中率为 1%–5%(主要来自重试风暴与重复提交);客服、FAQ 类负载的语义重复率可达 20%–40%
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: 经验区间,未附公开测量或本仓库实测;命中率强依赖负载形态,后续应以真实网关日志或 labs 复现数据替换。
+  - id: CLM-027-009
+    section: "27.5"
+    summary: 维持 5 家以上供应商的协议适配需要至少 2 名全职工程师;团队没有长期 owner 时不应选择自研网关
+    claim_type: recommendation
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: 作者经验判断,人数口径随供应商协议变更频率与适配深度浮动,未附外部来源。
+  - id: CLM-027-010
+    section: "27.5"
+    summary: 现实中的主流建设路线是混合:开源网关做协议适配层,自研 token 级限流计费与路由决策
+    claim_type: recommendation
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: 选型立场,"主流"为作者观察而非统计结论;可用开源网关(LiteLLM 等)采用度数据与公开工程博客佐证后升级。

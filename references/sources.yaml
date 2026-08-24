@@ -1,0 +1,38 @@
+schema_version: 1
+sources:
+  - id: SRC-LLAMA3-PAPER
+    title: The Llama 3 Herd of Models
+    publisher: Meta AI
+    source_type: paper
+    url: https://arxiv.org/abs/2407.21783
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    arxiv_id: "2407.21783"
+    license_note: arXiv non-exclusive license;图表不可转载,正文仅引用数据并注明出处
+    notes: 第 1 章故障实证(54 天 466 次中断、约 78% 硬件原因)的出处;§3.3.4 含中断分布
+  - id: SRC-MEGASCALE-PAPER
+    title: "MegaScale: Scaling Large Language Model Training to More Than 10,000 GPUs"
+    publisher: ByteDance / Peking University
+    source_type: paper
+    url: https://arxiv.org/abs/2402.15627
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    arxiv_id: "2402.15627"
+    license_note: arXiv non-exclusive license;图表不可转载
+    notes: 第 1 章万卡集群运维经验的出处
+  - id: SRC-EPOCH-NOTABLE-MODELS
+    title: Notable AI Models(训练算力数据)
+    publisher: Epoch AI
+    source_type: dataset
+    url: https://epoch.ai/data/notable-ai-models
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    license_note: CC BY 4.0(页面明示);图表可转载,需署名
+    review_after_days: 365
+    notes: 第 1 章算力增长 4 倍/年、AlexNet~GPT-3 量级数据与嵌入图表的出处
