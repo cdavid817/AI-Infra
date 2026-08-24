@@ -80,3 +80,25 @@ sources:
     evidence_level: L1
     review_after_days: 180
     notes: manager + ≥1 worker 集群;manager 创建并监控远程 Workload/Job 且与本地对象同步;Admission Check Controller 在 manager;完全准入(配额+准入检查)后分发;beta since Kueue v0.9 默认启用
+  - id: SRC-GIE-OFFICIAL
+    title: Kubernetes Gateway API Inference Extension
+    publisher: Kubernetes SIGs
+    source_type: official_documentation
+    url: https://gateway-api-inference-extension.sigs.k8s.io/
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 180
+    notes: Endpoint Picker(EPP)为推理路由器实现,路由优化信号含 Prefix Cache 状态与 LoRA 适配器可用性;仓库提供参考 EPP 实现
+  - id: SRC-GIE-INFERENCEPOOL
+    title: InferencePool API Type
+    publisher: Kubernetes SIGs
+    source_type: official_documentation
+    url: https://gateway-api-inference-extension.sigs.k8s.io/api-types/inferencepool/
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 180
+    notes: selector 圈定模型服务 Pod;一个 EPP 只关联一个 InferencePool;HTTPRoute 可引用多个池作 backendRefs;与 Service 职责有对照说明

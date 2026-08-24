@@ -49,6 +49,7 @@
 | 编排 / 平台层 | Ray Serve | Python 原生服务编排、细粒度组合 | 第 24 章 | 同上 |
 | 编排 / 平台层 | KubeAI | 轻量 K8s 模型服务编排 | 第 24 章 | — |
 | 网关层 | 各类 LLM Gateway(如 LiteLLM 系、Higress 系及自研) | 配额、计费口径、多模型多供应商路由 | 第 27 章 | 与硬件无关 |
+| 网关层 | Gateway API Inference Extension(InferencePool/EPP) | 模型感知的实例级路由标准:InferencePool 圈定同一模型的实例集合,EPP 按前缀缓存、LoRA 适配器可用性与负载选实例;API 版本与各网关实现支持状态高时效,按期复核 | 第 24、27 章 | 与硬件无关 |
 
 ### C.1.3 配套工具层(不入三层地图,按用途归类)
 

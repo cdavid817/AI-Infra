@@ -1,0 +1,31 @@
+schema_version: 1
+chapter: 27
+topic: 模型感知推理路由(Gateway API Inference Extension,计划 §17.4)
+prepared_at: 2026-08-24
+scope:
+  included:
+    - 四层路由链条的边界:业务 API 网关 → 模型/版本路由 → 实例级请求调度(InferencePool+EPP)→ 引擎内部 batch 调度
+    - InferencePool 与 Service 的差异(模型感知 vs 无状态轮询)
+    - EPP 路由信号:KV/前缀缓存状态、LoRA 适配器可用性、队列与负载
+    - 普通轮询的失效场景;EPP 数据流与控制流图
+    - 灰度、故障转移与缓存亲和性的冲突矩阵(第 24/25 章既有内容衔接)
+    - 附录 C 登记项目状态(具体版本不进正文)
+  excluded:
+    - 具体网关实现的配置教程;EPP 算法内部实现细节
+claims:
+  - proposed_id: CLM-027-NEW-011
+    statement: InferencePool+EPP 把实例选择做成模型感知的一层:selector 圈定模型服务 Pod,EPP 以前缀缓存状态、LoRA 适配器可用性等推理侧信号选实例;一个 EPP 只服务一个池,HTTPRoute 可挂多个池
+    claim_type: mechanism
+    candidate_sources: [SRC-GIE-OFFICIAL, SRC-GIE-INFERENCEPOOL]
+    confidence: high
+  - proposed_id: CLM-024-NEW-001
+    statement: 实例级请求调度(选哪个实例)与引擎内部 batch 调度(实例内怎么组批)是两层不同的决策,信号与时间尺度不同;混为一层会把网关做重或让引擎信号失去作用
+    claim_type: mechanism
+    candidate_sources: [SRC-GIE-OFFICIAL]
+    confidence: medium
+open_questions:
+  - InferencePool API 的 GA 时间线与各网关实现的支持矩阵(进附录 C,unverified)
+conflicting_sources: []
+volatile_facts:
+  - statement: Gateway API Inference Extension 的 API 版本与实现支持状态
+    review_required: true

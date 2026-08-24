@@ -1,0 +1,13 @@
+schema_version: 1
+chapter: 24
+claims:
+  - id: CLM-024-001
+    section: "24.4.5"
+    summary: 实例级请求调度(选哪个实例)与引擎内部 batch 调度(实例内怎么组批)是两层不同的决策,决策对象、信号来源与时间尺度均不同;混为一层要么让路由层被迫持有请求粒度的引擎内部状态而做重,要么让路由层以滞后的汇总信号越权排 batch、使引擎侧信号失去作用。实例级一层的 API 化形态(InferencePool/EPP)佐证该分层方向
+    claim_type: mechanism
+    evidence_level: L4
+    sources: [SRC-GIE-OFFICIAL]
+    status: unverified
+    reviewed_at: 2026-08-24
+    review_after_days: 180
+    disclosure: 分层结论为作者的架构判断(置信度中等),正文以判断口吻给出依据;InferencePool/EPP 的 API 形态(L1 来源)佐证"实例级调度独立成层"的方向,但"混为一层的后果"部分为机制推理,未附外部实证来源。

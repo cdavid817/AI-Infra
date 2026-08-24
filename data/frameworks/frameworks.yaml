@@ -208,6 +208,16 @@ inference:
     ascend_counterpart: 与硬件无关
     sources: []
     verification: unverified
+  - layer: 网关层
+    name: Gateway API Inference Extension(InferencePool/EPP)
+    positioning: 模型感知的实例级路由标准:InferencePool 圈定同一模型的实例集合,EPP 按前缀缓存、LoRA 适配器可用性与负载选实例;API 版本与各网关实现支持状态高时效,按期复核
+    chapter_ref: 第 24、27 章
+    ascend_counterpart: 与硬件无关
+    sources: [SRC-GIE-OFFICIAL]
+    verification: verified
+    review:
+      reviewed_at: "2026-08-24"
+      review_after_days: 180
 tooling:
   - purpose: 量化工具链
     projects: GPTQ / AWQ / llm-compressor / TensorRT Model Optimizer

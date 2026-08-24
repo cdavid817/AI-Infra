@@ -89,3 +89,12 @@ claims:
     sources: []
     status: unverified
     disclosure: 选型立场,"主流"为作者观察而非统计结论;可用开源网关(LiteLLM 等)采用度数据与公开工程博客佐证后升级。
+  - id: CLM-027-011
+    section: "27.4(网关之下:模型感知的实例选择层)"
+    summary: InferencePool+EPP 把实例选择做成模型感知的一层:InferencePool 以 selector 圈定服务同一模型的 Pod;EPP 以前缀缓存状态、LoRA 适配器可用性、队列与负载等推理侧信号选实例;一个 EPP 只服务一个 InferencePool,而一条 HTTPRoute 可引用多个池按权重分流——"模型/版本路由"与"实例选择"由此在 API 形态上分层。API 版本与各网关实现支持状态不进正文,登记于附录 C 数据并按期复核
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-GIE-OFFICIAL, SRC-GIE-INFERENCEPOOL]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180
