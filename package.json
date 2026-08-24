@@ -11,7 +11,10 @@
     "docs:check:local-links": "node scripts/check-doc-links.mjs",
     "test:docs-tools": "node --test \"scripts/tests/**/*.test.mjs\"",
     "docs:check:evidence": "node scripts/validate-evidence.mjs",
-    "docs:check:prompts": "node scripts/check-prompts.mjs"
+    "docs:check:prompts": "node scripts/check-prompts.mjs",
+    "docs:check:data": "node scripts/validate-data.mjs",
+    "docs:generate": "node scripts/generate-appendices.mjs",
+    "docs:check:drift": "node scripts/check-generated-drift.mjs"
   },
   "dependencies": {
     "ajv": "8.17.1",

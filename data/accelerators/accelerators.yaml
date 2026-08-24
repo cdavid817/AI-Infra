@@ -1,0 +1,582 @@
+# 附录 A 加速卡数据(唯一事实源)。附录 A.1 / A.5 由本文件生成。
+schema_version: 1
+snapshot_date: "2026-08"
+intro_notes:
+  - '**算力一律取稠密(dense)值**。厂商宣传页普遍标注稀疏(2:4 structured sparsity)值,恰好是稠密值的 2 倍;看到与本表相差一倍的数字,先怀疑口径而不是数据错误(识别方法见 [§4.2.1](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#421-四类范式真正的差异在编译器))。'
+  - '**互联带宽为单卡双向聚合带宽**;个别厂商按单向标注,换算时乘 2。'
+  - '**显存带宽为标称峰值**,实测可持续带宽约为标称的 80%~90%。'
+  - '空缺("—")表示该精度无硬件原生支持或厂商未公开;国产卡部分公开口径不一的数字以"≈"标注,以厂商正式 spec 为准。'
+tendency_notes:
+  - '**这是倾向标注,不是"训练卡/推理卡"二分类**——正文已论证该二分法正在失效([§4.2.2](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#422-训练型与推理型负载的硬件诉求差异)),同一张卡两侧都能跑,差别只在配比匹配度。'
+  - '标注方法:拿 [§4.2.2](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#422-训练型与推理型负载的硬件诉求差异) 六维表(显存容量、显存带宽、互联带宽、精度支持、可靠性、性价比口径)逐行比对上表数字,给出倾向。你拿到任何一张新卡,都应当自己重走一遍这个比对,而不是查这张表。'
+devices:
+  # ── A.1.1 NVIDIA 系 ──
+  - id: a100-80gb
+    vendor: NVIDIA
+    model: A100 80GB
+    form_factor: SXM
+    category: nvidia
+    memory:
+      capacity: 80 GB
+      type: HBM2e
+      bandwidth: { value: 2.0, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: NVLink
+      generation: "3"
+      per_device_aggregate: { value: 600, unit: GB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: 19.5, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: TF32, value: 156, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 312, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 624, unit: TOPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 400, confidence: exact }
+    tendency:
+      label: 通用(上代)
+      rationale: 各维均衡但无 FP8;2026 年新增采购已无理由,存量做微调与中小推理
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: h100
+    vendor: NVIDIA
+    model: H100
+    form_factor: SXM
+    category: nvidia
+    memory:
+      capacity: 80 GB
+      type: HBM3
+      bandwidth: { value: 3.35, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: NVLink
+      generation: "4"
+      per_device_aggregate: { value: 900, unit: GB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: 67, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: TF32, value: 494, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 989, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 1979, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 1979, unit: TOPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 700, confidence: exact }
+    tendency:
+      label: 通用,微偏训练
+      rationale: 互联 900 GB/s + BF16/FP8 齐备;带宽/算力比约 1.7 B/TF(FP8 口径)偏低,长上下文推理吃亏
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: h200
+    vendor: NVIDIA
+    model: H200
+    form_factor: SXM
+    category: nvidia
+    memory:
+      capacity: 141 GB
+      type: HBM3e
+      bandwidth: { value: 4.8, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: NVLink
+      generation: "4"
+      per_device_aggregate: { value: 900, unit: GB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: 67, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: TF32, value: 494, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 989, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 1979, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 1979, unit: TOPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 700, confidence: exact }
+    tendency:
+      label: 通用,微偏推理
+      rationale: 与 H100 同算力,显存 +76%、带宽 +43% 全部喂给 KV Cache 与 Decode 带宽
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: h20
+    vendor: NVIDIA
+    model: H20
+    form_factor: null
+    category: nvidia
+    availability:
+      state: china_market_specific
+      note: 中国市场型号
+    memory:
+      capacity: 96 GB
+      type: HBM3
+      bandwidth: { value: 4.0, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: NVLink
+      generation: "4"
+      per_device_aggregate: { value: 900, unit: GB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: 44, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: TF32, value: 74, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 148, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 296, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 296, unit: TOPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 400, confidence: exact }
+    tendency:
+      label: 明显偏推理
+      rationale: 算力仅 H100 的 15%,但带宽 4.0 TB/s 保留了 83%——典型的"带宽/算力比拉满"推理配比
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: l40s
+    vendor: NVIDIA
+    model: L40S
+    form_factor: PCIe
+    category: nvidia
+    memory:
+      capacity: 48 GB
+      type: GDDR6
+      bandwidth: { value: 0.86, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: null
+      generation: null
+      per_device_aggregate: { value: null, directionality: not_applicable }
+      note: 无 NVLink(走 PCIe)
+    compute:
+      - { precision: FP32, value: 91.6, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: TF32, value: 183, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 362, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 733, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 733, unit: TOPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 350, confidence: exact }
+    tendency:
+      label: 偏推理(轻量)
+      rationale: 无 NVLink、GDDR6 带宽低;适合 ≤13B 量化推理与视觉负载,任何多卡并行负载都是失效边界
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: b200
+    vendor: NVIDIA
+    model: B200
+    form_factor: SXM/GB200 单 GPU
+    category: nvidia
+    memory:
+      capacity: 192 GB
+      type: HBM3e
+      bandwidth: { value: 8.0, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: NVLink
+      generation: "5"
+      per_device_aggregate: { value: 1.8, unit: TB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: 80, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: TF32, value: 1.1, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 2.25, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 4.5, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: 9, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: INT8, value: 4.5, unit: POPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 1000, confidence: exact }
+    tendency:
+      label: 通用,偏训练
+      rationale: NVLink 5 域可扩到 72 卡,互联维度决定性占优;FP4 支持同时利好推理
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: b300
+    vendor: NVIDIA
+    model: B300
+    form_factor: GB300 单 GPU,Blackwell Ultra
+    category: nvidia
+    memory:
+      capacity: 288 GB
+      type: HBM3e
+      bandwidth: { value: 8.0, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: NVLink
+      generation: "5"
+      per_device_aggregate: { value: 1.8, unit: TB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: 80, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: TF32, value: 1.1, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 2.25, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 4.5, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: 14, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: INT8, value: null, unit: null, sparsity: dense, metric_type: peak }
+    power: { tdp_w: 1400, confidence: exact }
+    tendency:
+      label: 通用,偏推理
+      rationale: 相对 B200:显存 +50%、FP4 算力 +50%、BF16 不变——增量全部投向推理维度
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  # ── A.1.2 AMD / Intel / Google 系 ──
+  - id: amd-mi300x
+    vendor: AMD
+    model: MI300X
+    form_factor: OAM
+    category: amd_intel_google
+    memory:
+      capacity: 192 GB
+      type: HBM3
+      bandwidth: { value: 5.3, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: Infinity Fabric
+      generation: null
+      per_device_aggregate: { value: 896, unit: GB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: 163, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 1.31, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 2.61, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 2.61, unit: POPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 750, confidence: exact }
+    tendency:
+      label: 偏推理
+      rationale: 大显存 + 高带宽/算力比;互联域小(8 卡)且生态迁移成本高,训练侧失效边界见第 12 章
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: amd-mi325x
+    vendor: AMD
+    model: MI325X
+    form_factor: OAM
+    category: amd_intel_google
+    memory:
+      capacity: 256 GB
+      type: HBM3e
+      bandwidth: { value: 6.0, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: Infinity Fabric
+      generation: null
+      per_device_aggregate: { value: 896, unit: GB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: 163, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 1.31, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 2.61, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 2.61, unit: POPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 1000, confidence: exact }
+    tendency:
+      label: 偏推理
+      rationale: 大显存 + 高带宽/算力比;互联域小(8 卡)且生态迁移成本高,训练侧失效边界见第 12 章
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: amd-mi355x
+    vendor: AMD
+    model: MI355X
+    form_factor: OAM,CDNA4
+    category: amd_intel_google
+    memory:
+      capacity: 288 GB
+      type: HBM3e
+      bandwidth: { value: 8.0, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: Infinity Fabric
+      generation: null
+      per_device_aggregate: { value: 1, unit: TB/s, directionality: bidirectional, confidence: approximate }
+    compute:
+      - { precision: FP32, value: 157, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 2.5, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 5.0, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: 10, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: INT8, value: null, unit: null, sparsity: dense, metric_type: peak }
+    power: { tdp_w: 1400, confidence: exact }
+    tendency:
+      label: 通用
+      rationale: FP4/FP8 与带宽对齐 B200 档;训练侧可行性取决于软件栈成熟度而非硬件参数([§12.7](../第二部分-算力底座/第12章-国产算力平台与异构迁移.md#127-生态作为选型变量全书唯一定义处) 生态维度)
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: intel-gaudi-3
+    vendor: Intel
+    model: Gaudi 3
+    form_factor: OAM
+    category: amd_intel_google
+    memory:
+      capacity: 128 GB
+      type: HBM2e
+      bandwidth: { value: 3.7, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: 板载 RoCE
+      generation: null
+      note: 24×200 GbE
+    compute:
+      - { precision: FP32, value: 229, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 1.84, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: 1.84, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: null, unit: null, sparsity: dense, metric_type: peak }
+    power: { tdp_w: 900, confidence: exact }
+    tendency:
+      label: 偏训练(性价比档)
+      rationale: 板载 RoCE 组网省交换机成本;无 FP4、带宽档偏低,长上下文推理与激进量化是失效边界
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: google-tpu-v5p
+    vendor: Google
+    model: TPU v5p
+    form_factor: null
+    category: amd_intel_google
+    availability:
+      state: cloud_only
+      note: 仅云
+    memory:
+      capacity: 95 GB
+      type: HBM2e
+      bandwidth: { value: 2.77, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: ICI
+      generation: null
+      per_device_aggregate: { value: 1.2, unit: TB/s, directionality: bidirectional, confidence: approximate }
+    compute:
+      - { precision: FP32, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: BF16/FP16, value: 459, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 918, unit: TOPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: 500, confidence: approximate }
+    tendency:
+      label: 偏训练
+      rationale: ICI + OCS 大域互联为集合通信设计;动态形状负载难度见 [§4.2.1](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#421-四类范式真正的差异在编译器)
+      kind: author_judgment
+    sources: []
+    verification: unverified
+    notes:
+      - TPU 只能以云服务形态获得,没有采购决策,只有租用决策;其编译器主导的架构范式含义见 [§4.2.1](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#421-四类范式真正的差异在编译器)。
+  - id: google-tpu-v6e-trillium
+    vendor: Google
+    model: TPU v6e Trillium
+    form_factor: null
+    category: amd_intel_google
+    availability:
+      state: cloud_only
+      note: 仅云
+    memory:
+      capacity: 32 GB
+      type: HBM
+      bandwidth: { value: 1.6, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: ICI
+      generation: null
+    compute:
+      - { precision: FP32, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: BF16/FP16, value: 918, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 1836, unit: TOPS, sparsity: dense, metric_type: peak, confidence: exact }
+    power: { tdp_w: null }
+    tendency:
+      label: 偏推理
+      rationale: 32 GB 小显存 + 高算力密度,面向高吞吐 serving
+      kind: author_judgment
+    sources: []
+    verification: unverified
+    notes:
+      - TPU 只能以云服务形态获得,没有采购决策,只有租用决策;其编译器主导的架构范式含义见 [§4.2.1](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#421-四类范式真正的差异在编译器)。
+  - id: google-tpu-v7-ironwood
+    vendor: Google
+    model: TPU v7 Ironwood
+    form_factor: null
+    category: amd_intel_google
+    availability:
+      state: cloud_only
+      note: 仅云
+    memory:
+      capacity: 192 GB
+      type: HBM3e
+      bandwidth: { value: 7.4, unit: TB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: ICI
+      generation: null
+      per_device_aggregate: { value: 1.2, unit: TB/s, directionality: bidirectional, confidence: exact }
+    compute:
+      - { precision: FP32, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: BF16/FP16, value: 2.3, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: FP8, value: 4.6, unit: PFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: FP4, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: null, unit: null, sparsity: dense, metric_type: peak }
+    power: { tdp_w: 1000, confidence: approximate }
+    tendency:
+      label: 偏训练
+      rationale: ICI + OCS 大域互联为集合通信设计;动态形状负载难度见 [§4.2.1](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#421-四类范式真正的差异在编译器)
+      kind: author_judgment
+    sources: []
+    verification: unverified
+    notes:
+      - 原表功耗口径为"≈1 kW",此处换算为 1000 W。
+      - TPU 只能以云服务形态获得,没有采购决策,只有租用决策;其编译器主导的架构范式含义见 [§4.2.1](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#421-四类范式真正的差异在编译器)。
+  # ── A.5 国产卡(单列)──
+  - id: ascend-910b
+    vendor: 华为
+    model: 昇腾 910B
+    form_factor: Atlas A2
+    category: domestic
+    memory:
+      capacity: 64 GB
+      type: HBM2e
+      bandwidth: { value: 1.6, unit: TB/s, metric_type: peak, confidence: approximate }
+    interconnect:
+      name: HCCS
+      generation: null
+      per_device_aggregate: { value: 392, unit: GB/s, directionality: bidirectional, confidence: approximate }
+    compute:
+      - { precision: FP32, value: 94, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: BF16/FP16, value: 376, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 752, unit: TOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+    power: { tdp_w: 400, confidence: exact }
+    tendency:
+      label: 通用,微偏训练
+      rationale: HCCS 组网 + 集群交付成熟
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: ascend-910c
+    vendor: 华为
+    model: 昇腾 910C
+    form_factor: null
+    category: domestic
+    memory:
+      capacity: 128 GB
+      type: HBM3
+      bandwidth: { value: 3.2, unit: TB/s, metric_type: peak, confidence: approximate }
+    interconnect:
+      name: HCCS / 统一总线
+      generation: null
+    compute:
+      - { precision: FP32, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: BF16/FP16, value: 800, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: FP8, value: 支持(代际引入), unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 1.6, unit: POPS, sparsity: dense, metric_type: peak, confidence: approximate }
+    power: { tdp_w: 750, confidence: approximate }
+    tendency:
+      label: 通用
+      rationale: CloudMatrix 384 的组成单元
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: kunlunxin-p800
+    vendor: 昆仑芯
+    model: 昆仑芯 P800
+    form_factor: null
+    category: domestic
+    memory:
+      capacity: 64 GB
+      type: null
+      bandwidth: { value: null }
+    interconnect:
+      name: XPU Link
+      generation: null
+    compute:
+      - { precision: FP32, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: BF16/FP16, value: 345, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 690, unit: TOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+    power: { tdp_w: 400, confidence: approximate }
+    tendency:
+      label: 通用,偏推理
+      rationale: ''
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: cambricon-mlu590
+    vendor: 寒武纪
+    model: 寒武纪思元 590
+    form_factor: null
+    category: domestic
+    memory:
+      capacity: 64–80 GB
+      type: HBM
+      bandwidth: { value: null }
+    interconnect:
+      name: MLU-Link
+      generation: null
+    compute:
+      - { precision: FP32, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: BF16/FP16, value: null, unit: null, sparsity: dense, metric_type: peak, confidence: inconsistent_public_data, note: 公开口径不一 }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: null, unit: null, sparsity: dense, metric_type: peak }
+    power: { tdp_w: 350, confidence: approximate }
+    tendency:
+      label: 通用
+      rationale: 以实测为准
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: hygon-k100-ai
+    vendor: 海光
+    model: 海光深算三号(K100 AI)
+    form_factor: null
+    category: domestic
+    memory:
+      capacity: 64 GB
+      type: HBM2e
+      bandwidth: { value: 900, unit: GB/s, metric_type: peak, confidence: approximate }
+    interconnect:
+      name: xGMI 类
+      generation: null
+    compute:
+      - { precision: FP32, value: 支持, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: BF16/FP16, value: ≈100–200 TF 档, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 支持, unit: null, sparsity: dense, metric_type: peak }
+    power: { tdp_w: 350, confidence: approximate }
+    tendency:
+      label: 通用
+      rationale: 类 CUDA(DTK/ROCm 系)迁移成本最低
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: moore-threads-mtt-s4000
+    vendor: 摩尔线程
+    model: 摩尔线程 MTT S4000
+    form_factor: null
+    category: domestic
+    memory:
+      capacity: 48 GB
+      type: GDDR6
+      bandwidth: { value: 768, unit: GB/s, metric_type: peak, confidence: exact }
+    interconnect:
+      name: MTLink
+      generation: null
+    compute:
+      - { precision: FP32, value: 25, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: exact }
+      - { precision: BF16/FP16, value: 100, unit: TFLOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 200, unit: TOPS, sparsity: dense, metric_type: peak, confidence: approximate }
+    power: { tdp_w: 450, confidence: exact }
+    tendency:
+      label: 偏推理
+      rationale: 中小模型
+      kind: author_judgment
+    sources: []
+    verification: unverified
+  - id: enflame-s60
+    vendor: 燧原
+    model: 燧原 S60
+    form_factor: null
+    category: domestic
+    memory:
+      capacity: 48 GB
+      type: null
+      bandwidth: { value: null }
+    interconnect:
+      name: null
+      generation: null
+    compute:
+      - { precision: FP32, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: BF16/FP16, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: FP8, value: null, unit: null, sparsity: dense, metric_type: peak }
+      - { precision: INT8, value: 面向推理, unit: null, sparsity: dense, metric_type: peak }
+    power: { tdp_w: 300, confidence: approximate }
+    tendency:
+      label: 偏推理
+      rationale: ''
+      kind: author_judgment
+    sources: []
+    verification: unverified
+
+section_notes:
+  amd_intel_google: 'TPU 只能以云服务形态获得,没有采购决策,只有租用决策;其编译器主导的架构范式含义见 [§4.2.1](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#421-四类范式真正的差异在编译器)。'
+  domestic_intro: '国产卡的公开参数口径差异大、迭代快,本节数字请配合勘误页使用;**生态与迁移的判断框架见第 12 章与附录 E**,参数只是决策输入的一小部分。'
+  domestic_disciplines:
+    - '**参数表不能替代算子覆盖率盘点**——纸面 FLOPs 相同,算子缺一个融合实现,端到端性能可以差数倍([§12.4](../第二部分-算力底座/第12章-国产算力平台与异构迁移.md#124-混合集群管理双后端是常态而不是过渡),盘点表见附录 E)。'
+    - '**对标必须用第 12 章的统一口径**(同精度、同 batch、同序列分布、端到端吞吐),厂商 benchmark 的口径差异足以制造 2 倍的假象([§12.5](../第二部分-算力底座/第12章-国产算力平台与异构迁移.md#125-性能对标的正确姿势全书唯一定义处))。'
+    - '昇腾软件栈(CANN、HCCL、MindSpeed、MindIE)的对照关系见 [§5.3](../第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md#53-cann-与昇腾软件栈两套完整并行的世界)、[§7.4.5](../第一部分-基础与心智模型/第07章-互联与集合通信.md#745-hccl-与昇腾互联)、第 18 章、[§22.4](../第五部分-推理系统/第22章-推理引擎原理.md#224-引擎剖析方案对比) 与附录 C/D;**买卡决策的大头在软件栈,不在这张表**。'

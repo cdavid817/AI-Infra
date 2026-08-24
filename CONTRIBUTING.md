@@ -18,11 +18,17 @@
 npm ci
 ```
 
+**附录 A/C 为生成文件**(页首有 AUTO-GENERATED 标记),禁止直接编辑;数据的唯一事实源在 `data/` 目录(schema 见 `data/schemas/`),修改后运行 `npm run docs:generate` 重新生成,`npm run docs:check:drift` 会拦截手改。数据项补来源时引用 `references/sources.yaml` 的 id;无法核验的保持 `verification: unverified`,不得猜测补齐。
+
 然后运行:
 
 ```bash
 npm run test:docs-tools        # 文档工具链自身的单元测试
 npm run docs:check:local-links # 检查全书 Markdown 的本地文件链接
+npm run docs:check:evidence    # 证据体系(sources/claims)校验
+npm run docs:check:data        # data/ 结构化数据校验
+npm run docs:check:drift       # 生成物漂移检查(附录 A/C)
+npm run docs:check:prompts     # Prompt 包结构检查
 ```
 
 链接检查基于 Markdown AST(unified/remark)解析,正确处理中文文件名、URL 编码、代码块与带 title 的链接,不依赖任何外部命令。`node scripts/check-doc-links.mjs` 仍可作为兼容入口直接运行。锚点、外部链接和 Mermaid 的语义正确性目前仍需人工复核(后续由专项检查覆盖)。

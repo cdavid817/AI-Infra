@@ -1,6 +1,10 @@
+<!-- AUTO-GENERATED. DO NOT EDIT DIRECTLY. -->
+<!-- Source: data/frameworks/frameworks.yaml ; Generator: scripts/generate-appendices.mjs -->
+
+
 # 附录 C 框架选型快照
 
-> **数据截至 2026 年 8 月。** 框架项目的半衰期远短于本书的生命周期,本附录是三层框架地图([§2.4.3](../第一部分-基础与心智模型/第02章-两条主线解剖与框架地图.md#243-框架三层地图))在成书时刻的一张快照:项目清单、版本态势与选型矩阵都会过时,**层的划分与选型方法不会**。使用前请核对[勘误与更新页](../ERRATA.md#附录-c-框架选型快照)及对应项目的官方状态。
+> **数据截至 2026 年 8 月。** **数据截至 2026 年 8 月。** 框架项目的半衰期远短于本书的生命周期,本附录是三层框架地图([§2.4.3](../第一部分-基础与心智模型/第02章-两条主线解剖与框架地图.md#243-框架三层地图))在成书时刻的一张快照:项目清单、版本态势与选型矩阵都会过时,**层的划分与选型方法不会**。使用前请核对[勘误与更新页](../ERRATA.md#附录-c-框架选型快照)及对应项目的官方状态。
 >
 > 使用纪律(正文结论重申):任何框架对比只有发生在**同一层内**才有意义——vLLM vs KServe 之争等价于 Spark vs YARN 之争,是问错了问题([§2.4.3](../第一部分-基础与心智模型/第02章-两条主线解剖与框架地图.md#243-框架三层地图))。拿到本附录清单外的新项目,先把它放进层格子,再找同层项目对比;故意跨层的项目标注"占哪两格、与谁互斥",不要硬塞。
 
@@ -11,8 +15,8 @@
 ### C.1.1 训练侧
 
 | 层 | 项目 | 定位一句话 | 机制剖析章节 | 昇腾侧对应 |
-|---|---|---|---|---|
-| 运行时 / 引擎层 | Megatron-Core | TP/PP/EP 全维并行的参照实现,大规模预训练事实标准 | 第 18 章 | MindSpeed(Megatron 移植增强)|
+| --- | --- | --- | --- | --- |
+| 运行时 / 引擎层 | Megatron-Core | TP/PP/EP 全维并行的参照实现,大规模预训练事实标准 | 第 18 章 | MindSpeed(Megatron 移植增强) |
 | 运行时 / 引擎层 | DeepSpeed | ZeRO 系显存优化起家,全家桶式训练引擎 | 第 18 章 | 经 torch_npu 适配可用 |
 | 运行时 / 引擎层 | PyTorch FSDP2 | 原生全分片数据并行,与 PyTorch 生态零摩擦 | 第 18 章 | torch_npu 路线原生支持 |
 | 运行时 / 引擎层 | MindSpore | 昇腾原生训练框架(非 PyTorch 生态) | 第 18 章 | ——本体即昇腾侧,两条路线取舍见第 18 章 |
@@ -31,7 +35,7 @@
 ### C.1.2 推理侧
 
 | 层 | 项目 | 定位一句话 | 机制剖析章节 | 昇腾侧对应 |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | 运行时 / 引擎层 | vLLM | PagedAttention + continuous batching,开源推理事实标准 | 第 22 章 | vLLM-Ascend |
 | 运行时 / 引擎层 | SGLang | RadixAttention 前缀复用,Agent/结构化输出见长 | 第 22 章 | 社区适配推进中 |
 | 运行时 / 引擎层 | TensorRT-LLM | NVIDIA 编译路线,榨取单卡极限 | 第 22 章 | ——(绑定 NVIDIA) |
@@ -48,11 +52,11 @@
 ### C.1.3 配套工具层(不入三层地图,按用途归类)
 
 | 用途 | 项目 | 章节 | 昇腾侧对应 |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 量化工具链 | GPTQ / AWQ / llm-compressor / TensorRT Model Optimizer | 第 23 章 | 昇腾模型压缩工具(msModelSlim 系) |
 | 编译与算子 | Triton 语言、TorchInductor、FlashAttention / FlashInfer、CUTLASS | 第 23 章 | CANN 算子开发(Ascend C)、VF/CF 融合特性([§23.2](../第五部分-推理系统/第23章-推理优化-计算类加速.md#232-算子与融合)) |
-| 集合通信库 | NCCL | 第 7 章 | HCCL(原语对应关系见 [§7.4.5](../第一部分-基础与心智模型/第07章-互联与集合通信.md#745-hccl-与昇腾互联))|
-| 底层软件栈 | CUDA 全家桶 | 第 5 章 | CANN(完整栈对照见 [§5.3](../第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md#53-cann-与昇腾软件栈两套完整并行的世界),术语对照见附录 D)|
+| 集合通信库 | NCCL | 第 7 章 | HCCL(原语对应关系见 [§7.4.5](../第一部分-基础与心智模型/第07章-互联与集合通信.md#745-hccl-与昇腾互联)) |
+| 底层软件栈 | CUDA 全家桶 | 第 5 章 | CANN(完整栈对照见 [§5.3](../第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md#53-cann-与昇腾软件栈两套完整并行的世界),术语对照见附录 D) |
 
 ---
 
@@ -63,9 +67,9 @@
 ### C.2.1 训练侧
 
 | 场景 \ 规模 | 小(≤8 卡) | 中(~百卡) | 大(数百~数千卡) | 超大(数千卡+) |
-|---|---|---|---|---|
+| --- | --- | --- | --- | --- |
 | 微调(SFT/LoRA) | LLaMA-Factory / Axolotl 单机直跑 | LLaMA-Factory + FSDP2,K8s Job 或 Slurm | 少见;若有,TorchTitan + FSDP2 | — |
-| 稠密预训练 / 继续预训练 | FSDP2(TorchTitan 起步) | FSDP2 或 Megatron-Core,Slurm/Volcano 编排 | Megatron-Core(TP×PP×DP),Slurm | Megatron-Core + 容错体系(第 20 章)|
+| 稠密预训练 / 继续预训练 | FSDP2(TorchTitan 起步) | FSDP2 或 Megatron-Core,Slurm/Volcano 编排 | Megatron-Core(TP×PP×DP),Slurm | Megatron-Core + 容错体系(第 20 章) |
 | MoE 预训练 | 不建议(EP 域太小) | Megatron-Core(EP 域内化,需超节点或单机 EP) | Megatron-Core + EP,域对齐见第 16 章 | 同左,All2All 域内化是硬约束 |
 | RL 后训练 | TRL 单机 | verl / OpenRLHF + Ray | verl(训推混合潮汐,第 21 章) | verl / slime |
 | 昇腾集群训练 | torch_npu + LLaMA-Factory | MindSpeed 或 torch_npu+FSDP,Volcano | MindSpeed(PyTorch 路线)或 MindSpore | MindSpeed;两条路线取舍见第 18 章 |
@@ -73,7 +77,7 @@
 ### C.2.2 推理侧
 
 | 场景 \ 规模 | 单卡~单机 | 多实例(数机) | 大规模服务(数十机+) |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | 通用对话 / API 服务 | vLLM 直跑 | vLLM + KServe/Ray Serve | vLLM/SGLang + Dynamo(PD 分离)+ 网关层 |
 | Agent / 高前缀复用 / 结构化输出 | SGLang | SGLang + 编排层(KV 感知路由) | SGLang + Dynamo,前缀缓存策略见第 22 章 |
 | 极致单卡吞吐 / 延迟(NVIDIA) | TensorRT-LLM | TensorRT-LLM + Triton Server | 同左 + KServe;绑定代价见第 12 章 |
@@ -94,11 +98,11 @@
 本附录三类信息的过时速度不同,更新时按此优先级核对勘误页:
 
 | 信息类型 | 预期保质期 | 过时的信号 |
-|---|---|---|
+| --- | --- | --- |
 | 层的划分与否决规则 | 全书生命周期 | 出现稳定占据两层的主流项目(需重画地图而非改清单) |
 | 项目清单与定位 | 12~24 个月 | 某层出现新的事实标准;清单内项目停止维护 |
 | 选型矩阵推荐 | 6~12 个月 | 引擎层性能格局变化、昇腾侧适配状态变化 |
 
 ---
 
-*本附录数据截至 2026 年 8 月；勘误与更新见[本地勘误页](../ERRATA.md#附录-c-框架选型快照)。*
+*本附录数据截至 2026 年 8 月；勘误与更新见[本地勘误页](../ERRATA.md#附录-c-框架选型快照)。数据源:`data/frameworks/frameworks.yaml`(项目清单为登记信息,矩阵与否决规则为作者判断 author_judgment;更新请改数据文件后运行 `npm run docs:generate`)。*

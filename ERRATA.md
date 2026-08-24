@@ -17,6 +17,7 @@
 
 ## 附录 A：加速卡与集群形态速查表
 
+- **更新入口:`data/accelerators/accelerators.yaml` 与 `data/cluster-forms/cluster-forms.yaml`**——附录 A 是生成文件(页首有 AUTO-GENERATED 标记),不要直接改 Markdown;改数据后运行 `npm run docs:generate`。
 - 快照日期：2026 年 8 月。
 - 更新要求：每个新增或变更的型号须给出厂商规格页、访问日期、精度口径（稠密/稀疏、峰值/持续）和形态（SXM、PCIe、OAM 等）。
 - 待核验项：新增型号、路线图产品与以“≈”表示的公开参数。它们只能作为选型输入，不能替代目标负载实测。
@@ -28,6 +29,7 @@
 
 ## 附录 C：框架选型快照
 
+- **更新入口:`data/frameworks/frameworks.yaml`**——附录 C 是生成文件,不要直接改 Markdown;改数据后运行 `npm run docs:generate`。
 - 快照日期：2026 年 8 月。
 - 更新要求：项目状态或兼容性变化须链接到项目官方仓库、发行说明或官方文档，并注明核验日期。
 - 适用边界：矩阵提供默认起点；模型支持、硬件后端和性能结论必须在目标版本与目标负载上验证。

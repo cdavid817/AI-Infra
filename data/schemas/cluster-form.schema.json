@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai-infra/cluster-forms",
+  "type": "object",
+  "required": ["schema_version", "hbm_generations", "capacity_deductions", "supernodes", "power_density"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "hbm_generations": {
+      "type": "object",
+      "required": ["rows"],
+      "additionalProperties": false,
+      "properties": {
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["generation", "stack_capacity", "stack_bandwidth", "example_devices", "production_period"],
+            "additionalProperties": false,
+            "properties": {
+              "generation": { "type": "string" },
+              "stack_capacity": { "type": "string" },
+              "stack_bandwidth": { "type": "string" },
+              "example_devices": { "type": "string" },
+              "production_period": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "capacity_deductions": {
+      "type": "object",
+      "required": ["intro", "rows"],
+      "additionalProperties": false,
+      "properties": {
+        "intro": { "type": "string" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["item", "magnitude", "note"],
+            "additionalProperties": false,
+            "properties": {
+              "item": { "type": "string" },
+              "magnitude": { "type": "string" },
+              "note": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "supernodes": {
+      "type": "object",
+      "required": ["intro", "rows", "reading_guide"],
+      "additionalProperties": false,
+      "properties": {
+        "intro": { "type": "string" },
+        "reading_guide": { "type": "string" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "domain_size", "intra_domain_bandwidth", "intra_domain_topology", "scale_out", "note", "availability_state"],
+            "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "domain_size": { "type": "string" },
+              "intra_domain_bandwidth": { "type": "string" },
+              "intra_domain_topology": { "type": "string" },
+              "scale_out": { "type": "string" },
+              "note": { "type": "string" },
+              "availability_state": { "enum": ["generally_available", "roadmap", "baseline_reference"] }
+            }
+          }
+        }
+      }
+    },
+    "power_density": {
+      "type": "object",
+      "required": ["intro", "rows", "outro"],
+      "additionalProperties": false,
+      "properties": {
+        "intro": { "type": "string" },
+        "outro": { "type": "string" },
+        "rows": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["target", "power_reference", "cooling"],
+            "additionalProperties": false,
+            "properties": {
+              "target": { "type": "string" },
+              "power_reference": { "type": "string" },
+              "cooling": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

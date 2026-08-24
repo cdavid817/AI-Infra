@@ -1,0 +1,343 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "ai-infra/accelerators",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "snapshot_date",
+    "intro_notes",
+    "devices",
+    "tendency_notes"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": 1
+    },
+    "snapshot_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}$"
+    },
+    "intro_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tendency_notes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "vendor",
+          "model",
+          "category",
+          "memory",
+          "interconnect",
+          "compute",
+          "power",
+          "verification"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$"
+          },
+          "vendor": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "form_factor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "category": {
+            "enum": [
+              "nvidia",
+              "amd_intel_google",
+              "domestic"
+            ]
+          },
+          "availability": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "state": {
+                "enum": [
+                  "generally_available",
+                  "cloud_only",
+                  "roadmap",
+                  "china_market_specific",
+                  "unknown"
+                ]
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          },
+          "memory": {
+            "type": "object",
+            "required": [
+              "capacity",
+              "type"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "capacity": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "type": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "bandwidth": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "enum": [
+                      "TB/s",
+                      "GB/s"
+                    ]
+                  },
+                  "metric_type": {
+                    "const": "peak"
+                  },
+                  "confidence": {
+                    "enum": [
+                      "exact",
+                      "approximate"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "interconnect": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "name": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "generation": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "per_device_aggregate": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "value": {
+                    "type": [
+                      "number",
+                      "null"
+                    ]
+                  },
+                  "unit": {
+                    "enum": [
+                      "TB/s",
+                      "GB/s"
+                    ]
+                  },
+                  "directionality": {
+                    "enum": [
+                      "bidirectional",
+                      "unidirectional",
+                      "not_applicable"
+                    ]
+                  },
+                  "confidence": {
+                    "enum": [
+                      "exact",
+                      "approximate"
+                    ]
+                  }
+                }
+              },
+              "note": {
+                "type": "string"
+              }
+            }
+          },
+          "compute": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "precision",
+                "value",
+                "unit",
+                "sparsity",
+                "metric_type"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "precision": {
+                  "enum": [
+                    "FP32",
+                    "TF32",
+                    "BF16/FP16",
+                    "FP8",
+                    "FP4",
+                    "INT8"
+                  ]
+                },
+                "value": {
+                  "type": [
+                    "number",
+                    "string",
+                    "null"
+                  ]
+                },
+                "unit": {
+                  "enum": [
+                    "TFLOPS",
+                    "PFLOPS",
+                    "TOPS",
+                    "POPS",
+                    null
+                  ]
+                },
+                "sparsity": {
+                  "const": "dense"
+                },
+                "metric_type": {
+                  "const": "peak"
+                },
+                "confidence": {
+                  "enum": [
+                    "exact",
+                    "approximate",
+                    "inconsistent_public_data"
+                  ]
+                },
+                "note": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "power": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "tdp_w": {
+                "type": [
+                  "number",
+                  "null"
+                ]
+              },
+              "confidence": {
+                "enum": [
+                  "exact",
+                  "approximate"
+                ]
+              }
+            }
+          },
+          "tendency": {
+            "type": "object",
+            "required": [
+              "label",
+              "rationale",
+              "kind"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "kind": {
+                "const": "author_judgment"
+              }
+            }
+          },
+          "sources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^SRC-[A-Z0-9-]+$"
+            }
+          },
+          "verification": {
+            "enum": [
+              "verified",
+              "unverified"
+            ]
+          },
+          "review": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "reviewed_at": {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+              },
+              "review_after_days": {
+                "type": "integer",
+                "minimum": 1
+              }
+            }
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "section_notes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "amd_intel_google": {
+          "type": "string"
+        },
+        "domestic_intro": {
+          "type": "string"
+        },
+        "domestic_disciplines": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

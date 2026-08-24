@@ -1,0 +1,127 @@
+# 附录 A 集群形态数据(唯一事实源)。附录 A.2 / A.3 / A.4 由本文件生成。
+schema_version: 1
+hbm_generations:
+  rows:
+    - generation: HBM2
+      stack_capacity: 4–8 GB
+      stack_bandwidth: ≈307 GB/s
+      example_devices: V100
+      production_period: 2016–2019
+    - generation: HBM2e
+      stack_capacity: 8–16 GB
+      stack_bandwidth: 410–460 GB/s
+      example_devices: A100、Gaudi 3、TPU v5p
+      production_period: 2020–2023
+    - generation: HBM3
+      stack_capacity: 16–24 GB
+      stack_bandwidth: 665–819 GB/s
+      example_devices: H100、MI300X、昇腾 910C
+      production_period: 2022–2025
+    - generation: HBM3e
+      stack_capacity: 24–36 GB
+      stack_bandwidth: 1.0–1.2 TB/s
+      example_devices: H200、B200/B300、MI325X/MI355X
+      production_period: 2024–
+    - generation: HBM4
+      stack_capacity: 36–48 GB
+      stack_bandwidth: 1.6–2.0 TB/s(2048-bit 位宽)
+      example_devices: Rubin 代、MI400 代(2026 起爬坡)
+      production_period: 2026–
+capacity_deductions:
+  intro: '**标称容量与实际可用量的差额**——容量规划时必须扣除,漏算任何一项都表现为"账面放得下、上机就 OOM"(排查路径见 [§17.6](../第四部分-训练系统/第17章-显存与训练侧精度机制.md#176-大数据对照内存溢出排查方法论的迁移)):'
+  rows:
+    - item: ECC 开销与坏块保留
+      magnitude: 0.5%–3%
+      note: HBM 代际越新、堆栈越高,保留比例越可观
+    - item: 驱动/固件预留
+      magnitude: 每卡 0.5–2 GB
+      note: 上下文、page table、固件缓冲
+    - item: 框架运行时占用
+      magnitude: 每进程 1–3 GB
+      note: CUDA/CANN context、集合通信库缓冲区(NCCL/HCCL buffer)
+    - item: 分配器碎片
+      magnitude: 5%–10%
+      note: 长时任务逐渐累积,见 [§5.2](../第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md#52-运行时的共性问题) 分配器机制
+    - item: '**合计经验值**'
+      magnitude: '**标称 × 90% ≈ 可用上限**'
+      note: 本书正文所有"每卡 80 GB"类估算已隐含此折扣
+supernodes:
+  intro: 超节点(单一高带宽互联域覆盖远超 8 卡)的抽象定义与决策含义见 [§4.1.3](../第一部分-基础与心智模型/第04章-硬件第一性原理、架构范式与数值精度.md#413-规模层级互联域是关键抽象) 与第 7 章;它如何改写并行选型见第 16 章。此处只列具体方案的三个关键数:**单域卡数、域内单卡带宽、域间方案**。
+  reading_guide: 读这张表的方法(而非结论):**域内带宽 × 域规模决定 TP/EP 能扩到多大**(第 16 章"并行切分与域边界对齐");**域间带宽决定 DP/PP 的重叠预算**(第 7 章 T_comm 公式换 B_eff)。两条相反的设计路线——NVL72 的"小域高带宽"与 CloudMatrix 的"大域中带宽"——没有绝对优劣,匹配你的并行策略才有优劣。
+  rows:
+    - name: HGX 8 卡机(基线)
+      domain_size: '8'
+      intra_domain_bandwidth: 900 GB/s(NVLink 4)/ 1.8 TB/s(NVLink 5)
+      intra_domain_topology: NVSwitch 全互联
+      scale_out: InfiniBand NDR 400G 或 RoCE,每卡 1 端口
+      note: 非超节点,作对照基线
+      availability_state: baseline_reference
+    - name: NVIDIA GB200/GB300 NVL72
+      domain_size: '72'
+      intra_domain_bandwidth: 1.8 TB/s(NVLink 5)
+      intra_domain_topology: 9 台 NVSwitch tray 全互联,铜缆背板
+      scale_out: InfiniBand XDR / Spectrum-X 以太
+      note: 单柜即单域;液冷强制
+      availability_state: generally_available
+    - name: NVIDIA NVL576(Rubin 代,路线图)
+      domain_size: '576'
+      intra_domain_bandwidth: NVLink 6(代际翻倍)
+      intra_domain_topology: 多柜光互联
+      scale_out: 以太/IB scale-out
+      note: 2026 年 8 月尚未量产,谨慎作规划输入
+      availability_state: roadmap
+    - name: 华为 CloudMatrix 384
+      domain_size: '384'
+      intra_domain_bandwidth: ≈392 GB/s(统一总线,光互联)
+      intra_domain_topology: 16 柜级全光互联,统一总线语义
+      scale_out: RoCE scale-out
+      note: 以域规模换单卡带宽的相反路线;单卡带宽低于 NVLink 但域大 5 倍
+      availability_state: generally_available
+    - name: Google TPU v7 Pod
+      domain_size: 至 9216
+      intra_domain_bandwidth: ICI 1.2 TB/s
+      intra_domain_topology: 3D torus + OCS 光交换
+      scale_out: Pod 间走数据中心网络
+      note: OCS 可动态重构拓扑,故障绕行
+      availability_state: generally_available
+    - name: AMD Infinity Fabric 8 卡 + UALink(路线图)
+      domain_size: 8(现);UALink 目标数百
+      intra_domain_bandwidth: 896 GB/s–1 TB/s
+      intra_domain_topology: 全互联
+      scale_out: RoCE / Ultra Ethernet
+      note: UALink 1.0 规范已发布,商用硬件 2026 年 8 月尚未成规模
+      availability_state: roadmap
+power_density:
+  intro: '功率与散热约束的完整讨论见 [§31.2](../第七部分-工程化与治理/第31章-容量、成本与SLO.md#312-机房功率与散热全书唯一定义处),此处只给速查数字:'
+  outro: '速查含义:老机房 10 kW/柜的供电密度,放当代 8 卡机等于一柜只能放一台——**集群规划的第一约束经常是电和热,不是预算**([§31.2](../第七部分-工程化与治理/第31章-容量、成本与SLO.md#312-机房功率与散热全书唯一定义处))。'
+  rows:
+    - target: 单卡(上代,A100 档)
+      power_reference: 300–400 W
+      cooling: 风冷
+    - target: 单卡(当代,H100/MI300X 档)
+      power_reference: 700–750 W
+      cooling: 强化风冷可行,冷板更优
+    - target: 单卡(新一代,B200/MI355X 档)
+      power_reference: 1000–1400 W
+      cooling: 冷板液冷事实上强制
+    - target: 8 卡整机(HGX H100 档)
+      power_reference: 10–12 kW
+      cooling: 风冷机房上限附近
+    - target: 8 卡整机(HGX B200 档)
+      power_reference: 14–15 kW
+      cooling: 液冷
+    - target: 传统风冷机柜
+      power_reference: 8–15 kW/柜
+      cooling: 房间级空调
+    - target: 强化风冷机柜(封闭冷/热通道)
+      power_reference: 15–25 kW/柜
+      cooling: 列间空调 + 通道封闭
+    - target: 冷板液冷机柜
+      power_reference: 30–80 kW/柜
+      cooling: CDU + 冷板,残余 20%–30% 热量仍需风冷
+    - target: GB200/GB300 NVL72 单柜
+      power_reference: 120–140 kW/柜
+      cooling: 全液冷,机房需按此密度重建供电与承重
+    - target: 浸没式液冷
+      power_reference: 100–200 kW/柜
+      cooling: 单相/两相浸没,运维模式改变最大
