@@ -9,13 +9,20 @@
 
 ## 提交前检查
 
-运行：
+首次或依赖变更后先安装(需要 Node 22+):
 
 ```bash
-node scripts/check-doc-links.mjs
+npm ci
 ```
 
-该检查验证 Markdown 的本地文件链接。锚点、外部链接和 Mermaid 的语义正确性仍需人工复核。
+然后运行:
+
+```bash
+npm run test:docs-tools        # 文档工具链自身的单元测试
+npm run docs:check:local-links # 检查全书 Markdown 的本地文件链接
+```
+
+链接检查基于 Markdown AST(unified/remark)解析,正确处理中文文件名、URL 编码、代码块与带 title 的链接,不依赖任何外部命令。`node scripts/check-doc-links.mjs` 仍可作为兼容入口直接运行。锚点、外部链接和 Mermaid 的语义正确性目前仍需人工复核(后续由专项检查覆盖)。
 
 ## 勘误提交格式
 

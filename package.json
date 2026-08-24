@@ -1,0 +1,20 @@
+{
+  "name": "ai-infra-docs-tools",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-Infra 书稿文档工具链:链接、锚点与结构检查",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "docs:check:local-links": "node scripts/check-doc-links.mjs",
+    "test:docs-tools": "node --test \"scripts/tests/**/*.test.mjs\""
+  },
+  "dependencies": {
+    "github-slugger": "2.0.0",
+    "remark-gfm": "4.0.1",
+    "remark-parse": "11.0.0",
+    "unified": "11.0.5"
+  }
+}
