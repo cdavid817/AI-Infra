@@ -220,6 +220,15 @@ tooling:
     ascend_counterpart: CANN(完整栈对照见 [§5.3](../第一部分-基础与心智模型/第05章-CUDA、CANN与加速器软件栈.md#53-cann-与昇腾软件栈两套完整并行的世界),术语对照见附录 D)
     sources: []
     verification: unverified
+  - purpose: K8s 设备分配模型
+    projects: Device Plugin(存量主流)/ DRA(核心 stable,驱动生态迁移中)
+    chapter_ref: 第 8 章
+    ascend_counterpart: Ascend Device Plugin(DRA 驱动状态待核验)
+    sources: [SRC-K8S-DRA-OFFICIAL]
+    verification: verified
+    review:
+      reviewed_at: "2026-08-24"
+      review_after_days: 180
 recommendations:
   kind: author_judgment
   intro: 矩阵给的是**默认起点**,不是终点;每格的失效边界在对应章节。规模档口径:小 = 单机 8 卡内,中 = 数机到百卡,大 = 数百到数千卡,超大 = 数千卡以上。

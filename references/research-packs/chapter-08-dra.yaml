@@ -1,0 +1,37 @@
+schema_version: 1
+chapter: 8
+topic: Kubernetes Dynamic Resource Allocation(计划 §17.2)
+prepared_at: 2026-08-24
+scope:
+  included:
+    - Device Plugin 与 DRA 的职责边界与对照
+    - DeviceClass / ResourceClaim / ResourceClaimTemplate / ResourceSlice 对象模型与生命周期
+    - 设备属性选择、prioritized list 子请求、组合分配(GPU+RDMA NIC 联合需求)
+    - 拓扑约束与共享的表达方式变化
+    - 安全边界(ResourceSlice/status 权限、admin access)与运维风险
+    - 迁移与失效边界;第 9 章批调度交点(Gang 与 DRA 的关系)
+  excluded:
+    - 具体驱动实现教程与 YAML 清单(违反抗过时规则)
+    - 厂商 DRA 驱动的版本状态(进附录 C 数据文件)
+claims:
+  - proposed_id: CLM-008-NEW-001
+    statement: DRA 核心能力在 Kubernetes v1.35 进入 stable 并默认启用;此前 Device Plugin 是加速卡接入的唯一主流路径
+    claim_type: project_status
+    candidate_sources: [SRC-K8S-DRA-OFFICIAL]
+    confidence: high
+  - proposed_id: CLM-008-NEW-002
+    statement: DRA 用 DeviceClass/ResourceClaim(Template)/ResourceSlice 把设备从"计数资源"变为"有属性可选择的对象",支持按属性选择、子请求优先列表与多设备组合分配
+    claim_type: mechanism
+    candidate_sources: [SRC-K8S-DRA-OFFICIAL]
+    confidence: high
+  - proposed_id: CLM-008-NEW-003
+    statement: DRA 安全面在于 ResourceSlice/status 类对象的写权限与 admin access:驱动权限需按节点收敛,admin access 触达在用设备须准入管控
+    claim_type: mechanism
+    candidate_sources: [SRC-K8S-DRA-HARDENING]
+    confidence: medium
+open_questions:
+  - Gang 语义与 DRA 分配的先后耦合在主流批调度器中的支持进度(附录 C 按 unverified 登记,不写进正文结论)
+conflicting_sources: []
+volatile_facts:
+  - statement: DRA 各扩展特性(prioritized list、admin access、设备健康)的 stable 版本号
+    review_required: true

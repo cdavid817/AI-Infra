@@ -1,0 +1,12 @@
+schema_version: 1
+chapter: 9
+claims:
+  - id: CLM-009-001
+    section: "9.4"
+    summary: DRA 下设备分配以 ResourceClaim 为单位由调度器在集群级裁决,Gang 判定对象从"节点空闲卡计数"变为"全部 claim 的属性约束能否被联合满足";部分分配时任务互持的资源从卡变为已分配的 claim
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-K8S-DRA-OFFICIAL]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180

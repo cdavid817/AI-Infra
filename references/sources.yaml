@@ -36,3 +36,25 @@ sources:
     license_note: CC BY 4.0(页面明示);图表可转载,需署名
     review_after_days: 365
     notes: 第 1 章算力增长 4 倍/年、AlexNet~GPT-3 量级数据与嵌入图表的出处
+  - id: SRC-K8S-DRA-OFFICIAL
+    title: Dynamic Resource Allocation
+    publisher: Kubernetes
+    source_type: official_documentation
+    url: https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 180
+    notes: 页面标注 DRA 核心自 v1.35 stable 默认启用;API 对象 DeviceClass/ResourceClaim/ResourceClaimTemplate/ResourceSlice/DeviceTaintRule;prioritized list v1.36 stable;admin access 面向在用设备的特权维护
+  - id: SRC-K8S-DRA-HARDENING
+    title: Hardening Guide - Dynamic Resource Allocation
+    publisher: Kubernetes
+    source_type: official_documentation
+    url: https://kubernetes.io/docs/concepts/security/hardening-guide/dynamic-resource-allocation/
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 180
+    notes: 驱动与状态控制器的按节点权限收敛、admin access 管控与准入策略建议

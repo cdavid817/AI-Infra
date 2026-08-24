@@ -1,0 +1,30 @@
+schema_version: 1
+chapter: 8
+claims:
+  - id: CLM-008-001
+    section: "8.4"
+    summary: DRA(Dynamic Resource Allocation)核心能力在 Kubernetes v1.35 进入 stable 并默认启用;此前 Device Plugin 是加速卡接入的唯一主流路径。正文机制段不写版本号,版本事实仅登记于此与附录 C 数据
+    claim_type: project_status
+    evidence_level: L1
+    sources: [SRC-K8S-DRA-OFFICIAL]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180
+  - id: CLM-008-002
+    section: "8.4"
+    summary: DRA 用 DeviceClass/ResourceClaim(Template)/ResourceSlice 把设备从"计数资源"变为"有属性可选择的对象",支持按属性选择、子请求优先列表(prioritized list)与多设备组合分配(如 GPU+RDMA 网卡联合需求)
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-K8S-DRA-OFFICIAL]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180
+  - id: CLM-008-003
+    section: "8.4"
+    summary: DRA 安全面在于 ResourceSlice/claim status 类对象的写权限与 admin access:驱动写权限需按节点收敛(防止被攻破节点伪造设备清单或分配状态),admin access 可触达在用设备,须以准入策略管控
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-K8S-DRA-HARDENING]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 180

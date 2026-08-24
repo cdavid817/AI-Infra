@@ -22,7 +22,15 @@
           "chapter_ref": { "type": "string" },
           "ascend_counterpart": { "type": "string" },
           "sources": { "type": "array", "items": { "type": "string", "pattern": "^SRC-[A-Z0-9-]+$" } },
-          "verification": { "enum": ["verified", "unverified"] }
+          "verification": { "enum": ["verified", "unverified"] },
+          "review": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "reviewed_at": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+              "review_after_days": { "type": "integer", "minimum": 1 }
+            }
+          }
         }
       }
     },
