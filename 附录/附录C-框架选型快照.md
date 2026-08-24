@@ -23,7 +23,7 @@
 | 框架 / 工程层 | TorchTitan | PyTorch 官方参考训练循环,组合原生并行原语 | 第 19 章 | torch_npu 路线可用 |
 | 框架 / 工程层 | LLaMA-Factory | 微调工作台,配置驱动、覆盖主流开源模型 | 第 19 章 | 官方支持昇腾后端 |
 | 框架 / 工程层 | Axolotl | 微调工作台,YAML 配置、社区驱动 | 第 19 章 | — |
-| 框架 / 工程层(RL) | verl | RL 后训练框架,单控制器编排训推混合 | 第 21 章 | 社区昇腾适配推进中 |
+| 框架 / 工程层(RL) | verl | RL 后训练框架,单控制器编排训推混合;官方文档覆盖 agentic 多轮 rollout 与从 one-step off-policy 到 fully async 的异步耦合谱系(异步配方标记为实验性,状态高时效) | 第 21 章 | 社区昇腾适配推进中 |
 | 框架 / 工程层(RL) | OpenRLHF | Ray 架构的 RLHF 实现 | 第 21 章 | — |
 | 框架 / 工程层(RL) | TRL | Hugging Face 系轻量 RL,单机到小规模 | 第 21 章 | — |
 | 框架 / 工程层(RL) | slime | 面向大规模 rollout 的 RL 框架 | 第 21 章 | — |

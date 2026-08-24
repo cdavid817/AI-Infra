@@ -56,11 +56,14 @@ training:
     verification: unverified
   - layer: 框架 / 工程层(RL)
     name: verl
-    positioning: RL 后训练框架,单控制器编排训推混合
+    positioning: RL 后训练框架,单控制器编排训推混合;官方文档覆盖 agentic 多轮 rollout 与从 one-step off-policy 到 fully async 的异步耦合谱系(异步配方标记为实验性,状态高时效)
     chapter_ref: 第 21 章
     ascend_counterpart: 社区昇腾适配推进中
-    sources: []
-    verification: unverified
+    sources: [SRC-VERL-DOCS]
+    verification: verified
+    review:
+      reviewed_at: "2026-08-24"
+      review_after_days: 120
   - layer: 框架 / 工程层(RL)
     name: OpenRLHF
     positioning: Ray 架构的 RLHF 实现

@@ -1,0 +1,40 @@
+schema_version: 1
+chapter: 21
+topic: Agentic RL 基础设施(计划 §17.7)
+prepared_at: 2026-08-24
+scope:
+  included:
+    - 同步 / 异步 / 流式 rollout 的分类学(把第 21 章已有的异步小节收进统一坐标)
+    - policy version 与 trajectory 的最小 schema(11.52):版本标识、逐 token logprob 归属、轨迹分段与工具事件
+    - 训练 / 推理 / 环境三类资源的联合调度图(11.53)
+    - 长轨迹存储与部分轨迹回收、Replay Buffer 的基础设施画像(11.54)
+    - 轨迹可观测性(与第 29 章 OTel GenAI span 词汇衔接)
+    - reward hacking 与评测污染的 Infra 侧检测信号(与第 29/30 章、第 13 章自噬防线衔接)
+    - 与第 20 章容错、第 30 章血缘的交叉引用(11.55)
+    - 附录 C:verl 行按新来源升级 verified
+  excluded:
+    - RL 数学与效果调参(11.56);具体框架 API 与版本号
+  already_covered_in_chapter:
+    - 资源潮汐模型与利用率上界、三种混合架构、权重 resharding 三路径、staleness 参数化、logprob 对齐、奖励沙箱画像、多轮会话保持与工具延迟(21.4.7)——本轮只做增量,不重写
+claims:
+  - proposed_id: CLM-021-NEW-001
+    statement: 主流 RL 后训练框架把训练建模为数据流并用混合/单控制器编排训推角色;同步、one-step off-policy、fully async 与增量权重同步是官方文档明列的 rollout-训练耦合谱系
+    claim_type: mechanism
+    candidate_sources: [SRC-VERL-DOCS, SRC-HYBRIDFLOW-PAPER]
+    confidence: high
+  - proposed_id: CLM-021-NEW-002
+    statement: 多轮 Agentic 训练需要轨迹携带 policy version 与逐段归属信息:异步下同一轨迹可能跨越多个权重版本,importance 校正与回放筛选都依赖版本标注——缺失版本标注的轨迹库在异步模式下不可用
+    claim_type: mechanism
+    candidate_sources: [SRC-VERL-DOCS]
+    confidence: medium
+  - proposed_id: CLM-021-NEW-003
+    statement: reward hacking 与评测污染在 Infra 侧有可检测信号:奖励分布漂移、判题沙箱异常调用模式、评测集内容进入训练轨迹的血缘告警——检测归平台,定性归算法
+    claim_type: recommendation
+    candidate_sources: []
+    confidence: medium
+open_questions:
+  - 流式(样本级)rollout 在各框架的成熟度差异(附录 C 不逐一断言)
+conflicting_sources: []
+volatile_facts:
+  - statement: verl 异步训练配方的名称与状态(experimental 标记)
+    review_required: true

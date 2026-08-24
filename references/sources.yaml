@@ -146,3 +146,26 @@ sources:
     evidence_level: L1
     review_after_days: 180
     notes: 覆盖数据准备、训练到部署与推理的全生命周期;按 AI 系统类型定义边界与功能单位;激励直接减排优化而非依赖碳抵消
+  - id: SRC-VERL-DOCS
+    title: verl Documentation
+    publisher: verl (volcengine)
+    source_type: official_documentation
+    url: https://verl.readthedocs.io/en/latest/
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    review_after_days: 120
+    notes: 文档含 Agentic RL Training、HybridFlow 编程指南(single_controller 设计)、Multi-turn Rollout、异步训练配方(One Step Off Policy / Fully Async / Delta Weight Sync)、Rollout Correction 方法、Sandbox Fusion、Rollout KV Cache Offload、动态资源调度;后端覆盖 FSDP/Megatron 与 vLLM/SGLang 等
+  - id: SRC-HYBRIDFLOW-PAPER
+    title: "HybridFlow: A Flexible and Efficient RLHF Framework"
+    publisher: ByteDance / HKU
+    source_type: paper
+    url: https://arxiv.org/abs/2409.19256
+    accessed_at: 2026-08-24
+    language: en
+    status: active
+    evidence_level: L1
+    arxiv_id: "2409.19256"
+    license_note: arXiv non-exclusive license;图表不可转载,仅引用机制事实
+    notes: RL 后训练建模为数据流;传统单控制器统一指挥节点内计算与节点间通信在 RLHF 下低效,混合控制器编程模型为其核心贡献;为 verl 的论文原型

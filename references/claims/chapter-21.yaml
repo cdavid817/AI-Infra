@@ -1,0 +1,33 @@
+schema_version: 1
+chapter: 21
+claims:
+  - id: CLM-021-001
+    section: "21.4.6 异步的度量"
+    summary: "主流 RL 后训练框架把训练建模为多模型数据流并以单控制器/混合控制器编排训推角色;同步、one-step off-policy、fully async 与增量权重同步是其官方文档明列的 rollout-训练耦合形态,谱系为既定工程选项而非理论构造。"
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-VERL-DOCS, SRC-HYBRIDFLOW-PAPER]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 120
+
+  - id: CLM-021-002
+    section: "21.4 轨迹是带版本的数据资产"
+    summary: "异步/多轮 Agentic 训练要求轨迹逐段携带 policy version 与行为 logprob 归属:同一多轮轨迹可跨越多个权重版本,importance 校正、回放筛选与劣化追查都依赖版本标注——缺失版本标注的轨迹库在异步模式下不可用。机制基础(rollout correction 依赖生成时记录、异步配方)见 verl 官方文档;'整库不可用'的必要性表述为作者基于该机制的工程推论,正文已写明三项依赖。"
+    claim_type: mechanism
+    evidence_level: L1
+    sources: [SRC-VERL-DOCS]
+    status: verified
+    reviewed_at: 2026-08-24
+    review_after_days: 120
+
+  - id: CLM-021-003
+    section: "21.4 轨迹是带版本的数据资产"
+    summary: "reward hacking 与评测污染在 Infra 侧有可检测信号,推荐做成三类常驻告警:奖励分布漂移、判题沙箱异常调用模式、评测集内容进入训练轨迹的血缘告警;检测归平台、定性归算法。"
+    claim_type: recommendation
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "选型立场为作者的工程推断,尚未挂接公开来源;三类信号的可行性由本书第 13/29/30 章已述的血缘与观测机制推出,阈值与效果未经实测验证。"
+    reviewed_at: 2026-08-24
+    review_after_days: 120
