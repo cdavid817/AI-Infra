@@ -131,6 +131,12 @@
 
 附录 A、B、C 含有高时效性数据。引用其中的具体参数、项目状态或公式前,请先查看[勘误与更新](ERRATA.md)中的适用口径与来源记录。提交修订时遵循[贡献指南](CONTRIBUTING.md);本仓库的本地 Markdown 链接可通过 `node scripts/check-doc-links.mjs` 校验。
 
+## Labs、Runbooks 与参考架构
+
+- [Labs](labs/README.md):11 个分层动手实验(L0 无 GPU 至 L3 集群),把书中公式变成可复算的观测——每个都有成功判据与清理步骤。
+- [故障 Runbooks](runbooks/README.md):训练侧与推理/平台侧各 6 个,九段结构、止损先于诊断;安全类仅含防御与响应。
+- [参考架构](reference-architectures/README.md):从单机 8 卡到多集群平台共 7 档,容量模型全部公式代入,每档写明失效边界与升级去向。
+
 ## 配套估算器
 
 `calculators/` 提供七个可执行估算器(训练显存 / KV 并发 / 训练工期 / 集合通信 / Checkpoint 窗口 / 推理容量 / 功率 TCO),公式与附录 B 编号双向对齐,输出含假设与不确定性;固定测试向量取自正文算例,防止与书静默漂移。用法见 [calculators/examples/README.md](calculators/examples/README.md)。
