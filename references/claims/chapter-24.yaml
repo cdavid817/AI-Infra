@@ -11,3 +11,13 @@ claims:
     reviewed_at: 2026-08-24
     review_after_days: 180
     disclosure: 分层结论为作者的架构判断(置信度中等),正文以判断口吻给出依据;InferencePool/EPP 的 API 形态(L1 来源)佐证"实例级调度独立成层"的方向,但"混为一层的后果"部分为机制推理,未附外部实证来源。
+
+  - id: CLM-024-002
+    section: "24.3 问题场景"
+    summary: "合成案例中的示意数字:70B 模型 12 实例(每实例 4 卡 TP)、轮询负载均衡、平均每会话 9 轮、系统提示词约 1800 token、第 9 轮 prompt 约 12K token、每轮新增输入约 150 token、约 98% 的 prefill token 为已算过前缀、约 70% 算力花在重算、单实例压测命中率 80% 对生产 11%、单位成本为竞品三倍,均为写作构造。"
+    claim_type: illustrative
+    evidence_level: L5
+    sources: []
+    status: illustrative_only
+    disclosure: "合成案例:人物、机构与全部数值均为写作构造的示意,用于说明前缀感知路由与命中率因子分解的方法,不构成真实事故记录,不能作为现实统计证据。"
+    reviewed_at: "2026-08-25"

@@ -1,0 +1,32 @@
+schema_version: 1
+chapter: 16
+claims:
+  - id: CLM-016-001
+    section: "16.3 问题场景:同样 256 张卡,吞吐差三倍"
+    summary: "合成案例中的示意数字:70B 稠密模型、256 张 80 GB 卡、抄来的 TP=16/PP=2/DP=8 配置 MFU 11%,同规模对照团队 MFU 34%,吞吐差三倍、等价于 170 张卡空转,均为写作构造;11% 与 34% 的来历在 16.4.8 以公式逐步推演复现。"
+    claim_type: illustrative
+    evidence_level: L5
+    sources: []
+    status: illustrative_only
+    disclosure: "合成案例:人物、机构与全部数值均为写作构造的示意,用于说明并行配置三本账的核算方法,不构成真实事故记录,不能作为现实统计证据。"
+    reviewed_at: "2026-08-25"
+
+  - id: CLM-016-002
+    section: "16.4.6 变长与异构负载下的并行"
+    summary: "真实 SFT 数据集长度分布长尾时,按 batch 内最大长度 padding 的浪费率 30%–60% 是常态。"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "经验区间,非任何公开数据集的统计结果;其量级可由「浪费率 = 1 − 平均长度/最大长度」在长尾长度分布下推导(均值远低于 batch 内最大值时浪费率自然落入该区间),具体数值取决于数据集长度分布与 batch 组织方式。"
+    reviewed_at: "2026-08-25"
+
+  - id: CLM-016-003
+    section: "16.4.2 通信量与显存收益:每种策略的账"
+    summary: "在细粒度专家的 MoE 模型中,专家参数占总参数 90% 以上,故 EP 是 MoE 显存问题的主要解法。"
+    claim_type: quantitative
+    evidence_level: L4
+    sources: []
+    status: unverified
+    disclosure: "该占比适用于细粒度专家设计(大量小专家、注意力与共享部分占比低)的 MoE;粗粒度少专家的 MoE 中专家参数占比未必达到 90%,该数字不可跨结构套用,正文已加「在细粒度专家的 MoE 中」限定。"
+    reviewed_at: "2026-08-25"

@@ -3,7 +3,7 @@
 #   数据快照(data_snapshot):附录 A/C 背后 data/ 的口径日期;可独立于内容版本更新
 #   勘误(errata):滚动登记于 ERRATA.md,累积到一定量并入下一个 PATCH
 schema_version: 1
-version: 0.1.0
-stage: draft            # draft → release-candidate → stable
+version: 0.2.0
+stage: release-candidate # draft → release-candidate → stable
 content_snapshot: 2026-08
 data_snapshot: 2026-08

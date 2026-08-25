@@ -99,7 +99,7 @@ Research Pack 按 templates/research-pack.yaml 编写,必须列出:candidate cla
 | Roofline 与瓶颈判定 | §4.4 |
 | 显存三分与参数换算 | §6.2 |
 | profiling 方法论 | §5.4 |
-| 框架三层地图 | §0.4 |
+| 框架三层地图 | §2.4.3(大纲 §0.4) |
 | 加速特性三分法 | §22.5 |
 | 生态评估维度 | §12.7 |
 | 性能对标口径 | §12.5 |

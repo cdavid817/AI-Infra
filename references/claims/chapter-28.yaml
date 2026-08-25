@@ -3,13 +3,13 @@ chapter: 28
 claims:
   - id: CLM-028-001
     section: "28.3 问题场景:沙箱冷启动吃掉了一半延迟"
-    summary: "合成案例 trace 数字:端到端 P50 38 秒、模型推理 4 轮累计 11 秒、拉起容器 1.8 秒、安装依赖 6.5 秒、单轮沙箱准备约 8.5 秒、4 轮冷启动合计 22 秒;40 多个 Agent 应用、3 GB 胖镜像、单沙箱 800 MB 内存、低频应用池命中率不到 10%。"
+    summary: "合成案例 trace 数字:端到端 P50 44 秒、模型推理 4 轮累计 11 秒、拉起容器 1.8 秒、安装依赖 6.5 秒、单轮沙箱准备约 8.3 秒、4 轮沙箱准备合计约 33 秒(其中依赖安装 26 秒);40 多个 Agent 应用、3 GB 胖镜像、单沙箱 800 MB 内存、低频应用池命中率不到 10%。"
     claim_type: illustrative
     evidence_level: L5
     sources: []
     status: illustrative_only
     disclosure: "合成案例:人物、机构、日期与全部数值均为写作构造的示意,用于说明冷启动延迟构成与预热池取舍的分析方法,不构成真实事故记录或生产统计。"
-    reviewed_at: "2026-08-24"
+    reviewed_at: "2026-08-25"
 
   - id: CLM-028-002
     section: "28.4.1 Agent 负载的资源画像"
