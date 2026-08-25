@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 章节结构校验:七段骨架关键段、交付物句、mermaid init 块与图注;红色样式输出人工审查清单。
+// 章节能力覆盖校验:上下文、机制/证据、边界和交付物;不约束读者可见标题顺序。
 // 用法:node scripts/validate-chapters.mjs [--red-report]
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { relative } from 'node:path';
@@ -21,18 +21,15 @@ for (const file of chapterFiles) {
   };
 
   if (chapter === 3) {
-    // 第 3 章例外:三段式,校验编号小节与交付物
+    // 第 3 章保留编号知识地图,但与其他章节一样不套固定目录。
     for (const sec of ['3.1', '3.2', '3.3', '3.4', '3.5', '3.6', '3.7']) {
       need(text.includes(`${sec} `), `第 3 章缺少 §${sec} 小节(三段式例外结构)`);
     }
-  } else {
-    for (const seg of ['问题场景', '方案对比', '大数据对照', '决策树']) {
-      need(text.includes(seg), `缺少骨架段:${seg}`);
-    }
-    need(/链路定位|主线 [AB]/.test(text), '缺少链路定位(主线 A/B 标注)');
-    need(/依赖声明|建立在.{0,20}章/.test(text), '缺少依赖声明');
   }
-  need(text.includes('读完本章,你应当能'), '缺少可验证交付物句「读完本章,你应当能……」');
+  need(/<ChapterContext\b|链路定位|本章定位|主线 [AB]|主线 A\/B/.test(text), '缺少章节上下文(ChapterContext 或主线/定位说明)');
+  need(/<ChapterDeliverables\b|读完本章,你应当能|本章交付物/.test(text), '缺少可验证交付物(ChapterDeliverables 或兼容旧句式)');
+  need(/失效边界|适用边界|不适用|前提|约束/.test(text), '缺少适用条件或失效边界');
+  need(/\$[^$]+\$|```(?:text|math|mermaid)|<EvidencePanel\b|\|[^\n]+\|[^\n]+\||来源:|来源：|复现/.test(text), '缺少机制图、公式、表格、来源或可复现证据');
 
   // mermaid 规范:init 块与图注
   const lines = text.split('\n');
@@ -81,4 +78,4 @@ if (process.argv.includes('--red-report')) {
   console.log(`红色审查清单已写入 reports/mermaid-red-review.md(${redReview.length} 处)`);
 }
 
-report(diagnostics, { okMessage: `章节结构检查通过:${chapterFiles.length} 章骨架、交付物、mermaid init 与图注均符合规范。` });
+report(diagnostics, { okMessage: `章节能力检查通过:${chapterFiles.length} 章均覆盖上下文、证据/边界、交付物及图表元数据。` });

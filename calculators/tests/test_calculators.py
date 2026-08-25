@@ -42,10 +42,15 @@ def test_comm_allreduce_factor():
     assert r.outputs["每卡线上字节"].value == pytest.approx(10 * 2 * 7 / 8, rel=1e-6)
 
 def test_checkpoint_70b_size():
-    # 第 14 章:S_ckpt = 70e9 × 16 B = 1120 GB
+    # 第 14 章容量示例:S_ckpt = 70e9 × 16 B = 1120 GB；数据段下界为 S/min(B)
     r = checkpoint.checkpoint_window(70, 100, 50, 24)
     assert r.outputs["单次快照大小"].value == pytest.approx(1120, rel=1e-6)
-    assert r.outputs["全量写入时长"].value == pytest.approx(1120 / 50, rel=1e-6)
+    assert r.outputs["数据段物理下界"].value == pytest.approx(1120 / 50, rel=1e-6)
+    assert r.outputs["训练停顿时长/次"].value == pytest.approx(1120 / 50, rel=1e-6)
+
+def test_checkpoint_async_requires_measured_pause():
+    with pytest.raises(ValueError):
+        checkpoint.checkpoint_window(70, 100, 50, 24, async_upload=True)
 
 def test_inference_instances():
     # 需求 1000 QPS × 300 token = 3e5 token/s;单实例 5000、水位 0.7 → ⌈85.7⌉+1 = 87

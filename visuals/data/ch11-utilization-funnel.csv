@@ -1,0 +1,5 @@
+stage,share_percent,nature,note
+集群理论峰值,100,baseline,可服务卡时
+已分配卡时,85,synthetic,占用率 85%
+有效训练窗口,52.7,derived,85% × 62%
+有效模型 FLOPs,21.1,derived,52.7% × 40%

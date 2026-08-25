@@ -1,0 +1,4 @@
+tier,ack_condition,failure_domain,recovery_role
+本地暂存,分片写入本节点,不能跨节点故障,缩短训练暂停
+共享性能层,manifest 与 commit 完成,按共享层冗余边界,常规快速恢复
+权威归档层,复制校验与版本可见,按跨域复制边界,灾难恢复与长期保留

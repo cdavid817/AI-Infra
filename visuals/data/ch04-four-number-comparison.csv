@@ -1,0 +1,5 @@
+metric,unit,card_a_index,card_b_index,workload_priority
+目标精度算力,relative,140,100,2
+实际可用显存,relative,75,100,3
+显存带宽,relative,67,100,4
+互联带宽,relative,100,100,1

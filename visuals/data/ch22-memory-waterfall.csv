@@ -1,0 +1,4 @@
+component,gib
+权重,16
+运行时与激活预留,4
+KV Cache 可用池,60

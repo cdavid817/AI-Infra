@@ -1,0 +1,7 @@
+stage,minutes,owner,evidence
+检测,8,监控,step_heartbeat
+隔离,4,基础设施,fault_domain
+资源等待,12,调度器,allocation_event
+进程组初始化,6,运行时,group_ready
+状态加载,10,训练工程,restore_complete
+数据回放,20,任务,accepted_step

@@ -1,0 +1,6 @@
+minute,event,signal,interpretation
+0,任务绑定完成,64 卡已分配,数量条件满足
+2,通信组初始化,跨越两个互联域,拓扑条件未满足
+7,首个 step 完成,AllReduce 等待占比 61%,平均带宽掩盖慢链路
+18,链路出现长尾,P99 step time 翻倍,同步语义放大单点抖动
+31,任务中止,最后 checkpoint 为 4 小时前,恢复成本由写入间隔决定

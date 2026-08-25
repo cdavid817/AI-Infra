@@ -1,0 +1,6 @@
+candidate,quality_retention_percent,throughput_index,tail_latency_index
+BF16_baseline,100.0,100,100
+W8A8,99.8,138,90
+W4A16,99.1,150,78
+W4A16_Graph,99.1,158,65
+W8_Speculative,99.7,142,58

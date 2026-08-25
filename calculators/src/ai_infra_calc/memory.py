@@ -56,5 +56,5 @@ def training_memory(n_params_b: float, layers: int, batch_seqs: int, seq_len: in
     r.safety_margins = [f"分配器碎片与通信缓冲 +{allocator_margin:.0%}(F7)"]
     r.sensitivities = ["seq_len 进入激活二次项(注意力),长序列时误差最大", "zero_stage 与 dp 的组合决定状态项一个数量级的差异"]
     r.uncertainty = "±15% 量级:激活系数依实现(FlashAttention 已内置部分重算)与框架缓冲策略而异。"
-    r.replace_with_measurement = "用目标框架跑 3 个 step 读 torch.cuda.max_memory_allocated(§17.7 排查路径),替换本估算再定卡型。"
+    r.replace_with_measurement = "用目标框架跑 3 个 step 读取峰值并抓 memory snapshot(§17.4.8 排查路径),替换本估算再定卡型。"
     return r

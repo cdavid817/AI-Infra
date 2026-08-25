@@ -1,0 +1,8 @@
+interval_hours,save_overhead_percent,rollback_waste_percent,total_waste_percent
+0.25,33.33,0.26,33.59
+0.5,16.67,0.52,17.19
+1,8.33,1.04,9.37
+2,4.17,2.08,6.25
+2.83,2.94,2.95,5.89
+4,2.08,4.17,6.25
+8,1.04,8.33,9.37

@@ -1,0 +1,11 @@
+version,segment,duration_us,nature
+优化前,CPU_gap_1,10,gap
+优化前,LayerNorm,18,compute
+优化前,HBM_roundtrip_1,12,memory
+优化前,CPU_gap_2,10,gap
+优化前,Residual,16,compute
+优化前,HBM_roundtrip_2,12,memory
+优化前,CPU_gap_3,10,gap
+优化前,Activation,18,compute
+优化后,CPU_gap,10,gap
+优化后,Fused_kernel,44,fused

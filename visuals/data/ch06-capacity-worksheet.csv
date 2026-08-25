@@ -1,0 +1,12 @@
+section,name,value,nature
+结构输入,总参数量,70B,model-config
+结构输入,层数×隐藏维度,80×8192,model-config
+负载输入,训练token量,15T,request
+系统假设,单卡BF16峰值,1PFLOPS,replace-with-spec
+系统假设,MFU,40%,replace-with-measurement
+系统假设,并行配置,TP8×PP4×DP32,planning-choice
+显存输出,静态模型状态每卡,35GB,formula
+显存输出,激活每卡,4–6GB,estimate
+算力输出,总训练算力,6.3e24FLOPs,formula
+工期输出,1024卡理想工期,178天,derived
+工期输出,2048卡理想工期,89天,derived

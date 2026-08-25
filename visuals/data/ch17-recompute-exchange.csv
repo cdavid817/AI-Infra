@@ -1,0 +1,4 @@
+mode,activation_index,training_compute_index,nature
+不重计算,100,100,baseline
+选择性重计算,40,108,illustrative
+完全重计算,12,133,illustrative

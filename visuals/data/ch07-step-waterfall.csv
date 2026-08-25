@@ -1,0 +1,3 @@
+placement,compute_s,allreduce_s,other_s
+域内 32 卡,3.2,0.6,0.3
+跨域 64 卡,3.2,3.3,0.3

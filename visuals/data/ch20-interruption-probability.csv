@@ -1,0 +1,7 @@
+expected_interruptions,probability_percent
+0.1,9.5
+0.25,22.1
+0.5,39.3
+1,63.2
+2,86.5
+4,98.2

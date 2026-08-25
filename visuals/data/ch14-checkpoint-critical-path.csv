@@ -1,0 +1,5 @@
+stage,seconds,nature
+一致性与 staging,6,pause
+共享队列等待,12,queue
+分片数据写入,43,data
+尾部同步与提交,9,commit

@@ -1,0 +1,3 @@
+layout,used_blocks,reserved_or_fragmented_blocks,free_blocks
+连续预留,9,15,8
+分页分配,9,2,21

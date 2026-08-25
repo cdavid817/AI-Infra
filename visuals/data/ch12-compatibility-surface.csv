@@ -1,0 +1,6 @@
+layer,required_evidence,failure_signal,decision
+业务 API,真实脚本与依赖清单,平台分支散落业务代码,收敛到薄适配层
+算子与自动微分,前反向 trace 与 fallback,CPU 回退或缺失梯度,替换自研或排除
+精度与编译,关键层和短程训练对照,溢出或图编译分叉,定位后重测质量
+集合通信,目标规模 trace 与拓扑,同步等待随规模放大,重选并行与放置
+运行与恢复,长稳和 checkpoint 演练,失败后无法按 SLO 恢复,保留原后端退路

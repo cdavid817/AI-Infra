@@ -1,3 +1,38 @@
 .claim-ref { font-size: 0.7em; opacity: 0.55; margin-left: 2px; }
 .claim-ref a { text-decoration: none; }
 .claim-ref a:hover { opacity: 1; }
+
+.book-figure { margin: 2rem auto; }
+.book-figure--narrow { max-width: 560px; }
+.book-figure--normal { max-width: 780px; }
+.book-figure--wide { max-width: 980px; }
+.book-figure--full { max-width: none; }
+.book-figure__media { display: block; padding: 12px; overflow: auto; border: 1px solid var(--vp-c-divider); border-radius: 12px; background: var(--vp-c-bg-soft); }
+.book-figure img { display: block; width: 100%; height: auto; margin: 0; }
+.book-figure figcaption { display: grid; gap: 4px; margin-top: 10px; color: var(--vp-c-text-2); font-size: 0.9rem; line-height: 1.55; }
+.book-figure figcaption strong { color: var(--vp-c-text-1); }
+.book-figure figcaption strong::after { content: '  '; white-space: pre; }
+.book-figure figcaption small { color: var(--vp-c-text-3); }
+
+.case-meta, .chapter-context, .chapter-deliverables, .evidence-panel { margin: 1.5rem 0; padding: 14px 16px; border: 1px solid var(--vp-c-divider); border-radius: 10px; background: var(--vp-c-bg-soft); }
+.case-meta { border-left: 4px solid var(--vp-c-brand-1); }
+.case-meta__type { display: inline-block; margin-bottom: 8px; padding: 2px 8px; border-radius: 999px; background: var(--vp-c-brand-soft); color: var(--vp-c-brand-1); font: 600 0.78rem/1.6 var(--vp-font-family-mono); }
+.case-meta dl, .chapter-context dl { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 18px; margin: 0; }
+.case-meta dl div, .chapter-context dl div { display: grid; grid-template-columns: 5em 1fr; gap: 8px; }
+.case-meta dt, .chapter-context dt { color: var(--vp-c-text-3); font-size: 0.86rem; }
+.case-meta dd, .chapter-context dd { margin: 0; font-size: 0.9rem; }
+.chapter-context__question { margin: 0 0 12px; color: var(--vp-c-text-1); font-size: 1.05rem; font-weight: 650; }
+.chapter-deliverables { border-color: var(--vp-c-brand-2); }
+.chapter-deliverables h2 { margin: 0 0 8px; border: 0; padding: 0; font-size: 1rem; }
+.chapter-deliverables ul { margin: 0; }
+.evidence-panel { border-left: 4px solid #d9822b; }
+.evidence-panel__body { margin: 10px 0; }
+.evidence-panel p { margin-bottom: 0; }
+
+@media (max-width: 640px) {
+  .case-meta dl, .chapter-context dl { grid-template-columns: 1fr; }
+  .book-figure { margin: 1.5rem 0; }
+  .book-figure__media { padding: 6px; }
+}
+
+.dark .book-figure img[src$='.svg'] { filter: brightness(.92) contrast(1.08); }

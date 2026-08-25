@@ -1,0 +1,379 @@
+version: 1
+figures:
+  - id: ch01-capability-migration
+    chapter: 1
+    title: 大数据能力迁移矩阵
+    type: heatmap
+    purpose: comparison
+    source_kind: generated-illustrative
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch01/capability-migration.svg
+    data_files: [visuals/data/ch01-capability-migration.csv]
+    license: CC-BY-4.0
+    alt: 六类大数据平台能力中，调度、存储、数据管道和可观测性需要保留方法并改造资源语义，故障模型和弹性前提不能直接沿用
+    caption: 可迁移的是治理方法，不是资源与故障前提；后两者必须重新建模。
+    status: published
+  - id: ch01-incident-evidence-timeline
+    chapter: 1
+    title: 同步训练事故证据时间线
+    type: timeline
+    purpose: diagnosis
+    source_kind: generated-synthetic
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch01/incident-evidence-timeline.svg
+    data_files: [visuals/data/ch01-incident-timeline.csv]
+    license: CC-BY-4.0
+    alt: 一次合成训练事故从卡数分配、跨域通信初始化、AllReduce 等待上升、step 长尾到任务中止依次暴露证据
+    caption: 数量、拓扑、同步等待和恢复窗口必须串成证据链，单看 GPU 利用率无法定位故障。
+    status: published
+  - id: ch04-four-number-comparison
+    chapter: 4
+    title: 加速卡四个关键数字的负载化读法
+    type: quantitative-chart
+    purpose: decision
+    source_kind: generated-illustrative
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch04/four-number-comparison.svg
+    data_files: [visuals/data/ch04-four-number-comparison.csv]
+    license: CC-BY-4.0
+    alt: 候选 A 与候选 B 的目标精度算力、实际可用显存、显存带宽和互联带宽分别对照，右侧标出推理负载对各指标的优先级
+    caption: 规格比较必须先做精度与容量过滤，再按负载画像给带宽和算力排序。
+    status: published
+  - id: ch07-allreduce-crosspoint
+    chapter: 7
+    title: AllReduce 算法交叉点
+    type: quantitative-chart
+    purpose: comparison
+    source_kind: generated-illustrative
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch07/allreduce-crosspoint.svg
+    data_files: [visuals/data/ch07-allreduce-crosspoint.csv]
+    license: CC-BY-4.0
+    alt: Ring 与 Tree 两条完成时间曲线随消息大小增长，曲线间距随消息增大改变，说明算法选择依赖消息规模和目标拓扑
+    caption: 算法边界由消息大小和目标拓扑共同决定，示意交叉点不能代替目标集群实测。
+    status: published
+  - id: ch06-training-memory-waterfall
+    chapter: 6
+    title: 70B 训练单卡显存瀑布
+    type: waterfall
+    purpose: derivation
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch06/training-memory-waterfall.svg
+    data_files: [visuals/data/ch06-training-memory-waterfall.csv]
+    license: CC-BY-4.0
+    alt: 八十 GB 单卡容量依次分给权重、梯度、主权重、Adam 两组状态、激活和运行时预留，最后留下三十四 GB 未分配余量
+    caption: 公式只确定静态状态，激活与运行时预留必须由目标框架实测替换。
+    status: published
+  - id: ch06-capacity-worksheet
+    chapter: 6
+    title: 70B 模型容量工作表
+    type: worksheet
+    purpose: derivation
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch06/capacity-worksheet.svg
+    data_files: [visuals/data/ch06-capacity-worksheet.csv]
+    license: CC-BY-4.0
+    alt: 工作表从结构输入和负载输入开始，经过单卡峰值、MFU 与并行配置假设，分别输出单卡显存、总算力和理想工期
+    caption: 结构、负载与系统系数必须分栏记录，才能在实测后只替换假设而不重做整套推导。
+    status: published
+  - id: ch07-step-time-waterfall
+    chapter: 7
+    title: 域内与跨域放置的 step 时间分解
+    type: waterfall
+    purpose: diagnosis
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch07/step-time-waterfall.svg
+    data_files: [visuals/data/ch07-step-waterfall.csv]
+    license: CC-BY-4.0
+    alt: 域内三十二卡和跨域六十四卡的计算时间相同，跨域方案的 AllReduce 等待从零点六秒增加到三点三秒
+    caption: 扩容没有缩短计算段，却把同步等待推上关键路径，吞吐因此无法按卡数线性增长。
+    status: published
+  - id: ch22-memory-waterfall
+    chapter: 22
+    title: 推理显存容量瀑布
+    type: waterfall
+    purpose: derivation
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch22/memory-waterfall.svg
+    data_files: [visuals/data/ch22-memory-waterfall.csv]
+    license: CC-BY-4.0
+    alt: 八十 GiB 显存先扣除十六 GiB 权重和四 GiB 运行时预留，剩余六十 GiB 才能作为 KV Cache 池
+    caption: 并发估算从可用 KV 池开始，而不是直接用标称显存除以每 token 字节数。
+    status: published
+  - id: ch17-zero-state-sharding
+    chapter: 17
+    title: ZeRO 各阶段模型状态分片对照
+    type: quantitative-chart
+    purpose: derivation
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch17/zero-state-sharding.svg
+    data_files: [visuals/data/ch17-zero-state-sharding.csv]
+    license: CC-BY-4.0
+    alt: 在数据并行度八下，DDP、ZeRO-1、ZeRO-2 和 ZeRO-3 逐步分片优化器状态、梯度和权重，单卡每参数静态字节数依次下降
+    caption: ZeRO 阶段只改变静态状态的冗余，激活、临时聚合峰值和运行时余量仍需单独计算。
+    status: published
+  - id: ch17-recompute-exchange
+    chapter: 17
+    title: 激活重计算的显存—计算交换曲线
+    type: quantitative-chart
+    purpose: comparison
+    source_kind: generated-illustrative
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch17/recompute-exchange.svg
+    data_files: [visuals/data/ch17-recompute-exchange.csv]
+    license: CC-BY-4.0
+    alt: 不重计算、选择性重计算和完全重计算三个示意点沿着计算量增加、激活显存下降的方向排列
+    caption: 重计算的交换方向稳定，具体落点取决于算子、序列形状和框架实现，必须通过目标任务实测。
+    status: published
+  - id: ch11-utilization-funnel
+    chapter: 11
+    title: 三层有效产出漏斗
+    type: waterfall
+    purpose: derivation
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch11/utilization-funnel.svg
+    data_files: [visuals/data/ch11-utilization-funnel.csv]
+    license: CC-BY-4.0
+    alt: 集群理论峰值依次经过分配占用率、训练窗口比例和窗口内 MFU，最终得到有效模型 FLOPs 占比
+    caption: 三个时间与计算边界互斥时才可连乘，设备活动计数器只用于归因。
+    status: published
+  - id: ch11-attribution-matrix
+    chapter: 11
+    title: 低产出归因实验矩阵
+    type: decision-matrix
+    purpose: diagnosis
+    source_kind: generated-editorial
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch11/attribution-matrix.svg
+    data_files: [visuals/data/ch11-attribution-matrix.csv]
+    license: CC-BY-4.0
+    alt: 生命周期空窗、数据等待、通信等待和 kernel 低效分别对应主证据、受控实验与移交条件
+    caption: 活动指标提出假设，作业事件、时间线和单变量实验共同形成归因证据。
+    status: published
+  - id: ch11-risk-frontier
+    chapter: 11
+    title: 占用率与服务风险权衡曲线
+    type: quantitative-chart
+    purpose: decision
+    source_kind: generated-illustrative
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch11/risk-frontier.svg
+    data_files: [visuals/data/ch11-risk-frontier.csv]
+    license: CC-BY-4.0
+    alt: 分配占用率目标提高时合成队列延迟指数上升而恢复余量下降
+    caption: 占用率目标要与排队和恢复 SLO 联合选择，示意点不能充当生产阈值。
+    status: published
+  - id: ch12-compatibility-surface
+    chapter: 12
+    title: 加速器迁移五层适配面
+    type: decision-matrix
+    purpose: diagnosis
+    source_kind: generated-editorial
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch12/compatibility-surface.svg
+    data_files: [visuals/data/ch12-compatibility-surface.csv]
+    license: CC-BY-4.0
+    alt: 业务 API、算子与自动微分、精度与编译、集合通信、运行与恢复分别对应所需证据、失败信号和迁移动作
+    caption: 统一 API 只覆盖适配面的一层，生产验收要贯通功能、数值、性能和恢复证据。
+    status: published
+  - id: ch12-scale-efficiency
+    chapter: 12
+    title: 双平台规模效率曲线
+    type: quantitative-chart
+    purpose: comparison
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch12/scale-efficiency.svg
+    data_files: [visuals/data/ch12-scale-efficiency.csv]
+    license: CC-BY-4.0
+    alt: 两个平台在八卡最小单元均归一为百分之一百，扩展到六十四卡和二百五十六卡后规模效率以不同斜率下降
+    caption: 最小规模打平不能证明目标规模打平，规模斜率必须跨目标互联域实测。
+    status: published
+  - id: ch12-cost-ledger
+    chapter: 12
+    title: 迁移一次性与持续成本账
+    type: comparison
+    purpose: decision
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch12/cost-ledger.svg
+    data_files: [visuals/data/ch12-cost-ledger.csv]
+    license: CC-BY-4.0
+    alt: 算子适配、数值验证、性能调优、双后端 CI、升级回归和支持排障分别列出一次性人月与年度持续人月
+    caption: 一次性投入按受益年限摊销，持续投入乘预计双栈年限，才能与硬件价差比较。
+    status: published
+  - id: ch14-checkpoint-critical-path
+    chapter: 14
+    title: Checkpoint 端到端关键路径
+    type: waterfall
+    purpose: diagnosis
+    source_kind: generated-synthetic
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch14/checkpoint-critical-path.svg
+    data_files: [visuals/data/ch14-checkpoint-critical-path.csv]
+    license: CC-BY-4.0
+    alt: 一次合成 checkpoint 依次经过一致性与 staging、共享队列等待、分片数据写入和尾部同步提交
+    caption: 状态字节除以带宽只给数据段下界，端到端时间还包含队列、元数据、最慢 rank 与提交。
+    status: published
+  - id: ch14-burst-contention
+    chapter: 14
+    title: 多任务 Checkpoint 突发争用
+    type: quantitative-chart
+    purpose: diagnosis
+    source_kind: generated-synthetic
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch14/burst-contention.svg
+    data_files: [visuals/data/ch14-burst-contention.csv]
+    license: CC-BY-4.0
+    alt: 稳定读取流量叠加两个任务的同相 checkpoint 后超过服务能力，错峰后两个保存窗口不再重叠
+    caption: 平均吞吐隐藏同相突发，容量判断必须保留保存窗口内的并发和队列曲线。
+    status: published
+  - id: ch14-recovery-matrix
+    chapter: 14
+    title: Checkpoint 落点与恢复语义矩阵
+    type: decision-matrix
+    purpose: decision
+    source_kind: generated-editorial
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch14/recovery-matrix.svg
+    data_files: [visuals/data/ch14-recovery-matrix.csv]
+    license: CC-BY-4.0
+    alt: 本地暂存、共享性能层和权威归档层分别列出完成确认条件、耐受故障域和恢复用途
+    caption: 写得快与恢复得了是两个轴，完成语义必须绑定落点、提交条件和故障域。
+    status: published
+  - id: ch22-kv-fragmentation-comparison
+    chapter: 22
+    title: KV Cache 碎片前后对照
+    type: comparison
+    purpose: comparison
+    source_kind: generated-illustrative
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch22/kv-fragmentation-comparison.svg
+    data_files: [visuals/data/ch22-fragmentation-comparison.csv]
+    license: CC-BY-4.0
+    alt: 两组各三十二个 KV 块中有效数据同为九块，连续预留产生十五块预留或碎片，分页分配只产生两块碎片
+    caption: PagedAttention 的容量收益来自减少预留和碎片，不是减少每个 token 的 KV 字节数。
+    status: published
+  - id: ch16-parallelism-evidence-matrix
+    chapter: 16
+    title: 并行轴通信证据矩阵
+    type: decision-matrix
+    purpose: diagnosis
+    source_kind: generated-editorial
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch16/parallelism-evidence-matrix.svg
+    data_files: [visuals/data/ch16-parallelism-evidence-matrix.csv]
+    license: CC-BY-4.0
+    alt: 五种并行轴分别列出切分对象、主要通信载荷、发生频率和放置证据
+    caption: 公式负责预估载荷，目标图和 trace 负责确认次数、算法、并发与关键路径。
+    status: published
+  - id: ch16-pipeline-bubble
+    chapter: 16
+    title: 流水线理想气泡曲线
+    type: quantitative-chart
+    purpose: derivation
+    source_kind: generated-formula
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch16/pipeline-bubble.svg
+    data_files: [visuals/data/ch16-pipeline-bubble.csv]
+    license: CC-BY-4.0
+    alt: 四个等时流水线 stage 的理想气泡率随 microbatch 数增加而下降
+    caption: 理想公式用于初筛，生产值使用目标 schedule 的逐 stage 时间线。
+    status: published
+  - id: ch16-feasible-region
+    chapter: 16
+    title: 并行候选可行域
+    type: decision-matrix
+    purpose: decision
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch16/feasible-region.svg
+    data_files: [visuals/data/ch16-feasible-region.csv]
+    license: CC-BY-4.0
+    alt: 四个并行候选依次通过显存、整除、批量与拓扑门禁并记录拒绝原因
+    caption: 可行域先过滤，只有通过门禁的候选才进入端到端短跑。
+    status: published
+  - id: ch20-interruption-probability
+    chapter: 20
+    title: 任务中断概率曲线
+    type: quantitative-chart
+    purpose: derivation
+    source_kind: generated-formula
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch20/interruption-probability.svg
+    data_files: [visuals/data/ch20-interruption-probability.csv]
+    license: CC-BY-4.0
+    alt: Poisson 假设下至少一次中断的概率随任务期内期望中断次数增加而上升
+    caption: 横轴由本地任务影响事件估计，曲线不包含任何硬件故障率基准。
+    status: published
+  - id: ch20-checkpoint-cost-curve
+    chapter: 20
+    title: Checkpoint 间隔成本曲线
+    type: quantitative-chart
+    purpose: derivation
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch20/checkpoint-cost-curve.svg
+    data_files: [visuals/data/ch20-checkpoint-cost-curve.csv]
+    license: CC-BY-4.0
+    alt: 保存开销随 checkpoint 间隔增大而下降，期望回滚损失随间隔增大而上升
+    caption: 一阶曲线只用于初筛，检测、恢复、相关故障与异步路径需另行建模。
+    status: published
+  - id: ch20-recovery-timeline
+    chapter: 20
+    title: 失败检测与恢复时间线
+    type: timeline
+    purpose: diagnosis
+    source_kind: generated-synthetic
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch20/recovery-timeline.svg
+    data_files: [visuals/data/ch20-recovery-timeline.csv]
+    license: CC-BY-4.0
+    alt: 训练恢复依次经过检测、隔离、资源等待、进程组初始化、状态加载和数据回放
+    caption: 每段必须记录开始、完成、owner、证据和超时升级条件。
+    status: published
+  - id: ch23-kernel-timeline
+    chapter: 23
+    title: Kernel 时间线优化前后对照
+    type: timeline
+    purpose: diagnosis
+    source_kind: generated-synthetic
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch23/kernel-timeline.svg
+    data_files: [visuals/data/ch23-kernel-timeline.csv]
+    license: CC-BY-4.0
+    alt: 优化前多个 launch、小 kernel 和中间张量往返与优化后单个融合 kernel 的时间线对照
+    caption: 融合收益必须落到被删除的 gap 和访存，并检查融合 kernel 的资源压力。
+    status: published
+  - id: ch23-pareto
+    chapter: 23
+    title: 计算优化候选 Pareto
+    type: quantitative-chart
+    purpose: decision
+    source_kind: generated-capacity-example
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch23/pareto.svg
+    data_files: [visuals/data/ch23-pareto.csv]
+    license: CC-BY-4.0
+    alt: 五个合成候选按业务质量保留率、有效吞吐和尾延迟指数形成多目标比较
+    caption: 质量和成功率先做门禁，剩余候选才按吞吐、尾延迟和成本形成 Pareto。
+    status: published
+  - id: ch23-speculative-payoff
+    chapter: 23
+    title: 投机解码接受率收益曲线
+    type: quantitative-chart
+    purpose: derivation
+    source_kind: generated-formula
+    source_file: visuals/scripts/build-pilot-figures.mjs
+    output_file: visuals/generated/ch23/speculative-payoff.svg
+    data_files: [visuals/data/ch23-speculative-payoff.csv]
+    license: CC-BY-4.0
+    alt: 两条投机解码加速曲线随接受率上升，较高验证成本使收益曲线下移并改变盈亏点
+    caption: 接受率不是唯一输入，草稿成本和目标验证成本共同决定简化模型的盈亏点。
+    status: published

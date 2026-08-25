@@ -1,0 +1,5 @@
+stage,weights_bytes_per_param,gradients_bytes_per_param,optimizer_bytes_per_param,dp
+DDP,2,2,12,8
+ZeRO-1,2,2,1.5,8
+ZeRO-2,2,0.25,1.5,8
+ZeRO-3,0.25,0.25,1.5,8

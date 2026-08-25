@@ -1,0 +1,5 @@
+candidate,memory,divisibility,batch,topology,result,step_index
+TP4_PP8,pass,pass,fail,not_checked,reject_batch,-
+TP8_PP4,pass,pass,pass,pass,measure,100
+TP16_PP2,pass,pass,pass,risk_cross_domain,measure_with_risk,not_measured
+TP8_PP2,fail,pass,pass,pass,reject_memory,-

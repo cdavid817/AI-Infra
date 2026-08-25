@@ -1,0 +1,4 @@
+capability,scheduling,storage,data_pipeline,observability,fault_model,elasticity
+reuse,2,2,2,2,0,0
+reshape,1,1,1,1,1,1
+invalid,0,0,0,0,2,2

@@ -1,0 +1,9 @@
+component,gb,nature
+BF16权重,4.375,formula
+BF16梯度,4.375,formula
+FP32主权重,8.75,formula
+Adam一阶矩,8.75,formula
+Adam二阶矩,8.75,formula
+选择性重计算激活,5,assumption
+运行时与通信预留,6,assumption
+未分配余量,34,derived

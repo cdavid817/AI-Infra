@@ -1,0 +1,6 @@
+allocation_target,queue_delay_index,recovery_headroom_percent
+60,10,40
+70,15,30
+80,25,20
+90,50,10
+95,90,5

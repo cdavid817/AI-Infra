@@ -1,0 +1,5 @@
+cause,primary_signal,controlled_test,handoff_evidence
+生命周期空窗,作业事件与首末 step,影子回收或缩短启动链路,中断清单与恢复结果
+数据等待,data_time 与存储延迟,本地缓存或 worker 单变量,吞吐随输入路径恢复
+通信等待,未重叠集合通信时间线,放置域或 bucket 单变量,实测与拓扑模型收敛
+kernel 低效,MFU 与算子形状,精度融合或 micro-batch 单变量,Roofline 与吞吐共同改善

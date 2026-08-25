@@ -1,0 +1,7 @@
+category,one_time_person_months,annual_person_months
+算子适配,4,0.5
+数值验证,1.5,0.5
+性能调优,3,0.5
+双后端 CI,0.5,2.5
+升级回归,0.5,1.5
+支持排障,0.5,2
