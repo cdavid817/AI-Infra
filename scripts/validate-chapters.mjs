@@ -26,7 +26,7 @@ for (const file of chapterFiles) {
       need(text.includes(`${sec} `), `第 3 章缺少 §${sec} 小节(三段式例外结构)`);
     }
   }
-  need(/<ChapterContext\b|链路定位|本章定位|主线 [AB]|主线 A\/B/.test(text), '缺少章节上下文(ChapterContext 或主线/定位说明)');
+  need(/<ChapterContext\b|本章定位|主线 [AB]|主线 A\/B|两条主线|资源链路/.test(text), '缺少章节上下文(上下文卡片或自然导语)');
   need(/<ChapterDeliverables\b|读完本章,你应当能|本章交付物/.test(text), '缺少可验证交付物(ChapterDeliverables 或兼容旧句式)');
   need(/失效边界|适用边界|不适用|前提|约束/.test(text), '缺少适用条件或失效边界');
   need(/\$[^$]+\$|```(?:text|math|mermaid)|<EvidencePanel\b|\|[^\n]+\|[^\n]+\||来源:|来源：|复现/.test(text), '缺少机制图、公式、表格、来源或可复现证据');
