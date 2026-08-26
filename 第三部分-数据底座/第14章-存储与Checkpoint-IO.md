@@ -15,7 +15,7 @@
 
 ## 14.2 容量账从实际训练状态开始
 
-[§6.2](../第一部分-基础与心智模型/第06章-模型结构的定量分析.md#62-参数量与资源换算核心) 提供模型状态的估算入口，[§17.4.2](../第四部分-训练系统/第17章-显存与训练侧精度机制.md#1742-zero-三阶段分片的对象决定代价) 说明状态如何按 rank 分片。checkpoint 还可能包含 RNG、学习率调度器、数据游标、混合精度 scaler、框架元数据与自定义状态，因此参数量只能给容量下界或特定配置下的估算，生产预算以实际待保存对象和一次序列化测量为准。
+[§6.2](../第一部分-基础与心智模型/第06章-模型结构的定量分析.md#62-参数量与资源换算核心) 提供模型状态的估算入口，[§17.3.2](../第四部分-训练系统/第17章-显存与训练侧精度机制.md#1732-zero-三阶段分片的对象决定代价) 说明状态如何按 rank 分片。checkpoint 还可能包含 RNG、学习率调度器、数据游标、混合精度 scaler、框架元数据与自定义状态，因此参数量只能给容量下界或特定配置下的估算，生产预算以实际待保存对象和一次序列化测量为准。
 
 PyTorch Distributed Checkpoint 的 `save` 使用 collective 协调各 rank 写入，`async_save` 默认先把 state dict staging 到 CPU，再在线程中保存；新版异步 staging 还把 D2H 复制与训练重叠，但需要分别等待 staging 和 upload completion，并避免上一份状态尚未复制完就被 optimizer 修改。具体语义见 [DCP API](https://docs.pytorch.org/docs/main/distributed.checkpoint.html) 和 [异步保存教程](https://docs.pytorch.org/tutorials/recipes/distributed_async_checkpoint_recipe.html)。
 
