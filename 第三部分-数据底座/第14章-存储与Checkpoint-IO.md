@@ -92,7 +92,7 @@ $$T_{data}\geq\frac{S_{ckpt}}{\min(B_{client},B_{network},B_{backend})}$$
 
 $$T_{durable}=T_{queue}+T_{prepare}+\max_r(T_{data,r}+T_{metadata,r})+T_{commit}+T_{verify}$$
 
-$\max_r$ 表示最慢 rank 决定全局完成；元数据延迟、热点、限流与重试不能折成跨环境固定“带宽折扣”。同步保存的训练暴露时间可能接近 $T_{durable}$；异步保存则拆成一致性/staging 暂停 $T_{pause}$ 与后台持久化时间，后台仍消耗 CPU、内存、网络和存储，并可能与训练争用。
+$\max_r$ 表示最慢 rank 决定全局完成；元数据延迟、热点、限流与重试不能折成跨环境固定“带宽折扣”。同步保存的训练暴露时间可能接近 $T_{durable}$ ；异步保存则拆成一致性/staging 暂停 $T_{pause}$ 与后台持久化时间，后台仍消耗 CPU、内存、网络和存储，并可能与训练争用。
 
 <BookFigure
   id="ch14-burst-contention"
@@ -117,7 +117,7 @@ $\max_r$ 表示最慢 rank 决定全局完成；元数据延迟、热点、限�
 
 $$W_{Young}\approx\sqrt{2\mu C}$$
 
-$W$ 是两次 checkpoint 之间的有效工作时间，$C$ 是同步 checkpoint 成本，$\mu$ 是应用级平均故障间隔。该近似假设周期性协调保存、近似 Poisson/fail-stop 故障和相对简单的恢复成本；异步保存、相关故障、检测延迟、失败的 checkpoint 或多级恢复会改变目标函数。Daly 的高阶模型显式讨论更完整的运行时间成本，见 [论文记录](https://laro.lanl.gov/esploro/outputs/journalArticle/A-higher-order-estimate-of-the/9916364420003761)。生产间隔应先受业务 RPO 约束，再用本集群故障与恢复数据仿真或回放。
+$W$ 是两次 checkpoint 之间的有效工作时间， $C$ 是同步 checkpoint 成本， $\mu$ 是应用级平均故障间隔。该近似假设周期性协调保存、近似 Poisson/fail-stop 故障和相对简单的恢复成本；异步保存、相关故障、检测延迟、失败的 checkpoint 或多级恢复会改变目标函数。Daly 的高阶模型显式讨论更完整的运行时间成本，见 [论文记录](https://laro.lanl.gov/esploro/outputs/journalArticle/A-higher-order-estimate-of-the/9916364420003761)。生产间隔应先受业务 RPO 约束，再用本集群故障与恢复数据仿真或回放。
 
 ## 14.5 方案对比
 

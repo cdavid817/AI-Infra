@@ -73,7 +73,7 @@ CPU 通过 **Stream(流)** 向 GPU 异步下发 kernel:同一 stream 内按序�
 
 这笔账什么时候会主导性能?给一个可以自己代入的判断式:
 
-> 设每步迭代下发 N 个 kernel,CPU 两次发射之间的平均间隔为 $t_{issue}$,单个 kernel 平均 GPU 执行时长为 $t_{exec}$。当 $t_{issue}>t_{exec}$ 且没有其他可执行工作时,GPU 计算流会出现约 $t_{issue}-t_{exec}$ 的空隙;空隙比例应按完整发射周期计算,不能把 API 调用耗时直接等同于发射间隔。
+> 设每步迭代下发 N 个 kernel,CPU 两次发射之间的平均间隔为 $t_{issue}$,单个 kernel 平均 GPU 执行时长为 $t_{exec}$ 。当 $t_{issue}>t_{exec}$ 且没有其他可执行工作时,GPU 计算流会出现约 $t_{issue}-t_{exec}$ 的空隙;空隙比例应按完整发射周期计算,不能把 API 调用耗时直接等同于发射间隔。
 
 训练时 batch 大、单 kernel 动辄几百微秒,launch 开销可以忽略。但推理的 decode 阶段(见 [§3.4](第03章-人工智能与大模型基础.md#34-transformer-与注意力),自回归解码每步只算一个 token)恰好落在最坏区间:batch 小、矩阵瘦、单 kernel 只有几微秒到十几微秒,而一个 Transformer 层就有十几个 kernel,一次前向数百次 launch——launch 开销可以吃掉 30–50% 的时间。这就是问题场景里那 12 微秒空隙的来源,也解释了为什么这个问题在训练团队手里潜伏、到推理团队手里爆发。
 

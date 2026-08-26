@@ -50,7 +50,7 @@ PYTHONPATH=calculators/src python3 -m ai_infra_calc comm \
   --collective allreduce --payload-gb 35 --ranks 8 --bus-bw-gbps <你的实测Beff>
 ```
 
-分别代入域内与跨机的 $B_{eff}$,确认"同一公式换一个 $B_{eff}$,结论差一个量级"在你自己的数字上成立。最后写三行结论:标称带宽、实测 $B_{eff}$、差距的解释(协议开销、环拓扑、是否跨低速链路)。
+分别代入域内与跨机的 $B_{eff}$,确认"同一公式换一个 $B_{eff}$,结论差一个量级"在你自己的数字上成立。最后写三行结论:标称带宽、实测 $B_{eff}$ 、差距的解释(协议开销、环拓扑、是否跨低速链路)。
 
 ## 成功判据
 
