@@ -114,3 +114,41 @@ images:
       share_alike: false
     publish_status: approved
     notes: 页面 JSON-LD 明示 CC BY 4.0
+  - file: word-embedding-lookup.png
+    sha256: 7855d464a7ab7525e5591770a4afb12e6ed4dbab7a65278f3be163e204c286b0
+    used_in:
+      - 第一部分-基础与心智模型/第03章-人工智能与大模型基础.md
+    origin:
+      title: Word embeddings(TensorFlow Text 指南)
+      author: TensorFlow Authors(Google)
+      source_url: https://www.tensorflow.org/text/guide/word_embeddings
+      original_figure: 4 维词嵌入查找表示意图(embedding2.png)
+      derivation: 文档站原图(经 tensorflow/text 仓库 docs/guide/images 下载)
+    license:
+      name: CC BY 4.0
+      url: https://creativecommons.org/licenses/by/4.0/
+      verified_at: 2026-08-26
+      attribution_required: true
+      modifications_allowed: true
+      share_alike: false
+    publish_status: approved
+    notes: 页脚明示内容为 CC BY 4.0(代码示例为 Apache 2.0);正文来源行已署名
+  - file: transformer-architecture.png
+    sha256: 83675231890eabede45ff15be9fd63c59e7c947a26c2a9f94dab2819266f6933
+    used_in:
+      - 第一部分-基础与心智模型/第03章-人工智能与大模型基础.md
+    origin:
+      title: Neural machine translation with a Transformer and Keras(TensorFlow Text 教程)
+      author: TensorFlow Authors(Google)
+      source_url: https://www.tensorflow.org/text/tutorials/transformer
+      original_figure: Transformer 整体架构图(transformer.png)
+      derivation: 文档站原图
+    license:
+      name: CC BY 4.0
+      url: https://creativecommons.org/licenses/by/4.0/
+      verified_at: 2026-08-26
+      attribution_required: true
+      modifications_allowed: true
+      share_alike: false
+    publish_status: approved
+    notes: 页脚明示内容为 CC BY 4.0(代码示例为 Apache 2.0);正文来源行已署名

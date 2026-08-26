@@ -13,5 +13,7 @@
 | `speculative-decoding-trace.png` | 第23章 | Leviathan et al., *Fast Inference from Transformers via Speculative Decoding*(https://arxiv.org/abs/2211.17192) | Figure 5 | CC BY 4.0(2026-08-24) | 可发布(需署名) |
 | `distserve-arch.png` | 第24章 | Zhong et al., *DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving*(https://arxiv.org/abs/2401.09670) | Figure 6 | CC BY-SA 4.0(2026-08-24),SA | 可发布(需署名) |
 | `epoch-training-compute.png` | 第01章 | Epoch AI, *Notable AI Models — Training compute of notable ML models*(https://epoch.ai/data/notable-ai-models) | Training compute trends chart | CC BY 4.0(2026-08-24) | 可发布(需署名) |
+| `word-embedding-lookup.png` | 第03章 | TensorFlow Authors(Google), *Word embeddings(TensorFlow Text 指南)*(https://www.tensorflow.org/text/guide/word_embeddings) | 4 维词嵌入查找表示意图(embedding2.png) | CC BY 4.0(2026-08-26) | 可发布(需署名) |
+| `transformer-architecture.png` | 第03章 | TensorFlow Authors(Google), *Neural machine translation with a Transformer and Keras(TensorFlow Text 教程)*(https://www.tensorflow.org/text/tutorials/transformer) | Transformer 整体架构图(transformer.png) | CC BY 4.0(2026-08-26) | 可发布(需署名) |
 
 注:自绘图(`diagrams/` 下 SVG)不属第三方授权范围,其源文件与产物对应关系见 `diagrams/manifest.yaml`。
