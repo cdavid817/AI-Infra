@@ -1,5 +1,14 @@
 # 第 5 章 CUDA、CANN 与加速器软件栈
 
+<ChapterContext
+  track="主线 A/B 的单卡执行层"
+  question="一个性能或稳定性问题，如何穿过框架、运行时与驱动，定位到具体层次与责任方？"
+  upstream="第 4 章架构范式与 Roofline"
+  downstream="第 11 章利用率归因；第 12 章迁移评估；第 20 章慢节点；第 23 章推理工程化"
+  inputs="profile 时间线、版本清单、显存统计口径"
+  outputs="空泡与 OOM 归因结论、版本排查路径、CUDA/CANN 双栈对照"
+/>
+
 ## 5.0 性能问题为什么要穿过软件栈
 
 训练主线 A 的"前向 → 反向"与推理主线 B 的"Prefill → Decode 循环"里,每一次算子执行、显存分配和 kernel 下发,都发生在这一层软件栈上;它是硬件(第 4 章)与集群(第二部分)之间最容易被跳过、也最常出问题的中间层。
@@ -9,6 +18,14 @@
 先把本章的边界说死:**不教写 kernel**。平台建设方不需要会写 CUDA C++,但必须能读懂一份 profile 时间线、能独立排查一次版本冲突、能在 CUDA 与 CANN 两套栈之间画出对照关系。做到这三件事,你就能跟算子团队、驱动供应商、框架社区平等对话;做不到,你排查任何性能问题都只能靠猜。
 
 ### 5.0.1 问题场景:能跑,但只有一半速度
+
+<CaseMeta
+  type="synthetic-case"
+  data-nature="吞吐、MFU、kernel 时长与空隙均为演示排查路径构造的合成数字，不代表具体硬件或生产任务"
+  scope="7B 模型 8 卡单机继续预训练的吞吐排查"
+  assumptions="数据管道与网络已被排除；瓶颈为 CPU 端 kernel 下发速度"
+  reproducible="not-applicable"
+/>
 
 一个 7B 模型的继续预训练任务,8 卡单机,团队按 [§6.2](第06章-模型结构的定量分析.md#62-参数量与资源换算核心) 的公式(见第 6 章)估算过:这套硬件在 BF16 下应该做到约 42% 的 MFU(Model FLOPs Utilization,模型算力利用率),对应每卡每秒约 5,800 token。任务跑起来了,loss 正常下降,没有任何报错——但实测吞吐只有每卡每秒 2,700 token,MFU 不到 20%。
 
@@ -201,7 +218,7 @@ flowchart TB
         Q1["查 allocated 峰值<br/>是否贴近容量"]:::ctrl
         Q2["查 reserved − allocated<br/>差值是否达 GB 级"]:::ctrl
         Q3["查 allocated 逐迭代曲线<br/>是否只升不降"]:::ctrl
-        Q4["查进程启动即缺 1–2GB /<br/>图编译内存另立账本"]:::ctrl
+        Q4["对比驱动统计与分配器统计<br/>查分配器之外的常驻占用"]:::ctrl
     end
 
     subgraph 四类成因与处置
