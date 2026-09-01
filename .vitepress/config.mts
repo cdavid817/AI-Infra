@@ -67,6 +67,12 @@ export default withMermaid({
   },
   themeConfig: {
     nav: [
+      // 五个任务型一级入口(ADR-002,见 governance/content-architecture.md)
+      { text: '学习原理', link: '/entries/learn' },
+      { text: '动手实验', link: '/entries/labs' },
+      { text: '生产运维', link: '/entries/operate' },
+      { text: '架构决策', link: '/entries/decide' },
+      { text: '证据与更新', link: '/entries/evidence' },
       { text: '目录', link: '/README' },
       { text: '勘误', link: '/ERRATA' },
       { text: `v${version.version} · 数据快照 ${version.data_snapshot}`, link: '/CHANGELOG' },
