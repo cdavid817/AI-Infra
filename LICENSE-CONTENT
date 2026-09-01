@@ -5,7 +5,7 @@
 Creative Commons Attribution 4.0 International(CC BY 4.0)许可发布。
 
 许可证全文(法律文本):https://creativecommons.org/licenses/by/4.0/legalcode.zh-hans
-署名要求:转载或演绎须注明作者(cdavid817)、来源仓库(https://github.com/cdavid817/AI-Infra)并标明是否修改。
+署名要求:转载或演绎须注明作者(cdavid817)、来源仓库(https://github.com/cdavid817/AI-Infra-Tutorial)并标明是否修改。
 
 第三方内容例外(不适用上述许可,按各自原始许可使用,详见 images/sources.yaml):
 - images/distserve-arch.png:Zhong et al., DistServe(arXiv:2401.09670),CC BY-SA 4.0——对该图的再分发或修改须以相同许可共享;
