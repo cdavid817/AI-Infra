@@ -2,6 +2,14 @@
 
 分层口径(计划 §16.1):**L0** 无 GPU 普通开发机 / **L1** 单 GPU / **L2** 单机多 GPU / **L3** K8s·Slurm 集群。每个 Lab 含等级、成本、安全风险、清理步骤与可验证成功判据;模板见 [templates/lab.md](../templates/lab.md)。
 
+L 级描述「需要什么环境」;与之互补的 **Replay / Local / Cloud 三路径与 F0–F5 保真度**口径(描述「结论能有多真」)见 [governance/lab-fidelity-model.md](../governance/lab-fidelity-model.md)。**完全没有实验环境?** 从零环境路径开始:[没有实验环境怎么办](no-environment.md)。
+
+## Replay(零环境)实验
+
+| Replay | 保真度 | 状态 |
+|---|---|---|
+| [Kueue 队列、配额与准入控制](replay/kueue-admission/README.md)(配套 Lab 04) | F0 | 试点 |
+
 | Lab | 等级 |
 |---|---|
 | [Lab 01:Roofline 与算术强度可视化](lab-01-roofline-arithmetic-intensity.md) | L0 无 GPU |

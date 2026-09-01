@@ -1,0 +1,8 @@
+# synthetic 教学示例:team-a 命名空间的 LocalQueue,绑定到 team-a-cq
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: LocalQueue
+metadata:
+  name: team-a
+  namespace: team-a
+spec:
+  clusterQueue: team-a-cq

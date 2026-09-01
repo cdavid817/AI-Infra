@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Lab 元数据(三路径 × F0–F5,见 governance/lab-fidelity-model.md)",
+  "type": "object",
+  "required": ["schema_version", "id", "title", "data_nature", "learning_objectives", "paths", "validates", "does_not_validate"],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "id": { "type": "string", "pattern": "^LAB-[A-Z0-9-]+$" },
+    "title": { "type": "string", "minLength": 1 },
+    "data_nature": { "enum": ["synthetic", "measured", "derived", "estimate"] },
+    "learning_objectives": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "paths": {
+      "type": "object",
+      "required": ["replay", "local", "cloud"],
+      "additionalProperties": false,
+      "properties": {
+        "replay": { "$ref": "#/definitions/path" },
+        "local": { "$ref": "#/definitions/path" },
+        "cloud": { "$ref": "#/definitions/path" }
+      }
+    },
+    "validates": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "does_not_validate": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "related": { "type": "object" }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "path": {
+      "type": "object",
+      "required": ["status", "fidelity"],
+      "properties": {
+        "status": { "enum": ["available", "pilot", "planned"] },
+        "fidelity": { "enum": ["F0", "F1", "F2", "F3", "F4", "F5"] },
+        "environment": { "type": "string" },
+        "requirements": { "type": "string" },
+        "entrypoint": { "type": ["string", "null"] },
+        "estimated_cost": { "type": "string" },
+        "risk": { "type": "string" },
+        "setup": { "type": "string" },
+        "run": { "type": "string" },
+        "verify": { "type": "string" },
+        "cleanup": { "type": "string" },
+        "tested_with": { "type": "string" },
+        "last_verified": {
+          "oneOf": [
+            { "type": "null" },
+            { "type": "object", "required": ["date"], "properties": { "date": { "type": "string" }, "commit": { "type": "string" } } }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "enum": ["available", "pilot"] } } },
+          "then": {
+            "required": ["entrypoint", "environment", "last_verified"],
+            "properties": { "entrypoint": { "type": "string" }, "last_verified": { "type": "object" } }
+          }
+        },
+        {
+          "if": { "properties": { "status": { "const": "planned" } } },
+          "then": { "properties": { "last_verified": { "type": "null" } } }
+        }
+      ]
+    }
+  }
+}

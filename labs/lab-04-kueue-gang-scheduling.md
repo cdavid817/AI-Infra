@@ -7,6 +7,11 @@
 | 安全风险 | L0 无。L3:需要安装 CRD 与集群级对象(ClusterQueue),属集群管理权限;死锁复现会占满测试配额,务必用独立队列隔离 |
 | 关联章节 | [§9.3 问题场景](../第二部分-算力底座/第09章-批调度器.md#93-问题场景利用率-100进展为零)、[§9.4.1 Gang Scheduling](../第二部分-算力底座/第09章-批调度器.md#941-gang-scheduling同步训练的调度公理)、[§9.4.3 四件套](../第二部分-算力底座/第09章-批调度器.md#943-队列配额优先级抢占四件套的模型设计)、[§9.5 方案对比](../第二部分-算力底座/第09章-批调度器.md#95-方案对比volcano--kueue--slurm) |
 
+> **三路径入口**(口径见 [governance/lab-fidelity-model.md](../governance/lab-fidelity-model.md)):
+> - **Replay(F0,零环境)**:没有 Docker/Kubernetes 也能先完成配额与准入的推演 → [Replay:Kueue 队列、配额与准入控制](replay/kueue-admission/README.md)
+> - **Local(F1)**:即本文的 L0 kind 路径,验证控制面与 Gang 语义
+> - **Cloud(F3+)**:即本文的 L3 真集群路径,须与集群管理员协调,不在生产集群复现死锁
+
 ## 目标
 
 做完本 Lab,你能回答:

@@ -1,0 +1,11 @@
+# synthetic 教学示例:team-a 命名空间控制面事件流(kubectl get events 风格,已按时间排序)
+2026-09-01T08:58:40Z Normal   CreatedWorkload   job/train-llama-sft       Created Workload: team-a/job-train-llama-sft-a9d33
+2026-09-01T08:58:41Z Normal   QuotaReserved     workload/job-train-llama-sft-a9d33     Quota reserved in ClusterQueue team-a-cq, wait time was 1s
+2026-09-01T08:58:41Z Normal   Admitted          workload/job-train-llama-sft-a9d33     Admitted by ClusterQueue team-a-cq, wait time since queued was 1s
+2026-09-01T08:58:41Z Normal   Started           job/train-llama-sft       Admitted by clusterQueue team-a-cq
+2026-09-01T09:00:10Z Normal   CreatedWorkload   job/train-reward-model    Created Workload: team-a/job-train-reward-model-7f2c1
+2026-09-01T09:00:12Z Warning  Pending           workload/job-train-reward-model-7f2c1  couldn't assign flavors to pod set main: insufficient unused quota for nvidia.com/gpu in flavor default-flavor, 4 more needed
+2026-09-01T09:40:02Z Normal   UpdatedClusterQueue clusterqueue/team-a-cq  nominalQuota for nvidia.com/gpu in flavor default-flavor updated: 8 -> 12
+2026-09-01T09:40:06Z Normal   QuotaReserved     workload/job-train-reward-model-7f2c1  Quota reserved in ClusterQueue team-a-cq, wait time was 39m54s
+2026-09-01T09:40:07Z Normal   Admitted          workload/job-train-reward-model-7f2c1  Admitted by ClusterQueue team-a-cq, wait time since queued was 39m57s
+2026-09-01T09:40:07Z Normal   Started           job/train-reward-model    Admitted by clusterQueue team-a-cq

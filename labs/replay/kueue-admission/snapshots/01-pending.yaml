@@ -1,0 +1,31 @@
+# synthetic 教学示例:09:00:12 时刻,作业 B 对应 Workload 的状态快照(节选)
+# 此时 train-llama-sft 已占用 8/8 卡配额
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: Workload
+metadata:
+  name: job-train-reward-model-7f2c1
+  namespace: team-a
+spec:
+  queueName: team-a
+  podSets:
+    - name: main
+      count: 4
+      template:
+        spec:
+          containers:
+            - name: worker
+              resources:
+                requests:
+                  nvidia.com/gpu: "1"
+status:
+  conditions:
+    - type: QuotaReserved
+      status: "False"
+      reason: Pending
+      message: "couldn't assign flavors to pod set main: insufficient unused quota for nvidia.com/gpu in flavor default-flavor, 4 more needed"
+      lastTransitionTime: "2026-09-01T09:00:12Z"
+    - type: Admitted
+      status: "False"
+      reason: NoReservation
+      message: The workload has no reservation
+      lastTransitionTime: "2026-09-01T09:00:12Z"

@@ -1,0 +1,23 @@
+# synthetic 教学示例:作业 A —— 8 卡 SFT 训练,单 PodSet 8 副本 × 1 卡
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: train-llama-sft
+  namespace: team-a
+  labels:
+    kueue.x-k8s.io/queue-name: team-a
+spec:
+  completions: 8
+  parallelism: 8
+  suspend: true # 由 Kueue 准入后解除挂起
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: worker
+          image: registry.example.com/train/sft:demo
+          resources:
+            requests:
+              nvidia.com/gpu: "1"
+            limits:
+              nvidia.com/gpu: "1"
