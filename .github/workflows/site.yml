@@ -14,13 +14,15 @@ on:
 permissions:
   contents: read
 
+# PR/push 构建允许被新提交取消;workflow_dispatch(可能含 Pages 部署)不被取消
 concurrency:
-  group: site-${{ github.ref }}
-  cancel-in-progress: true
+  group: site-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: ${{ github.event_name != 'workflow_dispatch' }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -29,6 +31,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run site:build
+      - name: 构建产物链接与 Claim 映射检查
+        run: npm run site:check
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: site-dist
@@ -39,6 +43,11 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && inputs.deploy
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # Pages 生产部署使用独立并发组且不允许被后续运行中断
+    concurrency:
+      group: pages-deploy
+      cancel-in-progress: false
     permissions:
       pages: write
       id-token: write

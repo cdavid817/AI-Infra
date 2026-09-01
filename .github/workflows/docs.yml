@@ -16,15 +16,19 @@ concurrency:
 
 jobs:
   deterministic-checks:
-    # PR 与 push 的确定性门禁:工具单测、本地链接、锚点、结构、证据、数据、生成物漂移、Prompt 结构
+    # PR 与 push 的确定性门禁:工具单测、本地链接、锚点、结构、证据、数据、生成物漂移、Prompt 结构、manifest、lab 元数据
     if: github.event_name == 'push' || github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.10' # pyproject.toml 声明的最低支持版本
       - run: npm ci
       - run: npm run docs:check
       - name: 生成物漂移(二次防线)
@@ -39,6 +43,7 @@ jobs:
     # 完整外链扫描放 nightly 与手动触发;404/410 失败,403/429/timeout 仅警告
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -52,6 +57,7 @@ jobs:
   freshness-report:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
@@ -70,6 +76,7 @@ jobs:
     # 发布门禁:手动触发;图片授权非 approved 即失败
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
