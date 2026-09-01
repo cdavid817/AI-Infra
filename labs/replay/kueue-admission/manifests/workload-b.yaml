@@ -1,0 +1,23 @@
+# synthetic 教学示例:作业 B —— 4 卡 Reward Model 训练,单 PodSet 4 副本 × 1 卡
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: train-reward-model
+  namespace: team-a
+  labels:
+    kueue.x-k8s.io/queue-name: team-a
+spec:
+  completions: 4
+  parallelism: 4
+  suspend: true
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: worker
+          image: registry.example.com/train/rm:demo
+          resources:
+            requests:
+              nvidia.com/gpu: "1"
+            limits:
+              nvidia.com/gpu: "1"

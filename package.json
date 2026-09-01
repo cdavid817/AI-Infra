@@ -18,7 +18,8 @@
     "docs:check:anchors": "node scripts/check-doc-anchors.mjs",
     "docs:check:structure": "node scripts/validate-chapters.mjs",
     "docs:check:external-links": "node scripts/check-external-links.mjs",
-    "docs:check": "npm run test:docs-tools && npm run docs:check:local-links && npm run docs:check:anchors && npm run docs:check:structure && npm run docs:check:evidence && npm run docs:check:data && npm run docs:check:drift && npm run docs:check:prompts && npm run docs:check:images && npm run docs:check:manifest && npm run docs:check:visuals && npm run docs:check:figure-regeneration",
+    "docs:check": "npm run test:docs-tools && npm run docs:check:local-links && npm run docs:check:anchors && npm run docs:check:structure && npm run docs:check:evidence && npm run docs:check:data && npm run docs:check:drift && npm run docs:check:prompts && npm run docs:check:images && npm run docs:check:manifest && npm run docs:check:labs && npm run docs:check:visuals && npm run docs:check:figure-regeneration",
+    "docs:check:labs": "node scripts/validate-labs.mjs",
     "docs:check:images": "node scripts/validate-images.mjs",
     "docs:check:mermaid": "node scripts/check-mermaid.mjs",
     "docs:check:manifest": "node scripts/validate-manifest.mjs",
@@ -29,7 +30,8 @@
     "docs:audit": "npm run docs:audit:prose && npm run docs:audit:visuals",
     "visuals:build": "node visuals/scripts/build-pilot-figures.mjs",
     "site:dev": "vitepress dev",
-    "site:build": "vitepress build"
+    "site:build": "vitepress build",
+    "site:check": "node scripts/check-built-site.mjs"
   },
   "dependencies": {
     "ajv": "8.17.1",

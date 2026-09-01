@@ -1,0 +1,59 @@
+# Lab 元数据,Schema 见 references/schemas/lab.schema.json,由 scripts/validate-labs.mjs 校验。
+schema_version: 1
+id: LAB-04-KUEUE-REPLAY
+title: Kueue 队列、配额与准入控制(Replay)
+data_nature: synthetic # 教学构造数据,非真实生产测量
+learning_objectives:
+  - 理解 LocalQueue 与 ClusterQueue 的绑定和配额关系
+  - 根据资源请求与配额预测 Workload 的 Pending 状态及原因
+  - 通过事件流定位 Pending → Admitted 的关键状态转移
+  - 区分控制面语义验证与真实 GPU 调度验证的边界
+paths:
+  replay:
+    status: pilot
+    environment: none
+    requirements: 无任何运行环境,纯阅读与推演
+    fidelity: F0
+    entrypoint: README.md
+    estimated_cost: 零成本,约 30–45 分钟
+    risk: 无
+    setup: 阅读 manifests/ 下三类对象定义
+    run: 按 README.md 步骤完成预测与核对
+    verify: questions.md 六题全部可独立回答,与 answers.md 一致
+    cleanup: 无需清理
+    tested_with: 材料按 Kueue v1beta1 API 形态构造(synthetic)
+    last_verified:
+      date: 2026-09-02 # 材料自洽性人工核对(F0 无执行环境,验证即通读校对)
+  local:
+    status: planned # 未实际运行,不得标记为 verified;kind 动手路径暂以 lab-04 正文为准
+    environment: docker + kind + kubectl
+    fidelity: F1
+    entrypoint: ../../lab-04-kueue-gang-scheduling.md
+    last_verified: null
+  cloud:
+    status: planned # 未实现;引入前必须满足 governance/lab-fidelity-model.md 的云端安全护栏
+    environment: kubernetes + gpu
+    fidelity: F3
+    entrypoint: null
+    last_verified: null
+validates:
+  - queue relationship
+  - quota reasoning
+  - workload admission state
+  - pending-to-admitted transition
+  - event-based diagnosis
+does_not_validate:
+  - NVIDIA Device Plugin
+  - CUDA Runtime
+  - GPU topology
+  - NVLink or NVSwitch
+  - GPU performance
+  - production scheduling scalability
+related:
+  chapters:
+    - 第二部分-算力底座/第09章-批调度器.md
+  labs:
+    - labs/lab-04-kueue-gang-scheduling.md
+  runbooks: []
+  calculators: []
+  architectures: []

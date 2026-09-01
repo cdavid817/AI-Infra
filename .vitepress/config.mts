@@ -1,10 +1,15 @@
-import { readFileSync } from 'node:fs'
+import { readFileSync, existsSync } from 'node:fs'
 import { parse as parseYaml } from 'yaml'
 import { withMermaid } from 'vitepress-plugin-mermaid'
 import mathjax3 from 'markdown-it-mathjax3'
+import { resolveClaimHref } from '../scripts/lib/claim-links.mjs'
 
 const manifest = parseYaml(readFileSync('book-manifest.yaml', 'utf8'))
 const version = parseYaml(readFileSync('book-version.yaml', 'utf8'))
+// 仓库 owner/repo/base 单一来源:site-metadata.yaml;本地可用 DOCS_BASE 覆盖 base。
+const siteMeta = parseYaml(readFileSync('site-metadata.yaml', 'utf8'))
+const repoUrl: string = siteMeta.project.url
+const base: string = process.env.DOCS_BASE ?? siteMeta.site.base
 
 const toLink = (p: string) => '/' + p.replace(/\.md$/, '')
 const chapterItems = manifest.parts.map((part: any) => ({
@@ -28,7 +33,7 @@ export default withMermaid({
   title: manifest.book.title,
   description: '面向平台建设方的中文 AI 基础设施书稿',
   lang: manifest.book.language,
-  base: '/AI-Infra/',
+  base,
   vue: { template: { compilerOptions: { isCustomElement: (tag) => tag.startsWith('mjx-') } } },
   srcDir: '.',
   srcExclude: [
@@ -41,14 +46,20 @@ export default withMermaid({
     config(md) {
       md.use(mathjax3)
       // Claim 注释 → 可见角标(计划 8.8 最小实现)
-      const claimRe = /<!--\s*claim:\s*(CLM-(\d{3})-\d{3})[^>]*-->/g
+      // ID → 文件映射与降级策略见 scripts/lib/claim-links.mjs(CLM-024-* → chapter-24.yaml,不是 chapter-024.yaml)
+      const claimRe = /<!--\s*claim:\s*(CLM-\d{3}-\d{3})[^>]*-->/g
       for (const rule of ['html_block', 'html_inline']) {
         const prev = md.renderer.rules[rule]
         md.renderer.rules[rule] = (tokens, idx, opts, env, self) => {
           const content = tokens[idx].content
+          claimRe.lastIndex = 0 // /g 正则的 test 会残留 lastIndex,跨 token 复用前必须重置
           if (claimRe.test(content)) {
-            return content.replace(claimRe, (_m, id, ch) =>
-              `<sup class="claim-ref"><a href="https://github.com/cdavid817/AI-Infra/blob/main/references/claims/chapter-${ch}.yaml" target="_blank" title="可核验结论登记:${id}">[${id}]</a></sup>`)
+            return content.replace(claimRe, (m, id) => {
+              const href = resolveClaimHref(id, { repoUrl, branch: siteMeta.project.default_branch, exists: existsSync })
+              // 登记文件缺失或 ID 非法:保留原注释(不可见),避免渲染出 404 链接
+              if (!href) return m
+              return `<sup class="claim-ref"><a href="${href}" target="_blank" title="可核验结论登记:${id}">[${id}]</a></sup>`
+            })
           }
           return prev ? prev(tokens, idx, opts, env, self) : content
         }
@@ -57,6 +68,12 @@ export default withMermaid({
   },
   themeConfig: {
     nav: [
+      // 五个任务型一级入口(ADR-002,见 governance/content-architecture.md)
+      { text: '学习原理', link: '/entries/learn' },
+      { text: '动手实验', link: '/entries/labs' },
+      { text: '生产运维', link: '/entries/operate' },
+      { text: '架构决策', link: '/entries/decide' },
+      { text: '证据与更新', link: '/entries/evidence' },
       { text: '目录', link: '/README' },
       { text: '勘误', link: '/ERRATA' },
       { text: `v${version.version} · 数据快照 ${version.data_snapshot}`, link: '/CHANGELOG' },

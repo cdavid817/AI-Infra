@@ -8,7 +8,7 @@ import { findMarkdownFiles } from './lib/files.mjs';
 import { parseMarkdown, extractLinkTargets } from './lib/markdown.mjs';
 
 const TIMEOUT = Number((process.argv.find((a) => a.startsWith('--timeout-ms=')) ?? '').split('=')[1] || 15000);
-const UA = 'ai-infra-docs-link-checker/1.0 (+https://github.com/cdavid817/AI-Infra)';
+const UA = 'ai-infra-docs-link-checker/1.0 (+https://github.com/cdavid817/AI-Infra-Tutorial)';
 // 已知对机器 UA 返回 403 但人类可访问的域,直接按 warning 处理
 const SOFT_DOMAINS = ['openai.com'];
 

@@ -100,3 +100,82 @@ appendices:
     path: 附录/附录E-异构迁移评估清单.md
   - id: F
     path: 附录/附录F-算法深入读物推荐.md
+
+# ---- 以下为任务型信息架构与治理登记(ADR-002/003/004),非破坏式新增 ----
+# 所有登记路径由 scripts/validate-manifest.mjs 校验存在性;审阅/审计状态未完成一律 pending。
+repository:
+  metadata: site-metadata.yaml # owner/repo/Pages base 单一来源
+
+entries: # 站点五个任务型一级入口
+  - id: learn
+    title: 学习原理
+    path: entries/learn.md
+    type: entry
+    audience: [platform-engineer, solution-architect, beginner]
+  - id: labs
+    title: 动手实验
+    path: entries/labs.md
+    type: entry
+    audience: [platform-engineer]
+  - id: operate
+    title: 生产运维
+    path: entries/operate.md
+    type: entry
+    audience: [sre, platform-engineer]
+  - id: decide
+    title: 架构决策
+    path: entries/decide.md
+    type: entry
+    audience: [architect, solution-architect]
+  - id: evidence
+    title: 证据与更新
+    path: entries/evidence.md
+    type: entry
+    audience: [all-readers, maintainer]
+
+collections: # 主要内容目录入口(章节与附录已在上方 parts/appendices 登记)
+  labs: {path: labs/README.md, type: lab-index}
+  labs_no_environment: {path: labs/no-environment.md, type: guide}
+  runbooks: {path: runbooks/README.md, type: runbook-index}
+  architectures: {path: reference-architectures/README.md, type: architecture-index}
+  calculators: {path: calculators/examples/README.md, type: calculator-index}
+  claims: {path: references/claims, type: evidence-dir}
+  sources: {path: references/sources.yaml, type: evidence}
+
+labs: # 本次登记的实验试点;其余既有 Lab 的三路径登记为后续 PR 工作
+  - id: LAB-04-KUEUE-REPLAY
+    title: Kueue 队列、配额与准入控制(Replay)
+    path: labs/replay/kueue-admission/README.md
+    metadata: labs/replay/kueue-admission/lab.yaml
+    type: lab-replay
+    status: pilot
+    fidelity: F0
+    data_nature: synthetic
+    prerequisites: [第二部分-算力底座/第09章-批调度器.md]
+    related: [labs/lab-04-kueue-gang-scheduling.md]
+    review: {technical: pending, readability: pending}
+
+governance:
+  policies:
+    - governance/README.md
+    - governance/content-architecture.md
+    - governance/lab-fidelity-model.md
+    - governance/evidence-policy.md
+    - governance/review-workflow.md
+    - governance/figure-and-data-policy.md
+    - governance/migration-policy.md
+  decisions:
+    - decisions/README.md
+    - decisions/ADR-002-task-oriented-information-architecture.md
+    - decisions/ADR-003-lab-three-paths-and-fidelity.md
+    - decisions/ADR-004-evidence-as-code.md
+  review: # 审阅状态模型(governance/review-workflow.md)
+    model: [pending, in-review, changes-requested, approved]
+    default: pending
+  evidence_audit: # 证据审计状态模型(governance/evidence-policy.md)
+    model: [pending, audited-no-claims, audited]
+    default: pending # 当前全部章节为 pending,逐章审计后在此登记映射
+
+legacy_paths: # 旧路径保持策略(governance/migration-policy.md)
+  policy: keep-existing-paths # 现有路径即发布 URL;移动文件前必须先在 map 登记旧→新映射并提供兼容
+  map: [] # 本次结构调整未移动任何既有文件

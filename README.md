@@ -6,7 +6,19 @@
 >
 > 大纲:[ai-infra-book-outline.md](ai-infra-book-outline.md) · 写作 Prompt 包:[ai-infra-book-prompts.md](ai-infra-book-prompts.md)
 >
-> 维护入口:[勘误与更新](ERRATA.md) · [贡献指南](CONTRIBUTING.md) · [图片来源与授权台账](images/SOURCES.md)
+> 维护入口:[勘误与更新](ERRATA.md) · [贡献指南](CONTRIBUTING.md) · [图片来源与授权台账](images/SOURCES.md) · [内容治理规范](governance/README.md) · [决策记录](decisions/README.md)
+
+## 按任务进入
+
+| 入口 | 你想做的事 |
+|---|---|
+| [学习原理](entries/learn.md) | 建立系统知识模型:机制、边界、因果 |
+| [动手实验](entries/labs.md) | 用回放、模拟或真实环境验证机制 |
+| [生产运维](entries/operate.md) | 故障止损、采证、恢复、复盘 |
+| [架构决策](entries/decide.md) | 技术选型、容量规划、成本分析 |
+| [证据与更新](entries/evidence.md) | 核验结论证据、查数据口径与审阅状态 |
+
+**没有实验环境?** 没有 GPU 甚至没有 Docker 也能开始:[零环境实验路径](labs/no-environment.md)(Replay 推演 → 本地模拟 → 短时真实 GPU 验证)。
 
 ## 全书组织
 
@@ -15,7 +27,7 @@
 - **主线 A**:一次训练任务的全生命周期
 - **主线 B**:一次推理请求的全链路
 
-每章按统一七段骨架写作:链路定位 → 依赖声明 → 问题场景 → 原理与量化模型 → 方案对比(含失效边界)→ **大数据对照** → 选型决策树(第 3 章例外,用「概念直觉 → 资源事实 → 决策含义」三段式)。
+每章围绕核心问题自然组织,不强制固定的二级标题;内部内容检查覆盖七个能力维度:链路定位、依赖声明、问题场景、原理与量化模型、方案对比(含失效边界)、**大数据对照**、选型决策树(第 3 章用「概念直觉 → 资源事实 → 决策含义」三段式,检查口径见 `scripts/validate-chapters.mjs`)。
 
 ---
 
@@ -133,7 +145,7 @@
 
 ## Labs、Runbooks 与参考架构
 
-- [Labs](labs/README.md):11 个分层动手实验(L0 无 GPU 至 L3 集群),把书中公式变成可复算的观测——每个都有成功判据与清理步骤。
+- [Labs](labs/README.md):11 个分层动手实验(L0 无 GPU 至 L3 集群),把书中公式变成可复算的观测——每个都有成功判据与清理步骤。另有零环境 Replay 路径试点([没有实验环境怎么办](labs/no-environment.md))。
 - [故障 Runbooks](runbooks/README.md):训练侧与推理/平台侧各 6 个,九段结构、止损先于诊断;安全类仅含防御与响应。
 - [参考架构](reference-architectures/README.md):从单机 8 卡到多集群平台共 7 档,容量模型全部公式代入,每档写明失效边界与升级去向。
 

@@ -1,0 +1,20 @@
+# synthetic 教学示例:team-a 的 ClusterQueue,GPU 名义配额 8 卡
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ResourceFlavor
+metadata:
+  name: default-flavor
+---
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: ClusterQueue
+metadata:
+  name: team-a-cq
+spec:
+  namespaceSelector: {}
+  queueingStrategy: BestEffortFIFO
+  resourceGroups:
+    - coveredResources: ["nvidia.com/gpu"]
+      flavors:
+        - name: default-flavor
+          resources:
+            - name: "nvidia.com/gpu"
+              nominalQuota: 8

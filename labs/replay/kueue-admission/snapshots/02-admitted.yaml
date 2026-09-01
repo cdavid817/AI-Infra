@@ -1,0 +1,38 @@
+# synthetic 教学示例:09:40:07 时刻,配额调整(8 → 12)后作业 B 的状态快照(节选)
+apiVersion: kueue.x-k8s.io/v1beta1
+kind: Workload
+metadata:
+  name: job-train-reward-model-7f2c1
+  namespace: team-a
+spec:
+  queueName: team-a
+  podSets:
+    - name: main
+      count: 4
+      template:
+        spec:
+          containers:
+            - name: worker
+              resources:
+                requests:
+                  nvidia.com/gpu: "1"
+status:
+  admission:
+    clusterQueue: team-a-cq
+    podSetAssignments:
+      - name: main
+        flavors:
+          nvidia.com/gpu: default-flavor
+        resourceUsage:
+          nvidia.com/gpu: "4"
+  conditions:
+    - type: QuotaReserved
+      status: "True"
+      reason: QuotaReserved
+      message: Quota reserved in ClusterQueue team-a-cq
+      lastTransitionTime: "2026-09-01T09:40:06Z"
+    - type: Admitted
+      status: "True"
+      reason: Admitted
+      message: The workload is admitted
+      lastTransitionTime: "2026-09-01T09:40:07Z"

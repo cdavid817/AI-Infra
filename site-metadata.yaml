@@ -1,0 +1,11 @@
+# 仓库与站点元数据单一来源:owner、仓库名、Pages base 只在此维护。
+# 消费方:.vitepress/config.mts(站点 base 与 Claim 角标链接)、scripts/check-built-site.mjs。
+# 本地开发若需覆盖 base:DOCS_BASE=/ npm run site:dev
+schema_version: 1
+project:
+  owner: cdavid817
+  repo: AI-Infra-Tutorial
+  url: https://github.com/cdavid817/AI-Infra-Tutorial
+  default_branch: main
+site:
+  base: /AI-Infra-Tutorial/
