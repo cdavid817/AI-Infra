@@ -10,6 +10,8 @@ L 级描述「需要什么环境」;与之互补的 **Replay / Local / Cloud 三
 |---|---|---|
 | [Kueue 队列、配额与准入控制](replay/kueue-admission/README.md)(配套 Lab 04) | F0 | 试点 |
 
+## 动手 Labs(L0–L3)
+
 | Lab | 等级 |
 |---|---|
 | [Lab 01:Roofline 与算术强度可视化](lab-01-roofline-arithmetic-intensity.md) | L0 无 GPU |

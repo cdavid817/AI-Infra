@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 // Lab 元数据校验:labs/**/lab.yaml 按 references/schemas/lab.schema.json 校验,
 // 并检查启用路径的 entrypoint 文件存在。planned 路径不得携带 last_verified(防止虚标已验证)。
-import { readFileSync, existsSync } from 'node:fs';
-import { readdirSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import Ajv from 'ajv';

@@ -23,8 +23,7 @@ paths:
     cleanup: 无需清理
     tested_with: 材料按 Kueue v1beta1 API 形态构造(synthetic)
     last_verified:
-      date: 2026-09-02
-      commit: 本仓库当前提交(材料自洽性人工核对)
+      date: 2026-09-02 # 材料自洽性人工核对(F0 无执行环境,验证即通读校对)
   local:
     status: planned # 未实际运行,不得标记为 verified;kind 动手路径暂以 lab-04 正文为准
     environment: docker + kind + kubectl

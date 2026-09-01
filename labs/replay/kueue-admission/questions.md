@@ -1,6 +1,6 @@
 # 分析问题
 
-先只看 [manifests/](manifests/) 与 [events.txt](events.txt),独立作答后再对照 [answers.md](answers.md)。
+先只看 `manifests/` 下的三类对象与 [events.txt](events.txt),独立作答后再对照 [answers.md](answers.md)。
 
 1. **预测**:只根据 `cluster-queue.yaml` 的配额和两个作业的资源请求,哪个 Workload 会 Pending?写出你的算式。
 2. **归因**:`snapshots/01-pending.yaml` 里,判断 Pending 直接原因的字段是哪一个?它说明缺口是多少?

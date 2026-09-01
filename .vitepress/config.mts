@@ -52,6 +52,7 @@ export default withMermaid({
         const prev = md.renderer.rules[rule]
         md.renderer.rules[rule] = (tokens, idx, opts, env, self) => {
           const content = tokens[idx].content
+          claimRe.lastIndex = 0 // /g 正则的 test 会残留 lastIndex,跨 token 复用前必须重置
           if (claimRe.test(content)) {
             return content.replace(claimRe, (m, id) => {
               const href = resolveClaimHref(id, { repoUrl, branch: siteMeta.project.default_branch, exists: existsSync })

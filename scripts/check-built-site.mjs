@@ -4,7 +4,7 @@
 // 2) Claim 角标链接(GitHub blob URL)映射回仓库内真实存在的 references/claims/chapter-XX.yaml。
 // Markdown AST 检查覆盖不到动态渲染,这里兜底。用法:npm run site:build && node scripts/check-built-site.mjs
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
-import { join, dirname, relative, resolve, posix } from 'node:path';
+import { join, relative, posix } from 'node:path';
 import { parse as parseYaml } from 'yaml';
 import { report } from './lib/diagnostics.mjs';
 
