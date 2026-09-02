@@ -14,8 +14,8 @@
 - 第六部分-上层平台/第27章-模型网关.md:112 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
 - 第六部分-上层平台/第27章-模型网关.md:201 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
 - 第六部分-上层平台/第28章-Agent运行时基础设施.md:160 `classDef risk fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
-- 第六部分-上层平台/第29章-可观测性与评测流水线.md:161 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
-- 第六部分-上层平台/第29章-可观测性与评测流水线.md:224 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第七部分-工程化与治理/第29章-可观测性与评测流水线.md:161 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
+- 第七部分-工程化与治理/第29章-可观测性与评测流水线.md:224 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
 - 第七部分-工程化与治理/第30章-模型生命周期管理.md:166 `classDef bad fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
 - 第七部分-工程化与治理/第31章-容量、成本与SLO.md:65 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`
 - 第七部分-工程化与治理/第31章-容量、成本与SLO.md:247 `classDef bottleneck fill:#FDECEC,stroke:#D64545,stroke-width:1.5px,color:#1F2937`

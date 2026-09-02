@@ -78,11 +78,11 @@ parts:
         path: 第六部分-上层平台/第27章-模型网关.md
       - number: 28
         path: 第六部分-上层平台/第28章-Agent运行时基础设施.md
-      - number: 29
-        path: 第六部分-上层平台/第29章-可观测性与评测流水线.md
   - id: part-7
     title: 第七部分 工程化与治理
     chapters:
+      - number: 29
+        path: 第七部分-工程化与治理/第29章-可观测性与评测流水线.md
       - number: 30
         path: 第七部分-工程化与治理/第30章-模型生命周期管理.md
       - number: 31
@@ -177,5 +177,9 @@ governance:
     default: pending # 当前全部章节为 pending,逐章审计后在此登记映射
 
 legacy_paths: # 旧路径保持策略(governance/migration-policy.md)
-  policy: keep-existing-paths # 现有路径即发布 URL;移动文件前必须先在 map 登记旧→新映射并提供兼容
-  map: [] # 本次结构调整未移动任何既有文件
+  policy: keep-existing-paths # 现有路径即发布 URL;移动文件必须在 map 登记旧→新映射
+  map:
+    - legacy_path: 第六部分-上层平台/第29章-可观测性与评测流水线.md
+      new_path: 第七部分-工程化与治理/第29章-可观测性与评测流水线.md
+      reason: 可观测性与评测是横切三层的治理能力,移入第七部分(先看得见 → 再管得住 → 最后算得清)
+      moved_at: 2026-09-02
