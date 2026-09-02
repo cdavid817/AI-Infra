@@ -20,7 +20,7 @@ for (const part of doc.parts ?? []) {
 }
 for (let n = 1; n <= 31; n++) if (!seen.has(n)) err(`缺少第 ${n} 章`);
 const appendices = doc.appendices ?? [];
-if (appendices.length !== 10) err(`附录应为 10 个,实际 ${appendices.length}`);
+if (appendices.length !== 11) err(`附录应为 11 个,实际 ${appendices.length}`);
 for (const a of appendices) {
   if (!existsSync(a.path)) err(`附录 ${a.id} 路径不存在: ${a.path}`);
   if (!readme.includes(a.path)) err(`README 目录缺少附录 ${a.id} 链接: ${a.path}`);
