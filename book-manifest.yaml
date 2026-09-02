@@ -108,6 +108,8 @@ appendices:
     path: 附录/附录I-vLLM详细教程.md
   - id: J
     path: 附录/附录J-AReaL详细教程.md
+  - id: K
+    path: 附录/附录K-主流LLM图谱系统全景.md
 
 # ---- 以下为任务型信息架构与治理登记(ADR-002/003/004),非破坏式新增 ----
 # 所有登记路径由 scripts/validate-manifest.mjs 校验存在性;审阅/审计状态未完成一律 pending。
